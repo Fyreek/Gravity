@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		43DE4E38274867BEBBD9A134 /* Pods_Gravity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9336EEF0D7F40A40E657062A /* Pods_Gravity.framework */; };
+		A19946591C46B8D500A0041B /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A19946581C46B8D500A0041B /* GameKit.framework */; };
 		A1D459911C46B62E0093B6CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459901C46B62E0093B6CB /* AppDelegate.swift */; };
 		A1D459931C46B62E0093B6CB /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A1D459921C46B62E0093B6CB /* GameScene.sks */; };
 		A1D459951C46B62E0093B6CB /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459941C46B62E0093B6CB /* GameScene.swift */; };
@@ -17,6 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2369AD6B09CE19CAF640F3F4 /* Pods-Gravity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gravity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Gravity/Pods-Gravity.debug.xcconfig"; sourceTree = "<group>"; };
+		9336EEF0D7F40A40E657062A /* Pods_Gravity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gravity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A19946581C46B8D500A0041B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A1D4598D1C46B62E0093B6CB /* Gravity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gravity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1D459901C46B62E0093B6CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1D459921C46B62E0093B6CB /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -26,6 +31,7 @@
 		A1D4599B1C46B62E0093B6CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1D4599E1C46B62E0093B6CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1D459A01C46B62E0093B6CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F968D0DCB8B0D37544904FB3 /* Pods-Gravity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gravity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gravity/Pods-Gravity.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +39,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43DE4E38274867BEBBD9A134 /* Pods_Gravity.framework in Frameworks */,
+				A19946591C46B8D500A0041B /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5E8AB73335BD743FC12F52CF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2369AD6B09CE19CAF640F3F4 /* Pods-Gravity.debug.xcconfig */,
+				F968D0DCB8B0D37544904FB3 /* Pods-Gravity.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8C4A506B52B050643EA03376 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A19946581C46B8D500A0041B /* GameKit.framework */,
+				9336EEF0D7F40A40E657062A /* Pods_Gravity.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A1D459841C46B62E0093B6CB = {
 			isa = PBXGroup;
 			children = (
 				A1D4598F1C46B62E0093B6CB /* Gravity */,
 				A1D4598E1C46B62E0093B6CB /* Products */,
+				5E8AB73335BD743FC12F52CF /* Pods */,
+				8C4A506B52B050643EA03376 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,9 +105,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1D459A31C46B62E0093B6CB /* Build configuration list for PBXNativeTarget "Gravity" */;
 			buildPhases = (
+				9291C3A13F06EBFC3D049F16 /* Check Pods Manifest.lock */,
 				A1D459891C46B62E0093B6CB /* Sources */,
 				A1D4598A1C46B62E0093B6CB /* Frameworks */,
 				A1D4598B1C46B62E0093B6CB /* Resources */,
+				52C2E1BE10F8EC1DAEE67083 /* Embed Pods Frameworks */,
+				6C691F45DCA5A9883423A05E /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -102,6 +133,12 @@
 				TargetAttributes = {
 					A1D4598C1C46B62E0093B6CB = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = ZA57B2W688;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -136,6 +173,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		52C2E1BE10F8EC1DAEE67083 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gravity/Pods-Gravity-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6C691F45DCA5A9883423A05E /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gravity/Pods-Gravity-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9291C3A13F06EBFC3D049F16 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A1D459891C46B62E0093B6CB /* Sources */ = {
@@ -255,23 +340,33 @@
 		};
 		A1D459A41C46B62E0093B6CB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2369AD6B09CE19CAF640F3F4 /* Pods-Gravity.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Gravity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
 		A1D459A51C46B62E0093B6CB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F968D0DCB8B0D37544904FB3 /* Pods-Gravity.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Gravity/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -294,6 +389,7 @@
 				A1D459A51C46B62E0093B6CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

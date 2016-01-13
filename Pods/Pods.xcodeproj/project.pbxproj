@@ -6,43 +6,229 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		226AFA2E5BCCAEEA83166E6E5295B6DF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A2B18241249004550EEB2E8E335957 /* Foundation.framework */; };
+		2BAB097A059AFB4E7AD71BB630720018 /* EasyGameCenter-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A340BF16A1FD4BBC07CC4889E8547F /* EasyGameCenter-dummy.m */; };
+		47804C12B85941A38729E2D34125E267 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6589F0BFCE2AB1BBC7EE35AD47DD8E1 /* GameKit.framework */; };
+		56A9446F47F82C47193971ED364EC36A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC8568AE87D6F2A094836CE35082A00E /* SystemConfiguration.framework */; };
+		6000AE915A6A44296DCE5798A5CB17F8 /* EasyGameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3114D2D71FC138967759FC2944D71BE3 /* EasyGameCenter.swift */; };
+		B97E5DD9B8515BC88D11AD0E69264AEB /* Pods-Gravity-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = AA9371BF9C11162549C46CD0FFAAAE51 /* Pods-Gravity-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF699DD166A0120A313689387B9F43E1 /* EasyGameCenter-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B84621062487806B79F10FC498E8826 /* EasyGameCenter-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C4C5D12F4CE6EBE278F2E6408193100C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A2B18241249004550EEB2E8E335957 /* Foundation.framework */; };
+		F2CD3B9D0BBB70C5CF3CCFC73CFDA937 /* Pods-Gravity-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B513867A48A5F5DA5D989290D8FF0885 /* Pods-Gravity-dummy.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8D7174857374C2184AA92D2D5625711F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C86E879D2FB6A752C7C40AF50E7B7ACC;
+			remoteInfo = EasyGameCenter;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		0B84621062487806B79F10FC498E8826 /* EasyGameCenter-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "EasyGameCenter-umbrella.h"; sourceTree = "<group>"; };
+		28A2B18241249004550EEB2E8E335957 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		3114D2D71FC138967759FC2944D71BE3 /* EasyGameCenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EasyGameCenter.swift; sourceTree = "<group>"; };
+		32FA4DF1AD297306E3E439F746A2FF48 /* EasyGameCenter.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = EasyGameCenter.modulemap; sourceTree = "<group>"; };
+		41DD0B82A56B5211DE16DB12C01E9D65 /* Pods-Gravity-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Gravity-acknowledgements.plist"; sourceTree = "<group>"; };
+		517FDCC788154C9D928F0214B5DDC20F /* Pods-Gravity-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Gravity-acknowledgements.markdown"; sourceTree = "<group>"; };
+		522201E479FFCCB631772B22F9F027B2 /* Pods-Gravity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Gravity.debug.xcconfig"; sourceTree = "<group>"; };
+		61D7601ECE4EE9B575475960660F8763 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		64376C5AA005526A9ABF8BD4D92BEC7E /* Pods_Gravity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gravity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		73535140A91813AAEE89A23B2EA857DC /* Pods-Gravity.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Gravity.modulemap"; sourceTree = "<group>"; };
+		830DE9B3F71F98A9F873594272B4CA70 /* EasyGameCenter.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = EasyGameCenter.xcconfig; sourceTree = "<group>"; };
+		8B4EC10404C78FE71971290CEB528309 /* Pods-Gravity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Gravity.release.xcconfig"; sourceTree = "<group>"; };
+		AA9371BF9C11162549C46CD0FFAAAE51 /* Pods-Gravity-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Gravity-umbrella.h"; sourceTree = "<group>"; };
+		B164CEF23586FE8AF630FFFA6ED0BF0F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B513867A48A5F5DA5D989290D8FF0885 /* Pods-Gravity-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Gravity-dummy.m"; sourceTree = "<group>"; };
 		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BE21722C02F41F86B8B3FF643C8AD746 /* Pods-Gravity-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Gravity-frameworks.sh"; sourceTree = "<group>"; };
+		BF2C426619ADF97092AB83D2EAFB0C2F /* Pods-Gravity-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Gravity-resources.sh"; sourceTree = "<group>"; };
+		C6589F0BFCE2AB1BBC7EE35AD47DD8E1 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/GameKit.framework; sourceTree = DEVELOPER_DIR; };
+		C9A340BF16A1FD4BBC07CC4889E8547F /* EasyGameCenter-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "EasyGameCenter-dummy.m"; sourceTree = "<group>"; };
+		CC6D8E0785A4CB6466E3278116DE0673 /* EasyGameCenter-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "EasyGameCenter-prefix.pch"; sourceTree = "<group>"; };
+		EC8568AE87D6F2A094836CE35082A00E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		FAD1DD276A92D51CA9A13DF4CECDC28F /* EasyGameCenter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EasyGameCenter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXGroup section */
-		09C5E90726D2521A760312DBF50D9358 /* Products */ = {
-			isa = PBXGroup;
-			children = (
+/* Begin PBXFrameworksBuildPhase section */
+		898306ADA03CD0E5FD5618524A8E42DD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				226AFA2E5BCCAEEA83166E6E5295B6DF /* Foundation.framework in Frameworks */,
 			);
-			name = Products;
-			sourceTree = "<group>";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0F8D2E47FE03D3B91B51069F7C273AF4 /* Frameworks */ = {
+		9D536E16664126C10F6D697383E2481C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4C5D12F4CE6EBE278F2E6408193100C /* Foundation.framework in Frameworks */,
+				47804C12B85941A38729E2D34125E267 /* GameKit.framework in Frameworks */,
+				56A9446F47F82C47193971ED364EC36A /* SystemConfiguration.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		122DA2E5084A4393C29BE363C764795C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D1DBC31CD921D962A22A84B85F11AC21 /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		581114B9BB0111833AF8DF41B3D65122 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				32FA4DF1AD297306E3E439F746A2FF48 /* EasyGameCenter.modulemap */,
+				830DE9B3F71F98A9F873594272B4CA70 /* EasyGameCenter.xcconfig */,
+				C9A340BF16A1FD4BBC07CC4889E8547F /* EasyGameCenter-dummy.m */,
+				CC6D8E0785A4CB6466E3278116DE0673 /* EasyGameCenter-prefix.pch */,
+				0B84621062487806B79F10FC498E8826 /* EasyGameCenter-umbrella.h */,
+				B164CEF23586FE8AF630FFFA6ED0BF0F /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/EasyGameCenter";
+			sourceTree = "<group>";
+		};
+		5904682F436EB0F2683ED87E45D068E1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FAD1DD276A92D51CA9A13DF4CECDC28F /* EasyGameCenter.framework */,
+				64376C5AA005526A9ABF8BD4D92BEC7E /* Pods_Gravity.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
-				0F8D2E47FE03D3B91B51069F7C273AF4 /* Frameworks */,
-				09C5E90726D2521A760312DBF50D9358 /* Products */,
-				F6CCA5D896907CE7506C37FD31FC265A /* Targets Support Files */,
+				122DA2E5084A4393C29BE363C764795C /* Frameworks */,
+				FBDBD7E485C55710B86FE7DCBA0AF28A /* Pods */,
+				5904682F436EB0F2683ED87E45D068E1 /* Products */,
+				8EFBC2DAA4BB4EF975ED76A95456EF19 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		F6CCA5D896907CE7506C37FD31FC265A /* Targets Support Files */ = {
+		8EFBC2DAA4BB4EF975ED76A95456EF19 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
+				BBF9F6DAB2F00D9B777051E1026B2098 /* Pods-Gravity */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
+		BBF9F6DAB2F00D9B777051E1026B2098 /* Pods-Gravity */ = {
+			isa = PBXGroup;
+			children = (
+				61D7601ECE4EE9B575475960660F8763 /* Info.plist */,
+				73535140A91813AAEE89A23B2EA857DC /* Pods-Gravity.modulemap */,
+				517FDCC788154C9D928F0214B5DDC20F /* Pods-Gravity-acknowledgements.markdown */,
+				41DD0B82A56B5211DE16DB12C01E9D65 /* Pods-Gravity-acknowledgements.plist */,
+				B513867A48A5F5DA5D989290D8FF0885 /* Pods-Gravity-dummy.m */,
+				BE21722C02F41F86B8B3FF643C8AD746 /* Pods-Gravity-frameworks.sh */,
+				BF2C426619ADF97092AB83D2EAFB0C2F /* Pods-Gravity-resources.sh */,
+				AA9371BF9C11162549C46CD0FFAAAE51 /* Pods-Gravity-umbrella.h */,
+				522201E479FFCCB631772B22F9F027B2 /* Pods-Gravity.debug.xcconfig */,
+				8B4EC10404C78FE71971290CEB528309 /* Pods-Gravity.release.xcconfig */,
+			);
+			name = "Pods-Gravity";
+			path = "Target Support Files/Pods-Gravity";
+			sourceTree = "<group>";
+		};
+		D1DBC31CD921D962A22A84B85F11AC21 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				28A2B18241249004550EEB2E8E335957 /* Foundation.framework */,
+				C6589F0BFCE2AB1BBC7EE35AD47DD8E1 /* GameKit.framework */,
+				EC8568AE87D6F2A094836CE35082A00E /* SystemConfiguration.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		ED30EF9A4F879226D3C85308BAD9D889 /* EasyGameCenter */ = {
+			isa = PBXGroup;
+			children = (
+				3114D2D71FC138967759FC2944D71BE3 /* EasyGameCenter.swift */,
+				581114B9BB0111833AF8DF41B3D65122 /* Support Files */,
+			);
+			path = EasyGameCenter;
+			sourceTree = "<group>";
+		};
+		FBDBD7E485C55710B86FE7DCBA0AF28A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ED30EF9A4F879226D3C85308BAD9D889 /* EasyGameCenter */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D3CFB737FB68FCC18267535AA4169FA1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B97E5DD9B8515BC88D11AD0E69264AEB /* Pods-Gravity-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DEEE53317C857E333231E093BACBE059 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF699DD166A0120A313689387B9F43E1 /* EasyGameCenter-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		95570C7DDBC182258075EBCA74AB9FE0 /* Pods-Gravity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 06F14279E013FB722C836887A779DDCD /* Build configuration list for PBXNativeTarget "Pods-Gravity" */;
+			buildPhases = (
+				D8A68D678C8A89DEC067238CA1DAE931 /* Sources */,
+				898306ADA03CD0E5FD5618524A8E42DD /* Frameworks */,
+				D3CFB737FB68FCC18267535AA4169FA1 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15F2BD8143818BC3235B7DD384FDB882 /* PBXTargetDependency */,
+			);
+			name = "Pods-Gravity";
+			productName = "Pods-Gravity";
+			productReference = 64376C5AA005526A9ABF8BD4D92BEC7E /* Pods_Gravity.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C86E879D2FB6A752C7C40AF50E7B7ACC /* EasyGameCenter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B8A8A74C55762683AEF8FAAACD83610 /* Build configuration list for PBXNativeTarget "EasyGameCenter" */;
+			buildPhases = (
+				FC4B4C24AC1AED9A9349C174B1BA2A40 /* Sources */,
+				9D536E16664126C10F6D697383E2481C /* Frameworks */,
+				DEEE53317C857E333231E093BACBE059 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EasyGameCenter;
+			productName = EasyGameCenter;
+			productReference = FAD1DD276A92D51CA9A13DF4CECDC28F /* EasyGameCenter.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
@@ -59,15 +245,135 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 09C5E90726D2521A760312DBF50D9358 /* Products */;
+			productRefGroup = 5904682F436EB0F2683ED87E45D068E1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				C86E879D2FB6A752C7C40AF50E7B7ACC /* EasyGameCenter */,
+				95570C7DDBC182258075EBCA74AB9FE0 /* Pods-Gravity */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXSourcesBuildPhase section */
+		D8A68D678C8A89DEC067238CA1DAE931 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2CD3B9D0BBB70C5CF3CCFC73CFDA937 /* Pods-Gravity-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC4B4C24AC1AED9A9349C174B1BA2A40 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2BAB097A059AFB4E7AD71BB630720018 /* EasyGameCenter-dummy.m in Sources */,
+				6000AE915A6A44296DCE5798A5CB17F8 /* EasyGameCenter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		15F2BD8143818BC3235B7DD384FDB882 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = EasyGameCenter;
+			target = C86E879D2FB6A752C7C40AF50E7B7ACC /* EasyGameCenter */;
+			targetProxy = 8D7174857374C2184AA92D2D5625711F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		21AFA7A5A3F44EECFB4E153DE9DDBD18 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 830DE9B3F71F98A9F873594272B4CA70 /* EasyGameCenter.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/EasyGameCenter/EasyGameCenter-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/EasyGameCenter/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/EasyGameCenter/EasyGameCenter.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = EasyGameCenter;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		7F0360DB33C1B158AEF906733A2D554C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 522201E479FFCCB631772B22F9F027B2 /* Pods-Gravity.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-Gravity/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Gravity/Pods-Gravity.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods_Gravity;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		83D86C111B11DBAF2AB3F56C74B2576B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B4EC10404C78FE71971290CEB528309 /* Pods-Gravity.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-Gravity/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Gravity/Pods-Gravity.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods_Gravity;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		8D1534490D941DCA47C62AC4314182AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -107,6 +413,33 @@
 			};
 			name = Debug;
 		};
+		A063BADDD58E7355E1BD217C8F3CC2F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 830DE9B3F71F98A9F873594272B4CA70 /* EasyGameCenter.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/EasyGameCenter/EasyGameCenter-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/EasyGameCenter/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/EasyGameCenter/EasyGameCenter.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = EasyGameCenter;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		C5A18280E9321A9268D1C80B7DA43967 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -144,11 +477,29 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		06F14279E013FB722C836887A779DDCD /* Build configuration list for PBXNativeTarget "Pods-Gravity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F0360DB33C1B158AEF906733A2D554C /* Debug */,
+				83D86C111B11DBAF2AB3F56C74B2576B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8D1534490D941DCA47C62AC4314182AF /* Debug */,
 				C5A18280E9321A9268D1C80B7DA43967 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3B8A8A74C55762683AEF8FAAACD83610 /* Build configuration list for PBXNativeTarget "EasyGameCenter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21AFA7A5A3F44EECFB4E153DE9DDBD18 /* Debug */,
+				A063BADDD58E7355E1BD217C8F3CC2F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
