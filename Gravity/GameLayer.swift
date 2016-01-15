@@ -14,11 +14,13 @@ class GameLayer: SKNode {
     //Actions
     var topBarInAction:SKAction = SKAction()
     var bottomBarInAction:SKAction = SKAction()
+    var scoreNodeInAction:SKAction = SKAction()
     
     //Nodes
     var topBar:SKShapeNode = SKShapeNode()
     var bottomBar:SKShapeNode = SKShapeNode()
     var player:SKShapeNode = SKShapeNode()
+    var scoreNode = SKLabelNode()
     
     override init() {
         super.init()
@@ -29,26 +31,35 @@ class GameLayer: SKNode {
         
         topBar = SKShapeNode(rectOfSize: CGSize(width: interScene.screenSize.width, height: interScene.barHeight))
         topBar.position = CGPoint(x: interScene.screenSize.width / 2, y: interScene.screenSize.height + interScene.barHeight / 2)
-        topBar.fillColor = SKColor(red: 83 / 255, green: 88 / 255, blue: 128 / 255, alpha: 1)
-        topBar.strokeColor = SKColor(red: 83 / 255, green: 88 / 255, blue: 128 / 255, alpha: 1)
+        topBar.fillColor = colors.blueBarColor
+        topBar.strokeColor = colors.blueBarColor
         topBar.zPosition = 2
         addChild(topBar)
         
-        
-        
         bottomBar = SKShapeNode(rectOfSize: CGSize(width: interScene.screenSize.width, height: interScene.barHeight))
         bottomBar.position = CGPoint(x: interScene.screenSize.width / 2, y: -(interScene.barHeight / 2))
-        bottomBar.fillColor = SKColor(red: 83 / 255, green: 88 / 255, blue: 128 / 255, alpha: 1)
-        bottomBar.strokeColor = SKColor(red: 83 / 255, green: 88 / 255, blue: 128 / 255, alpha: 1)
+        bottomBar.fillColor = colors.blueBarColor
+        bottomBar.strokeColor = colors.blueBarColor
         bottomBar.zPosition = 2
         addChild(bottomBar)
         
-        player = SKShapeNode(circleOfRadius: interScene.screenSize.height / 16)
+        player = SKShapeNode(circleOfRadius: interScene.screenSize.height / 24)
         player.position = CGPoint(x: interScene.screenSize.width / 2, y: interScene.screenSize.height / 2)
-        player.fillColor = SKColor.whiteColor()
-        player.strokeColor = SKColor.whiteColor()
+        player.fillColor = colors.playerColor
+        player.strokeColor = colors.playerColor
         player.zPosition = 2
         addChild(player)
+        
+        scoreNode = SKLabelNode(fontNamed: "Helvetia")
+        scoreNode.text = "0.00"
+        scoreNode.fontSize = 28
+        scoreNode.fontColor = SKColor.whiteColor()
+        scoreNode.zPosition = 2
+        scoreNode.position = CGPoint(x: scoreNode.frame.width + interScene.screenSize.width / 60, y: interScene.screenSize.height + scoreNode.frame.height + interScene.screenSize.height / 40)
+        scoreNode.name = "scoreNode"
+        addChild(scoreNode)
+        
+        scoreNodeInAction = SKAction.moveToY(interScene.screenSize.height - scoreNode.frame.height - interScene.screenSize.height / 40, duration: interScene.gameLayerFadeTime)
         
     }
     

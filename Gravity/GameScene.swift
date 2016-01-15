@@ -34,6 +34,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var currentGameState:gameState = .gameMenu
     var moveLeft:Bool = false
     var moveRight:Bool = false
+    var spawnTimer = NSTimer()
+    
+    //Actions
     let fadeColorAction = SKAction.customActionWithDuration(0.2, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
         (node as! SKShapeNode).fillColor = SKColor.lightGrayColor()
         (node as! SKShapeNode).strokeColor = SKColor.lightGrayColor()
@@ -42,24 +45,42 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         (node as! SKShapeNode).fillColor = SKColor.whiteColor()
         (node as! SKShapeNode).strokeColor = SKColor.whiteColor()
     })
-
+    var waitAction:SKAction = SKAction()
+    var moveLeftAction:SKAction = SKAction()
+    var moveRightAction:SKAction = SKAction()
+    
+    //Functions
     override func didMoveToView(view: SKView) {
-        
         self.physicsWorld.contactDelegate = self
         loadValues()
         interfaceSetup()
-        
     }
     
     func loadValues() {
         interScene.screenSize = (view?.frame.size)!
         interScene.barHeight = interScene.screenSize.height / 7
-        print(interScene.screenSize)
+        interScene.objectSize = interScene.screenSize.height / 40
+        interScene.screenOutLeft = -interScene.objectSize * 2
+        interScene.screenOutRight = interScene.screenSize.width + interScene.objectSize * 2
+        
+        waitAction = SKAction.waitForDuration(interScene.objectWait)
+        moveLeftAction = SKAction.sequence([
+            waitAction,
+            SKAction.moveToX(interScene.screenOutLeft, duration: interScene.objectMoveTime)
+        ])
+        moveRightAction = SKAction.sequence([
+                waitAction,
+            SKAction.moveToX(interScene.screenOutRight, duration: interScene.objectMoveTime)
+        ])
     }
     
     func interfaceSetup() {
         menuLayer = MenuLayer()
         self.addChild(menuLayer)
+    }
+    
+    func setupSpawnTimer() {
+        self.spawnTimer = NSTimer.scheduledTimerWithTimeInterval(interScene.timerWait, target: self, selector: Selector("updateSpawnTimer"), userInfo: nil, repeats: true)
     }
     
     override func screenInteractionStarted(location: CGPoint) {
@@ -87,6 +108,17 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func screenInteractionMoved(location: CGPoint) {
+        if currentGameState == .gameActive {
+            if lastNodeName == "" {
+                if location.x >= interScene.screenSize.width / 2 {
+                    moveLeft = false
+                    moveRight = true
+                } else if location.x <= interScene.screenSize.width / 2 {
+                    moveRight = false
+                    moveLeft = true
+                }
+            }
+        }
     }
     
     override func screenInteractionEnded(location: CGPoint) {
@@ -111,12 +143,29 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(interScene.gameLayerFadeTime))
         gameLayer.topBar.runAction(gameLayer.topBarInAction)
         gameLayer.bottomBar.runAction(gameLayer.bottomBarInAction)
-        menuLayer.playButton.runAction(SKAction.scaleTo(0.5, duration: interScene.gameLayerFadeTime))
+        gameLayer.scoreNode.runAction(gameLayer.scoreNodeInAction)
         menuLayer.playButton.runAction(SKAction.scaleTo(0.5, duration: interScene.gameLayerFadeTime), completion: {
             self.menuLayer.playButton.hidden = true
             self.setupPhysics()
             self.currentGameState = .gameActive
+            self.setupSpawnTimer()
         })
+    }
+    
+    func updateSpawnTimer() {
+        getSpawnPositions()
+    }
+    
+    func splitedString(string: String, length: Int) -> [String] {
+        var result = [String]()
+        
+        for var i = 0; i < string.characters.count; i += length {
+            let endIndex = string.endIndex.advancedBy(-i)
+            let startIndex = endIndex.advancedBy(-length, limit: string.startIndex)
+            result.append(string[startIndex..<endIndex])
+        }
+        
+        return result.reverse()
     }
     
     func setupPhysics() {
@@ -147,10 +196,81 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     func switchGravity() {
         if gravityDirection == "down" {
             gravityDirection = "up"
-            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: 9.8)
+            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: interScene.gravity)
         } else if gravityDirection == "up" {
             gravityDirection = "down"
-            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -9.8)
+            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -interScene.gravity)
+        }
+    }
+    
+    func getSpawnPositions() {
+        var objectCount:Int = Int(arc4random_uniform(3))
+        objectCount += 1
+        let objectSide:Int = Int(arc4random_uniform(2))
+        var objectSpawnPoints:[CGFloat] = []
+        let gameSizeY:CGFloat = interScene.screenSize.height - interScene.barHeight * 2
+        let spawnSpace:CGFloat = gameSizeY / 4
+        
+        objectSpawnPoints.append(interScene.barHeight + spawnSpace)
+        objectSpawnPoints.append(interScene.barHeight + spawnSpace * 2)
+        objectSpawnPoints.append(interScene.barHeight + spawnSpace * 3)
+        
+        //Spawning
+        
+        if objectCount == 1 {
+            let whichSpawn:Int =  Int(arc4random_uniform(3))
+            if objectSide == 0 {
+                createObjects(CGPoint(x: interScene.screenOutLeft, y: objectSpawnPoints[whichSpawn]), direction: "right")
+            } else if objectSide == 1 {
+                createObjects(CGPoint(x: interScene.screenOutRight, y: objectSpawnPoints[whichSpawn]), direction: "left")
+            }
+        } else if objectCount == 2 {
+            let whichSpawn:Int = Int(arc4random_uniform(3))
+            objectSpawnPoints.removeAtIndex(whichSpawn)
+            for var i = 0; i < objectSpawnPoints.count; i++ {
+                if objectSide == 0 {
+                    createObjects(CGPoint(x: interScene.screenOutLeft, y: objectSpawnPoints[i]), direction: "right")
+                } else if objectSide == 1 {
+                    createObjects(CGPoint(x: interScene.screenOutRight, y: objectSpawnPoints[i]), direction: "left")
+                }
+            }
+        } else if objectCount == 3 {
+            for var i = 0; i < objectCount; i++ {
+                if objectSide == 0 {
+                    createObjects(CGPoint(x: interScene.screenOutLeft, y: objectSpawnPoints[i]), direction: "right")
+                } else if objectSide == 1 {
+                    createObjects(CGPoint(x: interScene.screenOutRight, y: objectSpawnPoints[i]), direction: "left")
+                }
+            }
+        }
+    }
+    
+    func createObjects(location : CGPoint, direction: String) {
+        let object = SKShapeNode(rectOfSize: CGSize(width: interScene.objectSize, height: interScene.objectSize))
+        object.position = location
+        object.zPosition = 3
+        object.fillColor = colors.blueObjectColor
+        object.strokeColor = colors.blueObjectBorderColor
+        object.lineWidth = interScene.objectBorderWidth
+        object.name = "object"
+        object.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: interScene.objectSize, height: interScene.objectSize))
+        object.physicsBody?.affectedByGravity = false
+        object.physicsBody?.categoryBitMask = ColliderType.Objects.rawValue
+        object.physicsBody?.contactTestBitMask = ColliderType.Player.rawValue
+        object.physicsBody?.collisionBitMask = ColliderType.Player.rawValue
+        object.physicsBody?.dynamic = false
+        object.physicsBody?.allowsRotation = false
+        addChild(object)
+        if direction == "right" {
+            object.runAction(moveRightAction, completion: {
+                object.removeAllActions()
+                object.removeFromParent()
+            })
+        } else if direction == "left" {
+            object.runAction(moveLeftAction, completion: {
+                object.removeAllActions()
+                object.removeFromParent()
+            })
         }
     }
     
@@ -160,15 +280,51 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         switch contactMask {
             
         case ColliderType.Player.rawValue | ColliderType.Ground.rawValue:
-            print("Player Ground Collision")
             switchGravity()
             
         case ColliderType.Player.rawValue | ColliderType.Objects.rawValue:
             print("Player Object Collision")
-            
+            gameOver()
         default:
             print("unkown collision")
         }
+    }
+    
+    func gameOver() {
+        spawnTimer.invalidate()
+        self.enumerateChildNodesWithName("object") {
+            node, stop in
+            node.removeAllActions()
+            node.runAction(SKAction.sequence([
+                self.waitAction,
+                SKAction.fadeOutWithDuration(interScene.objectFadeOutDuration)
+            ]), completion: {
+                node.removeFromParent()
+            })
+        }
+        currentGameState = .gameOver
+        gameLayer.player.physicsBody?.affectedByGravity = false
+        gameLayer.player.physicsBody?.dynamic = false
+        
+        gameLayer.player.runAction(SKAction.sequence([
+            self.waitAction,
+            SKAction.moveTo(CGPoint(x: interScene.screenSize.width / 2, y: interScene.screenSize.height / 2), duration: interScene.objectFadeOutDuration)
+        ]))
+        gameLayer.player.runAction(SKAction.sequence([
+            self.waitAction,
+            SKAction.moveTo(CGPoint(x: interScene.screenSize.width / 2, y: interScene.screenSize.height / 2), duration: interScene.objectFadeOutDuration)
+        ]), completion: {
+            self.restartGame()
+        })
+    }
+    
+    func restartGame() {
+        currentGameState = .gameActive
+        setupSpawnTimer()
+        gameLayer.player.physicsBody?.affectedByGravity = true
+        gameLayer.player.physicsBody?.dynamic = true
+        gravityDirection = "up"
+        switchGravity()
     }
     
     override func update(currentTime: CFTimeInterval) {

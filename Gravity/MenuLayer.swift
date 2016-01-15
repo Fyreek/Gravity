@@ -22,15 +22,15 @@ class MenuLayer: SKNode {
         
         backgroundNode = SKShapeNode(rectOfSize: interScene.screenSize)
         backgroundNode.position = CGPoint(x: interScene.screenSize.width / 2, y: interScene.screenSize.height / 2)
-        backgroundNode.fillColor = SKColor(red: 103 / 255, green: 108 / 255, blue: 148 / 255, alpha: 1)
-        backgroundNode.strokeColor = SKColor(red: 103 / 255, green: 108 / 255, blue: 148 / 255, alpha: 1)
+        backgroundNode.fillColor = colors.blueBGColor
+        backgroundNode.strokeColor = colors.blueBGColor
         backgroundNode.zPosition = 1
         addChild(backgroundNode)
         
         playButton = SKShapeNode(circleOfRadius: interScene.screenSize.height / 8)
         playButton.position = CGPoint(x: interScene.screenSize.width / 2, y: interScene.screenSize.height / 2)
-        playButton.fillColor = SKColor.whiteColor()
-        playButton.strokeColor = SKColor.whiteColor()
+        playButton.fillColor = colors.playerColor
+        playButton.strokeColor = colors.playerColor
         playButton.zPosition = 2
         playButton.name = "playButton"
         addChild(playButton)
@@ -42,8 +42,8 @@ class MenuLayer: SKNode {
         CGPathCloseSubpath(path)
         playArrow = SKShapeNode(path: path, centered: true)
         playArrow.lineWidth = 0
-        playArrow.fillColor = SKColor(red: 83 / 255, green: 88 / 255, blue: 128 / 255, alpha: 1)
-        playArrow.strokeColor = SKColor(red: 83 / 255, green: 88 / 255, blue: 128 / 255, alpha: 1)
+        playArrow.fillColor = colors.blueBarColor
+        playArrow.strokeColor = colors.blueBarColor
         playArrow.zPosition = 3
         playArrow.name = "playArrow"
         playArrow.position = CGPoint(x: interScene.screenSize.width / 2, y: interScene.screenSize.height / 2)
