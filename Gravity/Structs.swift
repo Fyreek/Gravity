@@ -23,6 +23,7 @@ struct interScene {
     static var objectMoveTime:NSTimeInterval = 3
     static var objectBorderWidth:CGFloat = 4
     static var objectFadeOutDuration:NSTimeInterval = 1
+    static var gameCenterLoggedIn:Bool = false
 }
 struct colors {
     static var playerColor:SKColor = SKColor.whiteColor()

@@ -8,11 +8,15 @@
 
 import UIKit
 import SpriteKit
+import EasyGameCenter
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, EGCDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        EGC.sharedInstance(self)
+        //EGC.showLoginPage = false
 
         if let scene = GameScene(fileNamed:"GameScene") {
             // Configure the view.
@@ -31,6 +35,14 @@ class GameViewController: UIViewController {
             skView.presentScene(scene)
         }
     }
+    
+    func EGCAuthentified(authentified:Bool) {
+        if authentified {
+            interScene.gameCenterLoggedIn = true
+            print("Logged in.")
+        }
+    }
+
 
     override func shouldAutorotate() -> Bool {
         return true

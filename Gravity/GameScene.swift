@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import EasyGameCenter
 
 class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
@@ -38,13 +39,22 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     //Actions
     let fadeColorAction = SKAction.customActionWithDuration(0.2, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
-        (node as! SKShapeNode).fillColor = SKColor.lightGrayColor()
-        (node as! SKShapeNode).strokeColor = SKColor.lightGrayColor()
+        if node is SKSpriteNode  {
+            (node as! SKSpriteNode)
+        } else if node is SKShapeNode {
+            (node as! SKShapeNode).fillColor = SKColor.whiteColor()
+            (node as! SKShapeNode).strokeColor = SKColor.whiteColor()
+        }
     })
     let fadeOutColorAction = SKAction.customActionWithDuration(0.2, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
-        (node as! SKShapeNode).fillColor = SKColor.whiteColor()
-        (node as! SKShapeNode).strokeColor = SKColor.whiteColor()
+        if node is SKSpriteNode  {
+            (node as! SKSpriteNode)
+        } else if node is SKShapeNode {
+            (node as! SKShapeNode).fillColor = SKColor.whiteColor()
+            (node as! SKShapeNode).strokeColor = SKColor.whiteColor()
+        }
     })
+    
     var waitAction:SKAction = SKAction()
     var moveLeftAction:SKAction = SKAction()
     var moveRightAction:SKAction = SKAction()
@@ -84,9 +94,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func screenInteractionStarted(location: CGPoint) {
-        if self.nodeAtPoint(location) == menuLayer.playButton || self.nodeAtPoint(location) == menuLayer.playArrow {
+        if self.nodeAtPoint(location) == menuLayer.playButton {
             lastNodeName = menuLayer.playButton.name!
             menuLayer.playButton.runAction(fadeColorAction)
+        } else if self.nodeAtPoint(location) == menuLayer.GCNode {
+            lastNodeName = menuLayer.GCNode.name!
+            menuLayer.GCNode.runAction(fadeColorAction)
         } else {
             if location.x >= interScene.screenSize.width / 2 {
                 moveLeft = false
@@ -122,11 +135,15 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func screenInteractionEnded(location: CGPoint) {
-        if self.nodeAtPoint(location) == menuLayer.playButton || self.nodeAtPoint(location) == menuLayer.playArrow {
+        if self.nodeAtPoint(location) == menuLayer.playButton || self.nodeAtPoint(location) == menuLayer.GCNode {
             if lastNodeName == menuLayer.playButton.name {
                 lastNodeName = ""
                 menuLayer.playButton.runAction(fadeOutColorAction)
                 showGameLayer()
+            } else if lastNodeName == menuLayer.GCNode.name {
+                lastNodeName = ""
+                menuLayer.GCNode.runAction(fadeOutColorAction)
+                EGC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
             } else {
                 removeNodeAction()
             }
@@ -139,7 +156,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer = GameLayer()
         addChild(gameLayer)
         
-        menuLayer.playArrow.runAction(SKAction.fadeOutWithDuration(interScene.gameLayerFadeTime))
         menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(interScene.gameLayerFadeTime))
         gameLayer.topBar.runAction(gameLayer.topBarInAction)
         gameLayer.bottomBar.runAction(gameLayer.bottomBarInAction)

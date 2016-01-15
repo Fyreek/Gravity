@@ -12,10 +12,10 @@ class MenuLayer: SKNode {
     
     //Nodes
     var backgroundNode:SKShapeNode = SKShapeNode()
-    var playButton = SKShapeNode()
+    var playButton = SKSpriteNode()
     var playArrow = SKShapeNode()
     var highScoreNode = SKLabelNode()
-    var GCNode = SKShapeNode()
+    var GCNode = SKSpriteNode()
     
     override init() {
         super.init()
@@ -27,27 +27,11 @@ class MenuLayer: SKNode {
         backgroundNode.zPosition = 1
         addChild(backgroundNode)
         
-        playButton = SKShapeNode(circleOfRadius: interScene.screenSize.height / 8)
+        playButton = SKSpriteNode(imageNamed: "PlayButton.png")
         playButton.position = CGPoint(x: interScene.screenSize.width / 2, y: interScene.screenSize.height / 2)
-        playButton.fillColor = colors.playerColor
-        playButton.strokeColor = colors.playerColor
         playButton.zPosition = 2
         playButton.name = "playButton"
         addChild(playButton)
-        
-        let path = CGPathCreateMutable()
-        CGPathMoveToPoint(path, nil, -(interScene.screenSize.width / 40), -(interScene.screenSize.height / 20))
-        CGPathAddLineToPoint(path, nil, -(interScene.screenSize.width / 40), interScene.screenSize.height / 20)
-        CGPathAddLineToPoint(path, nil, interScene.screenSize.width / 40, 0)
-        CGPathCloseSubpath(path)
-        playArrow = SKShapeNode(path: path, centered: true)
-        playArrow.lineWidth = 0
-        playArrow.fillColor = colors.blueBarColor
-        playArrow.strokeColor = colors.blueBarColor
-        playArrow.zPosition = 3
-        playArrow.name = "playArrow"
-        playArrow.position = CGPoint(x: interScene.screenSize.width / 2, y: interScene.screenSize.height / 2)
-        addChild(playArrow)
         
         highScoreNode = SKLabelNode(fontNamed: "Helvetia")
         highScoreNode.text = "0.00"
@@ -58,10 +42,8 @@ class MenuLayer: SKNode {
         highScoreNode.name = "highScoreNode"
         addChild(highScoreNode)
         
-        GCNode = SKShapeNode(rectOfSize: CGSize(width: interScene.screenSize.height / 10, height: interScene.screenSize.height / 10), cornerRadius: 1)
-        GCNode.position = CGPoint(x: GCNode.frame.size.width / 2 + interScene.screenSize.width / 40, y: interScene.screenSize.height - GCNode.frame.size.height )//- interScene.screenSize.height / 40)
-        GCNode.fillColor = SKColor.whiteColor()
-        GCNode.strokeColor = SKColor.whiteColor()
+        GCNode = SKSpriteNode(imageNamed: "GameCenter.png")
+        GCNode.position = CGPoint(x: GCNode.frame.size.width / 2 + interScene.screenSize.width / 66, y: (interScene.screenSize.height - (interScene.screenSize.height / 2 - GCNode.frame.size.height / 2) / 6 ))//- interScene.screenSize.height / 40)
         GCNode.zPosition = 2
         GCNode.name = "GCNode"
         addChild(GCNode)
