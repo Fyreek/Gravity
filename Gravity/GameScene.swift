@@ -464,7 +464,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             self.highScoreLayer.shareNode.runAction(SKAction.fadeInWithDuration(0.5))
         })
         gameLayer.player.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
-            self.highScoreLayer.highScoreText.fontColor = self.gameObjectColor[self.currentGameColor]
+            self.highScoreLayer.highScoreText.fontColor = self.gameLayer.topBar.fillColor
             self.highScoreLayer.highScoreText.text = self.menuLayer.highScoreNode.text
             self.highScoreLayer.highScoreNode.runAction(SKAction.fadeInWithDuration(1))
             self.highScoreLayer.highScoreText.runAction(SKAction.fadeInWithDuration(1))
