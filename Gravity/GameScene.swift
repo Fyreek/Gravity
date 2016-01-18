@@ -28,6 +28,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     //Layers
     var menuLayer = MenuLayer()
     var gameLayer = GameLayer()
+    var highScoreLayer = HighScoreLayer()
     
     //Vars
     var lastNodeName = ""
@@ -36,6 +37,15 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var moveLeft:Bool = false
     var moveRight:Bool = false
     var spawnTimer = NSTimer()
+    var timer = NSTimer()
+    var startTime = NSTimeInterval()
+    var currentScore: NSTimeInterval = 0
+    var highScore: NSTimeInterval = 0
+    var newHighScore:Bool = false
+    var gameCenterSync:Bool = false
+    var gameBGColor:[SKColor] = []
+    var gameObjectColor:[SKColor] = []
+    var currentGameColor:Int = 0
     
     //Actions
     let fadeColorAction = SKAction.customActionWithDuration(0.2, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
@@ -67,30 +77,68 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func loadValues() {
-        interScene.screenSize = (view?.frame.size)!
-        interScene.barHeight = interScene.screenSize.height / 7
-        interScene.objectSize = interScene.screenSize.height / 40
-        interScene.screenOutLeft = -interScene.objectSize * 2
-        interScene.screenOutRight = interScene.screenSize.width + interScene.objectSize * 2
+        vars.screenSize = (view?.frame.size)!
+        vars.barHeight = vars.screenSize.height / 7
+        vars.objectSize = vars.screenSize.height / 36
+        vars.screenOutLeft = -vars.objectSize * 2
+        vars.screenOutRight = vars.screenSize.width + vars.objectSize * 2
         
-        waitAction = SKAction.waitForDuration(interScene.objectWait)
+        gameBGColor.append(colors.redBGColor)
+        gameBGColor.append(colors.blueBGColor)
+        gameBGColor.append(colors.greenBGColor)
+        gameBGColor.append(colors.yellowBGColor)
+        gameBGColor.append(colors.orangeBGColor)
+        
+        gameObjectColor.append(colors.redObjectColor)
+        gameObjectColor.append(colors.blueObjectColor)
+        gameObjectColor.append(colors.greenObjectColor)
+        gameObjectColor.append(colors.yellowObjectColor)
+        gameObjectColor.append(colors.orangeObjectColor)
+        
+        waitAction = SKAction.waitForDuration(vars.objectWait)
         moveLeftAction = SKAction.sequence([
             waitAction,
-            SKAction.moveToX(interScene.screenOutLeft, duration: interScene.objectMoveTime)
+            SKAction.moveToX(vars.screenOutLeft, duration: vars.objectMoveTime)
         ])
         moveRightAction = SKAction.sequence([
                 waitAction,
-            SKAction.moveToX(interScene.screenOutRight, duration: interScene.objectMoveTime)
+            SKAction.moveToX(vars.screenOutRight, duration: vars.objectMoveTime)
         ])
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("highScore") {
+            highScore = NSTimeInterval(NSUserDefaults.standardUserDefaults().integerForKey("highScore"))
+        } else {
+            highScore = 0
+        }
     }
     
     func interfaceSetup() {
         menuLayer = MenuLayer()
+        setColors()
         self.addChild(menuLayer)
+        setHighScore()
+    }
+    
+    func setHighScore() {
+        var highScoreTime = highScore
+        let minutes = UInt8(highScoreTime / 60.0)
+        
+        highScoreTime -= (NSTimeInterval(minutes) * 60)
+        
+        let seconds = UInt8(highScoreTime)
+        
+        highScoreTime -= NSTimeInterval(seconds)
+        
+        let fraction = UInt8(highScoreTime * 100)
+        
+        let strMinutes = String(format: "%02d", minutes)
+        let strSeconds = String(format: "%02d", seconds)
+        let strFraction = String(format: "%02d", fraction)
+        
+        menuLayer.highScoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
     }
     
     func setupSpawnTimer() {
-        self.spawnTimer = NSTimer.scheduledTimerWithTimeInterval(interScene.timerWait, target: self, selector: Selector("updateSpawnTimer"), userInfo: nil, repeats: true)
+        self.spawnTimer = NSTimer.scheduledTimerWithTimeInterval(vars.timerWait, target: self, selector: Selector("updateSpawnTimer"), userInfo: nil, repeats: true)
     }
     
     override func screenInteractionStarted(location: CGPoint) {
@@ -100,11 +148,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         } else if self.nodeAtPoint(location) == menuLayer.GCNode {
             lastNodeName = menuLayer.GCNode.name!
             menuLayer.GCNode.runAction(fadeColorAction)
+        } else if self.nodeAtPoint(location) == highScoreLayer.highScoreNode || self.nodeAtPoint(location) == highScoreLayer.highScoreText {
+            lastNodeName = highScoreLayer.highScoreNode.name!
+            highScoreLayer.highScoreNode.runAction(fadeColorAction)
         } else {
-            if location.x >= interScene.screenSize.width / 2 {
+            if location.x >= vars.screenSize.width / 2 {
                 moveLeft = false
                 moveRight = true
-            } else if location.x <= interScene.screenSize.width / 2 {
+            } else if location.x <= vars.screenSize.width / 2 {
                 moveRight = false
                 moveLeft = true
             }
@@ -123,10 +174,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     override func screenInteractionMoved(location: CGPoint) {
         if currentGameState == .gameActive {
             if lastNodeName == "" {
-                if location.x >= interScene.screenSize.width / 2 {
+                if location.x >= vars.screenSize.width / 2 {
                     moveLeft = false
                     moveRight = true
-                } else if location.x <= interScene.screenSize.width / 2 {
+                } else if location.x <= vars.screenSize.width / 2 {
                     moveRight = false
                     moveLeft = true
                 }
@@ -135,7 +186,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func screenInteractionEnded(location: CGPoint) {
-        if self.nodeAtPoint(location) == menuLayer.playButton || self.nodeAtPoint(location) == menuLayer.GCNode {
+        if self.nodeAtPoint(location) == menuLayer.playButton || self.nodeAtPoint(location) == menuLayer.GCNode || self.nodeAtPoint(location) == highScoreLayer.highScoreNode{
             if lastNodeName == menuLayer.playButton.name {
                 lastNodeName = ""
                 menuLayer.playButton.runAction(fadeOutColorAction)
@@ -144,6 +195,19 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 lastNodeName = ""
                 menuLayer.GCNode.runAction(fadeOutColorAction)
                 EGC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
+            } else if lastNodeName == highScoreLayer.highScoreNode.name {
+                highScoreLayer.highScoreNode.runAction(SKAction.fadeOutWithDuration(0.5))
+                highScoreLayer.highScoreText.runAction(SKAction.fadeOutWithDuration(0.5))
+                highScoreLayer.shareNode.runAction(SKAction.fadeOutWithDuration(0.5))
+                menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
+                self.highScoreLayer.removeFromParent()
+                self.menuLayer.highScoreNode.runAction(SKAction.moveToY(self.menuLayer.highScoreNode.position.y - vars.screenSize.height / 8, duration: 0.5))
+                    self.gameLayer.player.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
+                    self.gameLayer.player.runAction(SKAction.fadeInWithDuration(0.5))
+                    self.gameLayer.scoreNode.runAction(SKAction.moveToY(self.gameLayer.scoreNode.position.y - vars.screenSize.height / 8, duration: 0.5), completion: {
+                        self.restartGame()
+                    })
+                })
             } else {
                 removeNodeAction()
             }
@@ -152,19 +216,63 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
     }
     
+    func startTimer() {
+        let aSelector : Selector = "updateTime"
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
+        startTime = NSDate.timeIntervalSinceReferenceDate()
+    }
+    
+    func stopTimer(){
+        timer.invalidate()
+    }
+    
+    func updateTime() {
+        
+        let currentTime = NSDate.timeIntervalSinceReferenceDate()
+        
+        var elapsedTime: NSTimeInterval = currentTime - startTime
+        currentScore = elapsedTime
+        if currentScore > highScore {
+            newHighScore = true
+            highScore = currentScore
+        }
+        
+        let minutes = UInt8(elapsedTime / 60.0)
+        
+        elapsedTime -= (NSTimeInterval(minutes) * 60)
+        
+        let seconds = UInt8(elapsedTime)
+        
+        elapsedTime -= NSTimeInterval(seconds)
+        
+        let fraction = UInt8(elapsedTime * 100)
+        
+        let strMinutes = String(format: "%02d", minutes)
+        let strSeconds = String(format: "%02d", seconds)
+        let strFraction = String(format: "%02d", fraction)
+        
+        gameLayer.scoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
+        if newHighScore == true {
+            menuLayer.highScoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
+        }
+        
+    }
+    
     func showGameLayer() {
         gameLayer = GameLayer()
+        setColors()
         addChild(gameLayer)
         
-        menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(interScene.gameLayerFadeTime))
+        menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
         gameLayer.topBar.runAction(gameLayer.topBarInAction)
         gameLayer.bottomBar.runAction(gameLayer.bottomBarInAction)
         gameLayer.scoreNode.runAction(gameLayer.scoreNodeInAction)
-        menuLayer.playButton.runAction(SKAction.scaleTo(0.5, duration: interScene.gameLayerFadeTime), completion: {
+        menuLayer.playButton.runAction(SKAction.scaleTo(0.5, duration: vars.gameLayerFadeTime), completion: {
             self.menuLayer.playButton.hidden = true
             self.setupPhysics()
             self.currentGameState = .gameActive
             self.setupSpawnTimer()
+            self.startTimer()
         })
     }
     
@@ -201,7 +309,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.bottomBar.physicsBody!.allowsRotation = false
         gameLayer.bottomBar.physicsBody!.dynamic = false
         
-        gameLayer.player.physicsBody = SKPhysicsBody(circleOfRadius: gameLayer.player.frame.size.height / 2)
+        gameLayer.player.physicsBody = SKPhysicsBody(circleOfRadius: gameLayer.player.frame.size.height / 2.5)
         gameLayer.player.physicsBody!.affectedByGravity = true
         gameLayer.player.physicsBody!.categoryBitMask = ColliderType.Player.rawValue
         gameLayer.player.physicsBody!.contactTestBitMask = ColliderType.Ground.rawValue | ColliderType.Objects.rawValue
@@ -212,10 +320,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     func switchGravity() {
         if gravityDirection == "down" {
             gravityDirection = "up"
-            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: interScene.gravity)
+            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: vars.gravity)
         } else if gravityDirection == "up" {
             gravityDirection = "down"
-            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -interScene.gravity)
+            self.physicsWorld.gravity = CGVector(dx: 0.0, dy: -vars.gravity)
         }
     }
     
@@ -224,52 +332,51 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         objectCount += 1
         let objectSide:Int = Int(arc4random_uniform(2))
         var objectSpawnPoints:[CGFloat] = []
-        let gameSizeY:CGFloat = interScene.screenSize.height - interScene.barHeight * 2
+        let gameSizeY:CGFloat = vars.screenSize.height - vars.barHeight * 2
         let spawnSpace:CGFloat = gameSizeY / 4
         
-        objectSpawnPoints.append(interScene.barHeight + spawnSpace)
-        objectSpawnPoints.append(interScene.barHeight + spawnSpace * 2)
-        objectSpawnPoints.append(interScene.barHeight + spawnSpace * 3)
+        objectSpawnPoints.append(vars.barHeight + spawnSpace)
+        objectSpawnPoints.append(vars.barHeight + spawnSpace * 2)
+        objectSpawnPoints.append(vars.barHeight + spawnSpace * 3)
         
         //Spawning
         
         if objectCount == 1 {
             let whichSpawn:Int =  Int(arc4random_uniform(3))
             if objectSide == 0 {
-                createObjects(CGPoint(x: interScene.screenOutLeft, y: objectSpawnPoints[whichSpawn]), direction: "right")
+                createObjects(CGPoint(x: vars.screenOutLeft, y: objectSpawnPoints[whichSpawn]), direction: "right")
             } else if objectSide == 1 {
-                createObjects(CGPoint(x: interScene.screenOutRight, y: objectSpawnPoints[whichSpawn]), direction: "left")
+                createObjects(CGPoint(x: vars.screenOutRight, y: objectSpawnPoints[whichSpawn]), direction: "left")
             }
         } else if objectCount == 2 {
             let whichSpawn:Int = Int(arc4random_uniform(3))
             objectSpawnPoints.removeAtIndex(whichSpawn)
             for var i = 0; i < objectSpawnPoints.count; i++ {
                 if objectSide == 0 {
-                    createObjects(CGPoint(x: interScene.screenOutLeft, y: objectSpawnPoints[i]), direction: "right")
+                    createObjects(CGPoint(x: vars.screenOutLeft, y: objectSpawnPoints[i]), direction: "right")
                 } else if objectSide == 1 {
-                    createObjects(CGPoint(x: interScene.screenOutRight, y: objectSpawnPoints[i]), direction: "left")
+                    createObjects(CGPoint(x: vars.screenOutRight, y: objectSpawnPoints[i]), direction: "left")
                 }
             }
         } else if objectCount == 3 {
             for var i = 0; i < objectCount; i++ {
                 if objectSide == 0 {
-                    createObjects(CGPoint(x: interScene.screenOutLeft, y: objectSpawnPoints[i]), direction: "right")
+                    createObjects(CGPoint(x: vars.screenOutLeft, y: objectSpawnPoints[i]), direction: "right")
                 } else if objectSide == 1 {
-                    createObjects(CGPoint(x: interScene.screenOutRight, y: objectSpawnPoints[i]), direction: "left")
+                    createObjects(CGPoint(x: vars.screenOutRight, y: objectSpawnPoints[i]), direction: "left")
                 }
             }
         }
     }
     
     func createObjects(location : CGPoint, direction: String) {
-        let object = SKShapeNode(rectOfSize: CGSize(width: interScene.objectSize, height: interScene.objectSize))
+        let object = SKShapeNode(rectOfSize: CGSize(width: vars.objectSize, height: vars.objectSize))
         object.position = location
         object.zPosition = 3
-        object.fillColor = colors.blueObjectColor
-        object.strokeColor = colors.blueObjectBorderColor
-        object.lineWidth = interScene.objectBorderWidth
+        object.fillColor = gameObjectColor[currentGameColor]
+        object.strokeColor = gameObjectColor[currentGameColor]
         object.name = "object"
-        object.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: interScene.objectSize, height: interScene.objectSize))
+        object.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: vars.objectSize, height: vars.objectSize))
         object.physicsBody?.affectedByGravity = false
         object.physicsBody?.categoryBitMask = ColliderType.Objects.rawValue
         object.physicsBody?.contactTestBitMask = ColliderType.Player.rawValue
@@ -299,11 +406,42 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             switchGravity()
             
         case ColliderType.Player.rawValue | ColliderType.Objects.rawValue:
-            print("Player Object Collision")
             gameOver()
         default:
             print("unkown collision")
         }
+    }
+    
+    func setColors() {
+        menuLayer.backgroundNode.fillColor = gameBGColor[currentGameColor]
+        gameLayer.topBar.fillColor = gameObjectColor[currentGameColor]
+        gameLayer.topBar.strokeColor = gameObjectColor[currentGameColor]
+        gameLayer.bottomBar.fillColor = gameObjectColor[currentGameColor]
+        gameLayer.bottomBar.strokeColor = gameObjectColor[currentGameColor]
+    }
+    
+    func gotNewHighScore() {
+        NSUserDefaults.standardUserDefaults().setInteger(Int(highScore), forKey: "highScore")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(highScore))
+        openNewHighScore()
+    }
+    
+    func openNewHighScore() {
+        highScoreLayer = HighScoreLayer()
+        self.addChild(highScoreLayer)
+        
+        gameLayer.scoreNode.runAction(SKAction.moveToY(gameLayer.scoreNode.position.y + vars.screenSize.height / 8, duration: 0.5))
+        menuLayer.highScoreNode.runAction(SKAction.moveToY(menuLayer.highScoreNode.position.y + vars.screenSize.height / 8, duration: 0.5), completion: {
+            self.menuLayer.GCNode.runAction(SKAction.fadeInWithDuration(0.5))
+            self.highScoreLayer.shareNode.runAction(SKAction.fadeInWithDuration(0.5))
+        })
+        gameLayer.player.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
+            self.highScoreLayer.highScoreText.fontColor = self.gameObjectColor[self.currentGameColor]
+            self.highScoreLayer.highScoreText.text = self.menuLayer.highScoreNode.text
+            self.highScoreLayer.highScoreNode.runAction(SKAction.fadeInWithDuration(1))
+            self.highScoreLayer.highScoreText.runAction(SKAction.fadeInWithDuration(1))
+        })
     }
     
     func gameOver() {
@@ -313,29 +451,37 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             node.removeAllActions()
             node.runAction(SKAction.sequence([
                 self.waitAction,
-                SKAction.fadeOutWithDuration(interScene.objectFadeOutDuration)
+                SKAction.fadeOutWithDuration(vars.objectFadeOutDuration)
             ]), completion: {
                 node.removeFromParent()
             })
         }
         currentGameState = .gameOver
+        stopTimer()
         gameLayer.player.physicsBody?.affectedByGravity = false
         gameLayer.player.physicsBody?.dynamic = false
-        
-        gameLayer.player.runAction(SKAction.sequence([
-            self.waitAction,
-            SKAction.moveTo(CGPoint(x: interScene.screenSize.width / 2, y: interScene.screenSize.height / 2), duration: interScene.objectFadeOutDuration)
-        ]))
-        gameLayer.player.runAction(SKAction.sequence([
-            self.waitAction,
-            SKAction.moveTo(CGPoint(x: interScene.screenSize.width / 2, y: interScene.screenSize.height / 2), duration: interScene.objectFadeOutDuration)
-        ]), completion: {
-            self.restartGame()
-        })
+        if newHighScore == true {
+            gotNewHighScore()
+            newHighScore = false
+        } else {
+            newHighScore = false
+            gameLayer.player.runAction(SKAction.sequence([
+                self.waitAction,
+                SKAction.moveTo(CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2), duration: vars.objectFadeOutDuration)
+                ]))
+            gameLayer.player.runAction(SKAction.sequence([
+                self.waitAction,
+                SKAction.moveTo(CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2), duration: vars.objectFadeOutDuration)
+                ]), completion: {
+                    self.restartGame()
+            })
+        }
     }
     
     func restartGame() {
         currentGameState = .gameActive
+        gameLayer.scoreNode.text = "00:00:00"
+        startTimer()
         setupSpawnTimer()
         gameLayer.player.physicsBody?.affectedByGravity = true
         gameLayer.player.physicsBody?.dynamic = true
@@ -346,14 +492,27 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     override func update(currentTime: CFTimeInterval) {
         if currentGameState == .gameActive {
             if moveRight == true {
-                gameLayer.player.position.x += interScene.playerSideSpeed
-                if gameLayer.player.position.x >= interScene.screenSize.width {
+                gameLayer.player.position.x += vars.playerSideSpeed
+                if gameLayer.player.position.x >= vars.screenSize.width {
                     gameLayer.player.position.x = 0
                 }
             } else if moveLeft == true {
-                gameLayer.player.position.x -= interScene.playerSideSpeed
+                gameLayer.player.position.x -= vars.playerSideSpeed
                 if gameLayer.player.position.x <= 0 {
-                    gameLayer.player.position.x = interScene.screenSize.width
+                    gameLayer.player.position.x = vars.screenSize.width
+                }
+            }
+        }
+        if gameCenterSync == false {
+            gameCenterSync = true
+            if vars.gameCenterLoggedIn == true {
+                if NSTimeInterval(vars.highScore) > highScore {
+                    highScore = NSTimeInterval(vars.highScore)
+                    NSUserDefaults.standardUserDefaults().setInteger(Int(highScore), forKey: "highScore")
+                    NSUserDefaults.standardUserDefaults().synchronize()
+                    setHighScore()
+                } else {
+                    EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(highScore))
                 }
             }
         }

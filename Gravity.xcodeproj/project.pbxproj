@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1472D29F1C4D32E50059D315 /* HighScoreLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472D29E1C4D32E50059D315 /* HighScoreLayer.swift */; };
 		43DE4E38274867BEBBD9A134 /* Pods_Gravity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9336EEF0D7F40A40E657062A /* Pods_Gravity.framework */; };
 		A108DE4A1C49488F00760D54 /* GameLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE461C49488F00760D54 /* GameLayer.swift */; };
 		A108DE4B1C49488F00760D54 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE471C49488F00760D54 /* MenuLayer.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1472D29E1C4D32E50059D315 /* HighScoreLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighScoreLayer.swift; sourceTree = "<group>"; };
 		2369AD6B09CE19CAF640F3F4 /* Pods-Gravity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gravity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Gravity/Pods-Gravity.debug.xcconfig"; sourceTree = "<group>"; };
 		9336EEF0D7F40A40E657062A /* Pods_Gravity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gravity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A108DE461C49488F00760D54 /* GameLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLayer.swift; sourceTree = "<group>"; };
@@ -55,6 +57,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		14CA552A1C49896D00E97C8F /* Layers */ = {
+			isa = PBXGroup;
+			children = (
+				A108DE461C49488F00760D54 /* GameLayer.swift */,
+				A108DE471C49488F00760D54 /* MenuLayer.swift */,
+				1472D29E1C4D32E50059D315 /* HighScoreLayer.swift */,
+			);
+			name = Layers;
+			sourceTree = "<group>";
+		};
+		14CA552B1C49897B00E97C8F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A108DE481C49488F00760D54 /* SKSceneExtension.swift */,
+				A108DE491C49488F00760D54 /* Structs.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		5E8AB73335BD743FC12F52CF /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -97,15 +118,13 @@
 				A1D459901C46B62E0093B6CB /* AppDelegate.swift */,
 				A1D459961C46B62E0093B6CB /* GameViewController.swift */,
 				A1D459941C46B62E0093B6CB /* GameScene.swift */,
-				A108DE461C49488F00760D54 /* GameLayer.swift */,
-				A108DE471C49488F00760D54 /* MenuLayer.swift */,
-				A108DE491C49488F00760D54 /* Structs.swift */,
-				A108DE481C49488F00760D54 /* SKSceneExtension.swift */,
 				A1D459921C46B62E0093B6CB /* GameScene.sks */,
 				A1D459981C46B62E0093B6CB /* Main.storyboard */,
 				A1D4599B1C46B62E0093B6CB /* Assets.xcassets */,
 				A1D4599D1C46B62E0093B6CB /* LaunchScreen.storyboard */,
 				A1D459A01C46B62E0093B6CB /* Info.plist */,
+				14CA552A1C49896D00E97C8F /* Layers */,
+				14CA552B1C49897B00E97C8F /* Extensions */,
 			);
 			path = Gravity;
 			sourceTree = "<group>";
@@ -145,7 +164,7 @@
 				TargetAttributes = {
 					A1D4598C1C46B62E0093B6CB = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = ZA57B2W688;
+						DevelopmentTeam = 9C545A2GHY;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 1;
@@ -239,6 +258,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1472D29F1C4D32E50059D315 /* HighScoreLayer.swift in Sources */,
 				A1D459951C46B62E0093B6CB /* GameScene.swift in Sources */,
 				A108DE4A1C49488F00760D54 /* GameLayer.swift in Sources */,
 				A108DE4B1C49488F00760D54 /* MenuLayer.swift in Sources */,
@@ -364,7 +384,7 @@
 				INFOPLIST_FILE = Gravity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravitya;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -380,7 +400,7 @@
 				INFOPLIST_FILE = Gravity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravitya;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

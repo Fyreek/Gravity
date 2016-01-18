@@ -38,8 +38,13 @@ class GameViewController: UIViewController, EGCDelegate {
     
     func EGCAuthentified(authentified:Bool) {
         if authentified {
-            interScene.gameCenterLoggedIn = true
-            print("Logged in.")
+            vars.gameCenterLoggedIn = true
+            EGC.getHighScore(leaderboardIdentifier: "gravity_leaderboard") {
+                (tupleHighScore) -> Void in
+                if let tupleIsOk = tupleHighScore {
+                    vars.highScore = tupleIsOk.score
+                }
+            }
         }
     }
 
