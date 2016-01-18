@@ -512,7 +512,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                     NSUserDefaults.standardUserDefaults().synchronize()
                     setHighScore()
                 } else {
-                    EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(highScore))
+                    EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(highScore * 100))
                 }
             }
         }

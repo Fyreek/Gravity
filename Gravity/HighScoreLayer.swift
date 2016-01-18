@@ -12,7 +12,7 @@ import SpriteKit
 class HighScoreLayer: SKNode {
     
     //Nodes
-    var shareNode:SKShapeNode = SKShapeNode()
+    var shareNode:SKSpriteNode = SKSpriteNode()
     var highScoreNode:SKShapeNode = SKShapeNode()
     var highScoreText:SKLabelNode = SKLabelNode()
     
@@ -21,9 +21,8 @@ class HighScoreLayer: SKNode {
     override init() {
         super.init()
     
-        shareNode = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.height / 20, height: vars.screenSize.height / 20))
+        shareNode = SKSpriteNode(imageNamed: "Share")
         shareNode.position = CGPoint(x: vars.screenSize.width - (shareNode.frame.size.width / 2 + vars.screenSize.width / 66), y: (vars.screenSize.height - (vars.screenSize.height / 2 - shareNode.frame.size.height / 2) / 6 ))
-        shareNode.fillColor = SKColor.whiteColor()
         shareNode.zPosition = 3
         shareNode.alpha = 0
         shareNode.name = "shareNode"
