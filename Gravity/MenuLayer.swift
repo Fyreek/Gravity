@@ -22,8 +22,6 @@ class MenuLayer: SKNode {
         
         backgroundNode = SKShapeNode(rectOfSize: vars.screenSize)
         backgroundNode.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
-        //backgroundNode.fillColor = colors.blueBGColor
-        //backgroundNode.strokeColor = colors.blueBGColor
         backgroundNode.zPosition = 1
         addChild(backgroundNode)
         

@@ -46,8 +46,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var gameBGColor:[SKColor] = []
     var gameObjectColor:[SKColor] = []
     var currentGameColor:Int = 0
+    var isColorizing:Bool = false
     
     //Actions
+    var colorizeBGNodes = SKAction()
+    var colorizeObjectNodes = SKAction()
     let fadeColorAction = SKAction.customActionWithDuration(0.2, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
         if node is SKSpriteNode  {
             (node as! SKSpriteNode)
@@ -108,6 +111,27 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             highScore = NSTimeInterval(NSUserDefaults.standardUserDefaults().integerForKey("highScore"))
         } else {
             highScore = 0
+        }
+    }
+    
+    func changeColor() {
+        
+        if isColorizing == true {
+            if currentGameColor <= gameBGColor.count - 2 {
+                menuLayer.backgroundNode.runAction(colorTransitionAction(gameBGColor[currentGameColor], toColor: gameBGColor[currentGameColor + 1], duration: vars.colorChangeTime))
+                gameLayer.topBar.runAction(colorTransitionAction(gameObjectColor[currentGameColor], toColor: gameObjectColor[currentGameColor + 1], duration: vars.colorChangeTime))
+                gameLayer.bottomBar.runAction(colorTransitionAction(gameObjectColor[currentGameColor], toColor: gameObjectColor[currentGameColor + 1], duration: vars.colorChangeTime), completion: {
+                    self.currentGameColor += 1
+                    self.changeColor()
+                })
+            } else {
+                menuLayer.backgroundNode.runAction(colorTransitionAction(gameBGColor[currentGameColor], toColor: gameBGColor[0], duration: vars.colorChangeTime))
+                gameLayer.topBar.runAction(colorTransitionAction(gameObjectColor[currentGameColor], toColor: gameObjectColor[0], duration: vars.colorChangeTime))
+                gameLayer.bottomBar.runAction(colorTransitionAction(gameObjectColor[currentGameColor], toColor: gameObjectColor[0], duration: vars.colorChangeTime), completion: {
+                    self.currentGameColor = 0
+                    self.changeColor()
+                })
+            }
         }
     }
     
@@ -273,6 +297,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             self.currentGameState = .gameActive
             self.setupSpawnTimer()
             self.startTimer()
+            self.isColorizing = true
+            self.changeColor()
         })
     }
     
@@ -414,6 +440,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func setColors() {
         menuLayer.backgroundNode.fillColor = gameBGColor[currentGameColor]
+        menuLayer.backgroundNode.strokeColor = gameBGColor[currentGameColor]
         gameLayer.topBar.fillColor = gameObjectColor[currentGameColor]
         gameLayer.topBar.strokeColor = gameObjectColor[currentGameColor]
         gameLayer.bottomBar.fillColor = gameObjectColor[currentGameColor]
@@ -444,8 +471,41 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         })
     }
     
+    func lerp(a : CGFloat, b : CGFloat, fraction : CGFloat) -> CGFloat
+    {
+        return (b-a) * fraction + a
+    }
+    
+    func colorTransitionAction(fromColor : UIColor, toColor : UIColor, duration : Double = 1.0) -> SKAction {
+        
+        var fr = CGFloat(0.0)
+        var fg = CGFloat(0.0)
+        var fb = CGFloat(0.0)
+        var fa = CGFloat(0.0)
+        var tr = CGFloat(0.0)
+        var tg = CGFloat(0.0)
+        var tb = CGFloat(0.0)
+        var ta = CGFloat(0.0)
+        
+        fromColor.getRed(&fr, green: &fg, blue: &fb, alpha: &fa)
+        toColor.getRed(&tr, green: &tg, blue: &tb, alpha: &ta)
+        
+        return SKAction.customActionWithDuration(duration, actionBlock: { (node : SKNode!, elapsedTime : CGFloat) -> Void in
+            let fraction = CGFloat(elapsedTime / CGFloat(duration))
+            let transColor = UIColor(red: self.lerp(fr, b: tr, fraction: fraction),
+                green: self.lerp(fg, b: tg, fraction: fraction),
+                blue: self.lerp(fb, b: tb, fraction: fraction),
+                alpha: self.lerp(fa, b: ta, fraction: fraction))
+            (node as! SKShapeNode).fillColor = transColor
+            (node as! SKShapeNode).strokeColor = transColor
+            }
+        )
+    }
+    
     func gameOver() {
         spawnTimer.invalidate()
+        gameLayer.player.physicsBody?.affectedByGravity = false
+        gameLayer.player.physicsBody?.dynamic = false
         self.enumerateChildNodesWithName("object") {
             node, stop in
             node.removeAllActions()
@@ -457,18 +517,13 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             })
         }
         currentGameState = .gameOver
+        isColorizing = false
         stopTimer()
-        gameLayer.player.physicsBody?.affectedByGravity = false
-        gameLayer.player.physicsBody?.dynamic = false
         if newHighScore == true {
             gotNewHighScore()
             newHighScore = false
         } else {
             newHighScore = false
-            gameLayer.player.runAction(SKAction.sequence([
-                self.waitAction,
-                SKAction.moveTo(CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2), duration: vars.objectFadeOutDuration)
-                ]))
             gameLayer.player.runAction(SKAction.sequence([
                 self.waitAction,
                 SKAction.moveTo(CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2), duration: vars.objectFadeOutDuration)
@@ -487,10 +542,17 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.player.physicsBody?.dynamic = true
         gravityDirection = "up"
         switchGravity()
+        isColorizing = true
+        changeColor()
     }
     
     override func update(currentTime: CFTimeInterval) {
         if currentGameState == .gameActive {
+            self.enumerateChildNodesWithName("object") {
+                node, stop in
+                (node as! SKShapeNode).fillColor = self.gameLayer.topBar.fillColor
+                (node as! SKShapeNode).strokeColor = self.gameLayer.topBar.strokeColor
+            }
             if moveRight == true {
                 gameLayer.player.position.x += vars.playerSideSpeed
                 if gameLayer.player.position.x >= vars.screenSize.width {

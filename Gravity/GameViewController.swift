@@ -16,6 +16,7 @@ class GameViewController: UIViewController, EGCDelegate {
         super.viewDidLoad()
         
         EGC.sharedInstance(self)
+        self.view.multipleTouchEnabled = true
         //EGC.showLoginPage = false
 
         if let scene = GameScene(fileNamed:"GameScene") {

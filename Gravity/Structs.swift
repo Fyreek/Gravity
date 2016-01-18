@@ -25,7 +25,9 @@ struct vars {
     static var objectFadeOutDuration:NSTimeInterval = 1
     static var gameCenterLoggedIn:Bool = false
     static var highScore:Int = 0
+    static var colorChangeTime:NSTimeInterval = 1
 }
+
 struct colors {
     static var playerColor:SKColor = SKColor.whiteColor()
     static var blueBGColor:SKColor = SKColor(red: 96 / 255, green: 201 / 255, blue: 248 / 255, alpha: 1)
