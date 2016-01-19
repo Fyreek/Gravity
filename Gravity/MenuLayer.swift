@@ -14,7 +14,7 @@ class MenuLayer: SKNode {
     var backgroundNode:SKShapeNode = SKShapeNode()
     var playButton = SKSpriteNode()
     var playArrow = SKShapeNode()
-    var highScoreNode = SKLabelNode()
+    var highscoreNode = SKLabelNode()
     var GCNode = SKSpriteNode()
     
     override init() {
@@ -31,14 +31,14 @@ class MenuLayer: SKNode {
         playButton.name = "playButton"
         addChild(playButton)
         
-        highScoreNode = SKLabelNode(fontNamed: "Helvetia")
-        highScoreNode.text = "00:00.00"
-        highScoreNode.fontSize = 28
-        highScoreNode.fontColor = SKColor.whiteColor()
-        highScoreNode.zPosition = 2
-        highScoreNode.position = CGPoint(x: vars.screenSize.width - highScoreNode.frame.width - vars.screenSize.width / 60, y: vars.screenSize.height - highScoreNode.frame.height - vars.screenSize.height / 40)
-        highScoreNode.name = "highScoreNode"
-        addChild(highScoreNode)
+        highscoreNode = SKLabelNode(fontNamed: "Helvetica")
+        highscoreNode.text = "00:00.00"
+        highscoreNode.fontSize = 28
+        highscoreNode.fontColor = SKColor.whiteColor()
+        highscoreNode.zPosition = 2
+        highscoreNode.position = CGPoint(x: vars.screenSize.width - highscoreNode.frame.width - vars.screenSize.width / 60, y: vars.screenSize.height - highscoreNode.frame.height - vars.screenSize.height / 40)
+        highscoreNode.name = "highscoreNode"
+        addChild(highscoreNode)
         
         GCNode = SKSpriteNode(imageNamed: "GameCenter.png")
         GCNode.position = CGPoint(x: GCNode.frame.size.width / 2 + vars.screenSize.width / 66, y: (vars.screenSize.height - (vars.screenSize.height / 2 - GCNode.frame.size.height / 2) / 6 ))//- vars.screenSize.height / 40)

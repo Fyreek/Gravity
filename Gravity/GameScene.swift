@@ -28,7 +28,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     //Layers
     var menuLayer = MenuLayer()
     var gameLayer = GameLayer()
-    var highScoreLayer = HighScoreLayer()
+    var highscoreLayer = HighscoreLayer()
     
     //Vars
     var lastNodeName = ""
@@ -40,8 +40,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var timer = NSTimer()
     var startTime = NSTimeInterval()
     var currentScore: NSTimeInterval = 0
-    var highScore: NSTimeInterval = 0
-    var newHighScore:Bool = false
+    var highscore: NSTimeInterval = 0
+    var newHighscore:Bool = false
     var gameCenterSync:Bool = false
     var gameBGColor:[SKColor] = []
     var gameObjectColor:[SKColor] = []
@@ -107,10 +107,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 waitAction,
             SKAction.moveToX(vars.screenOutRight, duration: vars.objectMoveTime)
         ])
-        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("highScore") {
-            highScore = NSTimeInterval(NSUserDefaults.standardUserDefaults().integerForKey("highScore"))
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("highscore") {
+            highscore = NSTimeInterval(NSUserDefaults.standardUserDefaults().floatForKey("highscore"))
         } else {
-            highScore = 0
+            highscore = 0
         }
     }
     
@@ -139,26 +139,27 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         menuLayer = MenuLayer()
         setColors()
         self.addChild(menuLayer)
-        setHighScore()
+        setHighscore()
     }
     
-    func setHighScore() {
-        var highScoreTime = highScore
-        let minutes = UInt8(highScoreTime / 60.0)
+    func setHighscore() {
+        var highscoreTime = highscore
+        print(highscore)
+        let minutes = UInt8(highscoreTime / 60.0)
         
-        highScoreTime -= (NSTimeInterval(minutes) * 60)
+        highscoreTime -= (NSTimeInterval(minutes) * 60)
         
-        let seconds = UInt8(highScoreTime)
+        let seconds = UInt8(highscoreTime)
         
-        highScoreTime -= NSTimeInterval(seconds)
+        highscoreTime -= NSTimeInterval(seconds)
         
-        let fraction = UInt8(highScoreTime * 100)
+        let fraction = UInt8(highscoreTime * 100)
         
         let strMinutes = String(format: "%02d", minutes)
         let strSeconds = String(format: "%02d", seconds)
         let strFraction = String(format: "%02d", fraction)
         
-        menuLayer.highScoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
+        menuLayer.highscoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
     }
     
     func setupSpawnTimer() {
@@ -172,9 +173,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         } else if self.nodeAtPoint(location) == menuLayer.GCNode {
             lastNodeName = menuLayer.GCNode.name!
             menuLayer.GCNode.runAction(fadeColorAction)
-        } else if self.nodeAtPoint(location) == highScoreLayer.highScoreNode || self.nodeAtPoint(location) == highScoreLayer.highScoreText {
-            lastNodeName = highScoreLayer.highScoreNode.name!
-            highScoreLayer.highScoreNode.runAction(fadeColorAction)
+        } else if self.nodeAtPoint(location) == highscoreLayer.highscoreNode || self.nodeAtPoint(location) == highscoreLayer.highscoreText {
+            lastNodeName = highscoreLayer.highscoreNode.name!
+            highscoreLayer.highscoreNode.runAction(fadeColorAction)
+        } else if self.nodeAtPoint(location) == highscoreLayer.shareNode {
+            lastNodeName = highscoreLayer.shareNode.name!
+            highscoreLayer.shareNode.runAction(fadeColorAction)
         } else {
             if location.x >= vars.screenSize.width / 2 {
                 moveLeft = false
@@ -210,7 +214,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func screenInteractionEnded(location: CGPoint) {
-        if self.nodeAtPoint(location) == menuLayer.playButton || self.nodeAtPoint(location) == menuLayer.GCNode || self.nodeAtPoint(location) == highScoreLayer.highScoreNode{
+        if self.nodeAtPoint(location) == menuLayer.playButton || self.nodeAtPoint(location) == menuLayer.GCNode || self.nodeAtPoint(location) == highscoreLayer.highscoreNode || self.nodeAtPoint(location) == highscoreLayer.shareNode {
             if lastNodeName == menuLayer.playButton.name {
                 lastNodeName = ""
                 menuLayer.playButton.runAction(fadeOutColorAction)
@@ -219,13 +223,17 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 lastNodeName = ""
                 menuLayer.GCNode.runAction(fadeOutColorAction)
                 EGC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
-            } else if lastNodeName == highScoreLayer.highScoreNode.name {
-                highScoreLayer.highScoreNode.runAction(SKAction.fadeOutWithDuration(0.5))
-                highScoreLayer.highScoreText.runAction(SKAction.fadeOutWithDuration(0.5))
-                highScoreLayer.shareNode.runAction(SKAction.fadeOutWithDuration(0.5))
+            } else if lastNodeName == highscoreLayer.shareNode.name {
+                lastNodeName = ""
+                highscoreLayer.shareNode.runAction(fadeOutColorAction)
+                NSNotificationCenter.defaultCenter().postNotificationName("shareHighscore", object: nil)
+            } else if lastNodeName == highscoreLayer.highscoreNode.name {
+                highscoreLayer.highscoreNode.runAction(SKAction.fadeOutWithDuration(0.5))
+                highscoreLayer.highscoreText.runAction(SKAction.fadeOutWithDuration(0.5))
+                highscoreLayer.shareNode.runAction(SKAction.fadeOutWithDuration(0.5))
                 menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
-                self.highScoreLayer.removeFromParent()
-                self.menuLayer.highScoreNode.runAction(SKAction.moveToY(self.menuLayer.highScoreNode.position.y - vars.screenSize.height / 8, duration: 0.5))
+                self.highscoreLayer.removeFromParent()
+                self.menuLayer.highscoreNode.runAction(SKAction.moveToY(self.menuLayer.highscoreNode.position.y - vars.screenSize.height / 8, duration: 0.5))
                     self.gameLayer.player.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
                     self.gameLayer.player.runAction(SKAction.fadeInWithDuration(0.5))
                     self.gameLayer.scoreNode.runAction(SKAction.moveToY(self.gameLayer.scoreNode.position.y - vars.screenSize.height / 8, duration: 0.5), completion: {
@@ -256,9 +264,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         
         var elapsedTime: NSTimeInterval = currentTime - startTime
         currentScore = elapsedTime
-        if currentScore > highScore {
-            newHighScore = true
-            highScore = currentScore
+        if currentScore > highscore {
+            newHighscore = true
+            highscore = currentScore
         }
         
         let minutes = UInt8(elapsedTime / 60.0)
@@ -276,8 +284,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         let strFraction = String(format: "%02d", fraction)
         
         gameLayer.scoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
-        if newHighScore == true {
-            menuLayer.highScoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
+        if newHighscore == true {
+            menuLayer.highscoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
         }
         
     }
@@ -434,7 +442,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         case ColliderType.Player.rawValue | ColliderType.Objects.rawValue:
             gameOver()
         default:
-            print("unkown collision")
+            print("unknown collision")
         }
     }
     
@@ -447,27 +455,28 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.bottomBar.strokeColor = gameObjectColor[currentGameColor]
     }
     
-    func gotNewHighScore() {
-        NSUserDefaults.standardUserDefaults().setInteger(Int(highScore), forKey: "highScore")
+    func gotNewHighscore() {
+        vars.highscore = Float(highscore)
+        NSUserDefaults.standardUserDefaults().setFloat(Float(highscore), forKey: "highscore")
         NSUserDefaults.standardUserDefaults().synchronize()
-        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(highScore))
+        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(highscore * 100))
         openNewHighScore()
     }
     
     func openNewHighScore() {
-        highScoreLayer = HighScoreLayer()
-        self.addChild(highScoreLayer)
+        highscoreLayer = HighscoreLayer()
+        self.addChild(highscoreLayer)
         
         gameLayer.scoreNode.runAction(SKAction.moveToY(gameLayer.scoreNode.position.y + vars.screenSize.height / 8, duration: 0.5))
-        menuLayer.highScoreNode.runAction(SKAction.moveToY(menuLayer.highScoreNode.position.y + vars.screenSize.height / 8, duration: 0.5), completion: {
+        menuLayer.highscoreNode.runAction(SKAction.moveToY(menuLayer.highscoreNode.position.y + vars.screenSize.height / 8, duration: 0.5), completion: {
             self.menuLayer.GCNode.runAction(SKAction.fadeInWithDuration(0.5))
-            self.highScoreLayer.shareNode.runAction(SKAction.fadeInWithDuration(0.5))
+            self.highscoreLayer.shareNode.runAction(SKAction.fadeInWithDuration(0.5))
         })
         gameLayer.player.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
-            self.highScoreLayer.highScoreText.fontColor = self.gameLayer.topBar.fillColor
-            self.highScoreLayer.highScoreText.text = self.menuLayer.highScoreNode.text
-            self.highScoreLayer.highScoreNode.runAction(SKAction.fadeInWithDuration(1))
-            self.highScoreLayer.highScoreText.runAction(SKAction.fadeInWithDuration(1))
+            self.highscoreLayer.highscoreText.fontColor = self.gameLayer.topBar.fillColor
+            self.highscoreLayer.highscoreText.text = self.menuLayer.highscoreNode.text
+            self.highscoreLayer.highscoreNode.runAction(SKAction.fadeInWithDuration(1))
+            self.highscoreLayer.highscoreText.runAction(SKAction.fadeInWithDuration(1))
         })
     }
     
@@ -519,11 +528,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         currentGameState = .gameOver
         isColorizing = false
         stopTimer()
-        if newHighScore == true {
-            gotNewHighScore()
-            newHighScore = false
+        if newHighscore == true {
+            gotNewHighscore()
+            newHighscore = false
         } else {
-            newHighScore = false
+            newHighscore = false
             gameLayer.player.runAction(SKAction.sequence([
                 self.waitAction,
                 SKAction.moveTo(CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2), duration: vars.objectFadeOutDuration)
@@ -568,13 +577,13 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if gameCenterSync == false {
             gameCenterSync = true
             if vars.gameCenterLoggedIn == true {
-                if NSTimeInterval(vars.highScore) > highScore {
-                    highScore = NSTimeInterval(vars.highScore)
-                    NSUserDefaults.standardUserDefaults().setInteger(Int(highScore), forKey: "highScore")
+                if NSTimeInterval(vars.highscore) > highscore {
+                    highscore = NSTimeInterval(vars.highscore)
+                    NSUserDefaults.standardUserDefaults().setInteger(Int(highscore), forKey: "highscore")
                     NSUserDefaults.standardUserDefaults().synchronize()
-                    setHighScore()
+                    setHighscore()
                 } else {
-                    EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(highScore * 100))
+                    EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(highscore * 100))
                 }
             }
         }
