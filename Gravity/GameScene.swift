@@ -266,7 +266,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         currentScore = elapsedTime
         if currentScore > highscore {
             newHighscore = true
-            highscore = currentScore
+            highscore = (round(100 * currentScore) / 100)
         }
         
         let minutes = UInt8(elapsedTime / 60.0)
@@ -574,12 +574,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 }
             }
         }
-        if gameCenterSync == false {
+        if vars.gameCenterLoggedIn == true && gameCenterSync == false {
             gameCenterSync = true
             if vars.gameCenterLoggedIn == true {
                 if NSTimeInterval(vars.highscore) > highscore {
                     highscore = NSTimeInterval(vars.highscore)
-                    NSUserDefaults.standardUserDefaults().setInteger(Int(highscore), forKey: "highscore")
+                    NSUserDefaults.standardUserDefaults().setFloat(Float(highscore), forKey: "highscore")
                     NSUserDefaults.standardUserDefaults().synchronize()
                     setHighscore()
                 } else {
