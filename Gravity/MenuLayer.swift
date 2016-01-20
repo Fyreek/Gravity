@@ -36,6 +36,7 @@ class MenuLayer: SKNode {
         highscoreNode.text = "00:00.00"
         highscoreNode.fontSize = 28
         highscoreNode.fontColor = SKColor.whiteColor()
+        highscoreNode.horizontalAlignmentMode = .Left
         highscoreNode.zPosition = 2
         highscoreNode.position = CGPoint(x: vars.screenSize.width - highscoreNode.frame.width - vars.screenSize.width / 60, y: vars.screenSize.height - highscoreNode.frame.height - vars.screenSize.height / 40)
         highscoreNode.name = "highscoreNode"

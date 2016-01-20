@@ -31,15 +31,11 @@ class GameLayer: SKNode {
         
         topBar = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width, height: vars.barHeight))
         topBar.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height + vars.barHeight / 2)
-        //topBar.fillColor = colors.blueBarColor
-        //topBar.strokeColor = colors.blueBarColor
         topBar.zPosition = 2
         addChild(topBar)
         
         bottomBar = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width, height: vars.barHeight))
         bottomBar.position = CGPoint(x: vars.screenSize.width / 2, y: -(vars.barHeight / 2))
-        //bottomBar.fillColor = colors.blueBarColor
-        //bottomBar.strokeColor = colors.blueBarColor
         bottomBar.zPosition = 2
         addChild(bottomBar)
         
@@ -54,6 +50,7 @@ class GameLayer: SKNode {
         scoreNode.text = "00:00.00"
         scoreNode.fontSize = 28
         scoreNode.fontColor = SKColor.whiteColor()
+        scoreNode.horizontalAlignmentMode = .Right
         scoreNode.zPosition = 2
         scoreNode.position = CGPoint(x: scoreNode.frame.width + vars.screenSize.width / 60, y: vars.screenSize.height + scoreNode.frame.height + vars.screenSize.height / 40)
         scoreNode.name = "scoreNode"

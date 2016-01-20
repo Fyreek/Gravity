@@ -12,12 +12,6 @@ import EasyGameCenter
 class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     //Enums
-    enum gameState {
-        case gameMenu
-        case gameOver
-        case gameActive
-    }
-    
     enum ColliderType:UInt32 {
         case All = 0xFFFFFFFF
         case Player = 0b001
@@ -33,12 +27,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     //Vars
     var lastNodeName = ""
     var gravityDirection = "down"
-    var currentGameState:gameState = .gameMenu
     var moveLeft:Bool = false
     var moveRight:Bool = false
     var spawnTimer = NSTimer()
     var timer = NSTimer()
     var startTime = NSTimeInterval()
+    var stopTime = NSTimeInterval()
     var currentScore: NSTimeInterval = 0
     var highscore: NSTimeInterval = 0
     var newHighscore:Bool = false
@@ -97,6 +91,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameObjectColor.append(colors.greenObjectColor)
         gameObjectColor.append(colors.yellowObjectColor)
         gameObjectColor.append(colors.orangeObjectColor)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopTimerAfter", name: "pauseGame", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "startTimerAfter", name: "resumeGame", object: nil)
         
         waitAction = SKAction.waitForDuration(vars.objectWait)
         moveLeftAction = SKAction.sequence([
@@ -205,7 +202,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func screenInteractionMoved(location: CGPoint) {
-        if currentGameState == .gameActive {
+        if vars.currentGameState == .gameActive {
             if lastNodeName == "" {
                 if location.x >= vars.screenSize.width / 2 {
                     moveLeft = false
@@ -246,7 +243,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             if lastNodeName == menuLayer.GCNode.name {
                 lastNodeName = ""
                 menuLayer.GCNode.runAction(fadeOutColorAction, withKey: "fade")
-                if currentGameState == .gameOver || currentGameState == .gameMenu {
+                if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
                     EGC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
                 }
             }
@@ -267,14 +264,28 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
     }
     
+    func startTimerAfter() {
+        let aSelector : Selector = "updateTime"
+        setupSpawnTimer()
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
+        let newTime:NSTimeInterval = NSDate.timeIntervalSinceReferenceDate()
+        startTime = newTime - (stopTime - startTime)
+    }
+    
     func startTimer() {
         let aSelector : Selector = "updateTime"
         timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
         startTime = NSDate.timeIntervalSinceReferenceDate()
     }
     
-    func stopTimer(){
+    func stopTimer() {
         timer.invalidate()
+    }
+    
+    func stopTimerAfter() {
+        stopTime = NSDate.timeIntervalSinceReferenceDate()
+        timer.invalidate()
+        spawnTimer.invalidate()
     }
     
     func updateTime() {
@@ -321,7 +332,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         menuLayer.playButton.runAction(SKAction.scaleTo(0.5, duration: vars.gameLayerFadeTime), completion: {
             self.menuLayer.playButton.hidden = true
             self.setupPhysics()
-            self.currentGameState = .gameActive
+            vars.currentGameState = .gameActive
             self.setupSpawnTimer()
             self.startTimer()
         })
@@ -531,6 +542,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         spawnTimer.invalidate()
         gameLayer.player.physicsBody?.affectedByGravity = false
         gameLayer.player.physicsBody?.dynamic = false
+        gameLayer.player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
         stopTimer()
         self.enumerateChildNodesWithName("object") {
             node, stop in
@@ -541,7 +553,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 node.removeFromParent()
             })
         }
-        currentGameState = .gameOver
+        vars.currentGameState = .gameOver
         if newHighscore == true {
             gotNewHighscore()
             newHighscore = false
@@ -557,7 +569,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func restartGame() {
-        currentGameState = .gameActive
+        vars.currentGameState = .gameActive
         gameLayer.scoreNode.text = "00:00:00"
         startTimer()
         setupSpawnTimer()
@@ -573,10 +585,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             (node as! SKShapeNode).fillColor = self.gameLayer.topBar.fillColor
             (node as! SKShapeNode).strokeColor = self.gameLayer.topBar.strokeColor
         }
-        if currentGameState == .gameOver {
+        if vars.currentGameState == .gameOver {
             highscoreLayer.highscoreText.fontColor = gameLayer.topBar.strokeColor
         }
-        if currentGameState == .gameActive {
+        if vars.currentGameState == .gameActive {
             if moveRight == true {
                 gameLayer.player.position.x += vars.playerSideSpeed
                 if gameLayer.player.position.x >= vars.screenSize.width {

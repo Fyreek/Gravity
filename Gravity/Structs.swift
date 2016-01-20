@@ -8,6 +8,12 @@
 
 import SpriteKit
 
+enum gameState {
+    case gameMenu
+    case gameOver
+    case gameActive
+}
+
 struct vars {
     //If Value is at 0 look at the Function loadValues() in GameScene
     static var screenSize:CGSize = CGSize(width: 0, height: 0)
@@ -27,6 +33,7 @@ struct vars {
     static var highscoreGC:Float = 0
     static var colorChangeTime:NSTimeInterval = 1
     static var scalingFactor:CGFloat = 1
+    static var currentGameState:gameState = .gameMenu
 }
 
 struct colors {
