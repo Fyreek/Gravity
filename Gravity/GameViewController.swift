@@ -46,11 +46,11 @@ class GameViewController: UIViewController, EGCDelegate {
             EGC.getHighScore(leaderboardIdentifier: "gravity_leaderboard") {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
-                    if vars.highscore < Float(tupleIsOk.score) / 100 {
+                    if vars.highscoreGC < Float(tupleIsOk.score) / 100 {
                         
-                    vars.highscore = Float(tupleIsOk.score) / 100
+                    vars.highscoreGC = Float(tupleIsOk.score) / 100
                         
-                    NSUserDefaults.standardUserDefaults().setFloat(Float(vars.highscore), forKey: "highscore")
+                    NSUserDefaults.standardUserDefaults().setFloat(Float(vars.highscoreGC), forKey: "highscore")
                     NSUserDefaults.standardUserDefaults().synchronize()
                         
                     }
@@ -62,7 +62,7 @@ class GameViewController: UIViewController, EGCDelegate {
     
     func shareHighscore() {
         
-        let sharingText = "I've survived for " + ((NSString(format: "%.02f", vars.highscore)) as String) + " seconds in Gr4vity. Can you beat me?\nhttp://apple.co/1P2rkrT"
+        let sharingText = "I've survived for " + ((NSString(format: "%.02f", vars.highscoreGC)) as String) + " seconds in Gr4vity. Can you beat me?\nhttp://apple.co/1P2rkrT"
         
         let activityViewController : UIActivityViewController = UIActivityViewController(
             activityItems: [sharingText], applicationActivities: nil)
@@ -96,7 +96,7 @@ class GameViewController: UIViewController, EGCDelegate {
             return .All
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.

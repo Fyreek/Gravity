@@ -27,6 +27,7 @@ class MenuLayer: SKNode {
         
         playButton = SKSpriteNode(imageNamed: "PlayButton.png")
         playButton.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
+        playButton.setScale(1)
         playButton.zPosition = 2
         playButton.name = "playButton"
         addChild(playButton)
