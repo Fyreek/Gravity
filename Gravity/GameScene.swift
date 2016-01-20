@@ -41,24 +41,24 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var gameObjectColor:[SKColor] = []
     var currentGameColor:Int = 0
     var isColorizing:Bool = false
+    var barsFadedIn:Bool = true
+    var gameRestarting:Bool = false
     
     //Actions
     var colorizeBGNodes = SKAction()
     var colorizeObjectNodes = SKAction()
-    let fadeColorAction = SKAction.customActionWithDuration(0.2, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
+    let fadeColorAction = SKAction.customActionWithDuration(0.5, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
         if node is SKSpriteNode  {
-            (node as! SKSpriteNode)
+            (node as! SKSpriteNode).alpha = 0.8
         } else if node is SKShapeNode {
-            (node as! SKShapeNode).fillColor = SKColor.whiteColor()
-            (node as! SKShapeNode).strokeColor = SKColor.whiteColor()
+            (node as! SKShapeNode).alpha = 0.8
         }
     })
-    let fadeOutColorAction = SKAction.customActionWithDuration(0.2, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
+    let fadeOutColorAction = SKAction.customActionWithDuration(0.5, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
         if node is SKSpriteNode  {
-            (node as! SKSpriteNode)
+            (node as! SKSpriteNode).alpha = 1.0
         } else if node is SKShapeNode {
-            (node as! SKShapeNode).fillColor = SKColor.whiteColor()
-            (node as! SKShapeNode).strokeColor = SKColor.whiteColor()
+            (node as! SKShapeNode).alpha = 1.0
         }
     })
     
@@ -141,8 +141,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func setHighscore() {
-        var highscoreTime = highscore
-        print(highscore)
+        var highscoreTime = Double(highscore).roundToPlaces(2)
+        print(highscoreTime)
         let minutes = UInt8(highscoreTime / 60.0)
         
         highscoreTime -= (NSTimeInterval(minutes) * 60)
@@ -172,8 +172,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             lastNodeName = menuLayer.GCNode.name!
             menuLayer.GCNode.runAction(fadeColorAction, withKey: "fade")
         } else if self.nodeAtPoint(location) == highscoreLayer.highscoreNode || self.nodeAtPoint(location) == highscoreLayer.highscoreText {
-            lastNodeName = highscoreLayer.highscoreNode.name!
-            highscoreLayer.highscoreNode.runAction(fadeColorAction, withKey: "fade")
+            if gameRestarting == false {
+                lastNodeName = highscoreLayer.highscoreNode.name!
+                highscoreLayer.highscoreNode.runAction(fadeColorAction, withKey: "fade")
+            }
         } else if self.nodeAtPoint(location) == highscoreLayer.shareNode {
             lastNodeName = highscoreLayer.shareNode.name!
             highscoreLayer.shareNode.runAction(fadeColorAction, withKey: "fade")
@@ -220,12 +222,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         highscoreLayer.highscoreText.runAction(SKAction.fadeOutWithDuration(0.5))
         highscoreLayer.shareNode.runAction(SKAction.fadeOutWithDuration(0.5))
         menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
+            self.menuLayer.GCNode.hidden = true
             self.highscoreLayer.removeFromParent()
             self.menuLayer.highscoreNode.runAction(SKAction.moveToY(self.menuLayer.highscoreNode.position.y - vars.screenSize.height / 8, duration: 0.5))
             self.gameLayer.player.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
             self.gameLayer.player.runAction(SKAction.fadeInWithDuration(0.5))
             self.gameLayer.scoreNode.runAction(SKAction.moveToY(self.gameLayer.scoreNode.position.y - vars.screenSize.height / 8, duration: 0.5), completion: {
                 self.restartGame()
+                self.gameRestarting = false
             })
         })
     }
@@ -237,7 +241,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 lastNodeName = ""
                 menuLayer.playButton.runAction(fadeOutColorAction, withKey: "fade")
                 showGameLayer()
-                //EGC.showGameCenterChallenges()
             }
         } else if self.nodeAtPoint(location) == menuLayer.GCNode {
             if lastNodeName == menuLayer.GCNode.name {
@@ -248,10 +251,13 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 }
             }
         } else if self.nodeAtPoint(location) == highscoreLayer.highscoreNode {
-            if lastNodeName == highscoreLayer.highscoreNode.name {
-                lastNodeName = ""
-                highscoreLayer.highscoreNode.runAction(fadeOutColorAction, withKey: "fade")
-                restartButton()
+            if gameRestarting == false {
+                gameRestarting = true
+                if lastNodeName == highscoreLayer.highscoreNode.name {
+                    lastNodeName = ""
+                    highscoreLayer.highscoreNode.runAction(fadeOutColorAction, withKey: "fade")
+                    restartButton()
+                }
             }
         } else if self.nodeAtPoint(location) == highscoreLayer.shareNode {
             if lastNodeName == highscoreLayer.shareNode.name {
@@ -324,8 +330,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer = GameLayer()
         setColors()
         addChild(gameLayer)
+        barsFadedIn = false
         
-        menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+        menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime), completion:  {
+            self.menuLayer.GCNode.hidden = true
+        })
         gameLayer.topBar.runAction(gameLayer.topBarInAction)
         gameLayer.bottomBar.runAction(gameLayer.bottomBarInAction)
         gameLayer.scoreNode.runAction(gameLayer.scoreNodeInAction)
@@ -334,6 +343,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             self.setupPhysics()
             vars.currentGameState = .gameActive
             self.setupSpawnTimer()
+            self.barsFadedIn = false
             self.startTimer()
         })
     }
@@ -484,6 +494,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func gotNewHighscore() {
+        highscore = Double(highscore).roundToPlaces(2)
         vars.highscoreGC = Float(highscore)
         NSUserDefaults.standardUserDefaults().setFloat(Float(highscore), forKey: "highscore")
         NSUserDefaults.standardUserDefaults().synchronize()
@@ -497,6 +508,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         
         gameLayer.scoreNode.runAction(SKAction.moveToY(gameLayer.scoreNode.position.y + vars.screenSize.height / 8, duration: 0.5))
         menuLayer.highscoreNode.runAction(SKAction.moveToY(menuLayer.highscoreNode.position.y + vars.screenSize.height / 8, duration: 0.5), completion: {
+            self.menuLayer.GCNode.hidden = false
             self.menuLayer.GCNode.runAction(SKAction.fadeInWithDuration(0.5))
             self.highscoreLayer.shareNode.runAction(SKAction.fadeInWithDuration(0.5))
         })
@@ -579,11 +591,30 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         switchGravity()
     }
     
+    func colorizeBars() {
+        let myColor = menuLayer.backgroundNode.strokeColor
+        if let myCIColor = myColor.coreImageColor {
+            let redColor:CGFloat = myCIColor.red
+            let greenColor:CGFloat = myCIColor.green
+            let blueColor:CGFloat = myCIColor.blue
+            let alphaColor:CGFloat = myCIColor.alpha
+            let newColor = SKColor(red: redColor - (30 / 255), green: greenColor - (30 / 255), blue: blueColor - (30 / 255), alpha: alphaColor)
+            gameLayer.topBar.strokeColor = newColor
+            gameLayer.topBar.fillColor = newColor
+            gameLayer.bottomBar.strokeColor = newColor
+            gameLayer.bottomBar.fillColor = newColor
+        }
+    }
+    
+    
     override func update(currentTime: CFTimeInterval) {
         self.enumerateChildNodesWithName("object") {
             node, stop in
             (node as! SKShapeNode).fillColor = self.gameLayer.topBar.fillColor
             (node as! SKShapeNode).strokeColor = self.gameLayer.topBar.strokeColor
+        }
+        if barsFadedIn == false {
+            colorizeBars()
         }
         if vars.currentGameState == .gameOver {
             highscoreLayer.highscoreText.fontColor = gameLayer.topBar.strokeColor
@@ -614,5 +645,16 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 }
             }
         }
+    }
+}
+extension UIColor {
+    var coreImageColor: CoreImage.CIColor? {
+        return CoreImage.CIColor(color: self)
+    }
+}
+extension Double {
+    func roundToPlaces(places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return round(self * divisor) / divisor
     }
 }
