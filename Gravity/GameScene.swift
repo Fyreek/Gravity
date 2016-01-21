@@ -34,7 +34,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var startTime = NSTimeInterval()
     var stopTime = NSTimeInterval()
     var currentScore: NSTimeInterval = 0
-    var highscore: NSTimeInterval = 0
     var newHighscore:Bool = false
     var gameCenterSync:Bool = false
     var gameBGColor:[SKColor] = []
@@ -105,9 +104,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             SKAction.moveToX(vars.screenOutRight, duration: vars.objectMoveTime)
         ])
         if let _ = NSUserDefaults.standardUserDefaults().objectForKey("highscore") {
-            highscore = NSTimeInterval(NSUserDefaults.standardUserDefaults().floatForKey("highscore"))
+            vars.highscore = NSUserDefaults.standardUserDefaults().doubleForKey("highscore")
         } else {
-            highscore = 0
+            vars.highscore = 0
+        }
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("gamesPlayed") {
+            vars.gamesPlayed = NSUserDefaults.standardUserDefaults().integerForKey("gamesPlayed")
+        } else {
+            vars.gamesPlayed = 0
         }
     }
     
@@ -141,8 +145,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func setHighscore() {
-        var highscoreTime = Double(highscore).roundToPlaces(2)
-        print(highscoreTime)
+        var highscoreTime = vars.highscore.roundToPlaces(2)
+        
         let minutes = UInt8(highscoreTime / 60.0)
         
         highscoreTime -= (NSTimeInterval(minutes) * 60)
@@ -151,13 +155,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         
         highscoreTime -= NSTimeInterval(seconds)
         
-        let fraction = UInt8(highscoreTime * 100)
+        //let fraction = Int(highscoreTime * 100)
+        let fraction = String(highscoreTime).componentsSeparatedByString(".")[1]
         
         let strMinutes = String(format: "%02d", minutes)
         let strSeconds = String(format: "%02d", seconds)
-        let strFraction = String(format: "%02d", fraction)
+        //let strFraction = String(format: "%02d", fraction)
         
-        menuLayer.highscoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
+        menuLayer.highscoreNode.text = "\(strMinutes):\(strSeconds).\(fraction)"
     }
     
     func setupSpawnTimer() {
@@ -271,11 +276,13 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func startTimerAfter() {
-        let aSelector : Selector = "updateTime"
-        setupSpawnTimer()
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
-        let newTime:NSTimeInterval = NSDate.timeIntervalSinceReferenceDate()
-        startTime = newTime - (stopTime - startTime)
+        if vars.currentGameState == .gameActive {
+            let aSelector : Selector = "updateTime"
+            setupSpawnTimer()
+            timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
+            let newTime:NSTimeInterval = NSDate.timeIntervalSinceReferenceDate()
+            startTime = newTime - (stopTime - startTime)
+        }
     }
     
     func startTimer() {
@@ -300,9 +307,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         
         var elapsedTime: NSTimeInterval = currentTime - startTime
         currentScore = elapsedTime
-        if currentScore > highscore {
+        if currentScore > vars.highscore {
             newHighscore = true
-            highscore = (round(100 * currentScore) / 100)
+            vars.highscore = (round(100 * currentScore) / 100)
         }
         
         let minutes = UInt8(elapsedTime / 60.0)
@@ -494,11 +501,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func gotNewHighscore() {
-        highscore = Double(highscore).roundToPlaces(2)
-        vars.highscoreGC = Float(highscore)
-        NSUserDefaults.standardUserDefaults().setFloat(Float(highscore), forKey: "highscore")
+        vars.highscore = vars.highscore.roundToPlaces(2)
+        print(vars.highscore)
+        NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "highscore")
         NSUserDefaults.standardUserDefaults().synchronize()
-        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(highscore * 100))
+        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(vars.highscore * 100))
         openNewHighScore()
     }
     
@@ -556,6 +563,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.player.physicsBody?.dynamic = false
         gameLayer.player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
         stopTimer()
+        vars.gamesPlayed += 1
+        NSUserDefaults.standardUserDefaults().setInteger(vars.gamesPlayed, forKey: "gamesPlayed")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        print(vars.gamesPlayed)
+        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_timesplayed", score: vars.gamesPlayed)
         self.enumerateChildNodesWithName("object") {
             node, stop in
             node.removeAllActions()
@@ -635,14 +647,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if gameCenterSync == false {
             if vars.gameCenterLoggedIn == true {
                 gameCenterSync = true
-                if NSTimeInterval(vars.highscoreGC) > highscore {
-                    highscore = NSTimeInterval(vars.highscoreGC)
-                    NSUserDefaults.standardUserDefaults().setFloat(Float(highscore), forKey: "highscore")
-                    NSUserDefaults.standardUserDefaults().synchronize()
-                    setHighscore()
-                } else {
-                    EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(highscore * 100))
-                }
+                setHighscore()
             }
         }
     }

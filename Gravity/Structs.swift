@@ -30,10 +30,11 @@ struct vars {
     static var objectBorderWidth:CGFloat = 4
     static var objectFadeOutDuration:NSTimeInterval = 1
     static var gameCenterLoggedIn:Bool = false
-    static var highscoreGC:Float = 0
+    static var highscore:Double = 0
     static var colorChangeTime:NSTimeInterval = 1
     static var scalingFactor:CGFloat = 1
     static var currentGameState:gameState = .gameMenu
+    static var gamesPlayed:Int = 0
 }
 
 struct colors {

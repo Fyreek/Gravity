@@ -46,23 +46,42 @@ class GameViewController: UIViewController, EGCDelegate {
             EGC.getHighScore(leaderboardIdentifier: "gravity_leaderboard") {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
-                    if vars.highscoreGC < Float(tupleIsOk.score) / 100 {
+                    if vars.highscore < Double(tupleIsOk.score) / 100 {
                         
-                    vars.highscoreGC = Float(tupleIsOk.score) / 100
+                        vars.highscore = Double(tupleIsOk.score) / 100
+                            
+                        NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "highscore")
+                        NSUserDefaults.standardUserDefaults().synchronize()
                         
-                    NSUserDefaults.standardUserDefaults().setFloat(Float(vars.highscoreGC), forKey: "highscore")
-                    NSUserDefaults.standardUserDefaults().synchronize()
-                        
+                    } else {
+                        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(vars.highscore * 100))
                     }
                     
                 }
             }
+            EGC.getHighScore(leaderboardIdentifier: "gravity_timesplayed") {
+                (tupleHighScore) -> Void in
+                if let tupleIsOk = tupleHighScore {
+                    if vars.gamesPlayed < tupleIsOk.score {
+                        
+                        vars.gamesPlayed = tupleIsOk.score
+                        
+                        NSUserDefaults.standardUserDefaults().setInteger(vars.gamesPlayed, forKey: "gamesPlayed")
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                        
+                    } else {
+                        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_timesplayed", score: vars.gamesPlayed)
+                    }
+                    
+                }
+            }
+
         }
     }
     
     func shareHighscore() {
         
-        let sharingText = "I've survived for " + ((NSString(format: "%.02f", vars.highscoreGC)) as String) + " seconds in Gr4vity. Can you beat me?\nhttp://apple.co/1P2rkrT"
+        let sharingText = "I've survived for " + ((NSString(format: "%.02f", vars.highscore)) as String) + " seconds in Gr4vity. Can you beat me?\nhttp://apple.co/1P2rkrT"
         
         let activityViewController : UIActivityViewController = UIActivityViewController(
             activityItems: [sharingText], applicationActivities: nil)
