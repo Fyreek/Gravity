@@ -42,13 +42,13 @@ class GameViewController: UIViewController, EGCDelegate {
     
     func EGCAuthentified(authentified:Bool) {
         if authentified {
-            vars.gameCenterLoggedIn = true
             EGC.getHighScore(leaderboardIdentifier: "gravity_leaderboard") {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
                     if vars.highscore < Double(tupleIsOk.score) / 100 {
                         
                         vars.highscore = Double(tupleIsOk.score) / 100
+                        vars.highscore = vars.highscore.roundToPlaces(2)
                             
                         NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "highscore")
                         NSUserDefaults.standardUserDefaults().synchronize()
@@ -56,7 +56,7 @@ class GameViewController: UIViewController, EGCDelegate {
                     } else {
                         EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(vars.highscore * 100))
                     }
-                    
+                    vars.gameCenterLoggedIn = true
                 }
             }
             EGC.getHighScore(leaderboardIdentifier: "gravity_timesplayed") {

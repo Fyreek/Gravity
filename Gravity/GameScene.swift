@@ -155,14 +155,13 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         
         highscoreTime -= NSTimeInterval(seconds)
         
-        //let fraction = Int(highscoreTime * 100)
-        let fraction = String(highscoreTime).componentsSeparatedByString(".")[1]
+        let fraction = Int(round(highscoreTime * 100.0)) % 100
         
         let strMinutes = String(format: "%02d", minutes)
         let strSeconds = String(format: "%02d", seconds)
-        //let strFraction = String(format: "%02d", fraction)
+        let strFraction = String(format: "%02d", fraction)
         
-        menuLayer.highscoreNode.text = "\(strMinutes):\(strSeconds).\(fraction)"
+        menuLayer.highscoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
     }
     
     func setupSpawnTimer() {
@@ -502,7 +501,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func gotNewHighscore() {
         vars.highscore = vars.highscore.roundToPlaces(2)
-        print(vars.highscore)
         NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "highscore")
         NSUserDefaults.standardUserDefaults().synchronize()
         EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(vars.highscore * 100))
