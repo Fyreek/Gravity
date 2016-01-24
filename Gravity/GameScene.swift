@@ -42,6 +42,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var isColorizing:Bool = false
     var barsFadedIn:Bool = true
     var gameRestarting:Bool = false
+    var timerRunning:Bool = false
     
     //Actions
     var colorizeBGNodes = SKAction()
@@ -64,11 +65,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var waitAction:SKAction = SKAction()
     var moveLeftAction:SKAction = SKAction()
     var moveRightAction:SKAction = SKAction()
+    var objectMoveRightAction:SKAction = SKAction()
+    var objectMoveLeftAction:SKAction = SKAction()
     
     //Functions
     override func didMoveToView(view: SKView) {
         self.physicsWorld.contactDelegate = self
         loadValues()
+        loadNSUserData()
         interfaceSetup()
     }
     
@@ -103,6 +107,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 waitAction,
             SKAction.moveToX(vars.screenOutRight, duration: vars.objectMoveTime)
         ])
+    }
+    
+    func loadNSUserData() {
         if let _ = NSUserDefaults.standardUserDefaults().objectForKey("highscore") {
             vars.highscore = NSUserDefaults.standardUserDefaults().doubleForKey("highscore")
         } else {
@@ -112,6 +119,36 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             vars.gamesPlayed = NSUserDefaults.standardUserDefaults().integerForKey("gamesPlayed")
         } else {
             vars.gamesPlayed = 0
+        }
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("fiveSeconds") {
+            achievements.fiveSeconds = NSUserDefaults.standardUserDefaults().boolForKey("fiveSeconds")
+        } else {
+            achievements.fiveSeconds = false
+        }
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("tenSeconds") {
+            achievements.tenSeconds = NSUserDefaults.standardUserDefaults().boolForKey("tenSeconds")
+        } else {
+            achievements.tenSeconds = false
+        }
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("twentySeconds") {
+            achievements.twentySeconds = NSUserDefaults.standardUserDefaults().boolForKey("twentySeconds")
+        } else {
+            achievements.twentySeconds = false
+        }
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("thirtySeconds") {
+            achievements.thirtySeconds = NSUserDefaults.standardUserDefaults().boolForKey("thirtySeconds")
+        } else {
+            achievements.thirtySeconds = false
+        }
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("oneMinute") {
+            achievements.oneMinute = NSUserDefaults.standardUserDefaults().boolForKey("oneMinute")
+        } else {
+            achievements.oneMinute = false
+        }
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("oneHour") {
+            achievements.oneHour = NSUserDefaults.standardUserDefaults().boolForKey("oneHour")
+        } else {
+            achievements.oneHour = false
         }
     }
     
@@ -245,6 +282,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 lastNodeName = ""
                 menuLayer.playButton.runAction(fadeOutColorAction, withKey: "fade")
                 showGameLayer()
+            } else {
+                removeNodeAction()
             }
         } else if self.nodeAtPoint(location) == menuLayer.GCNode {
             if lastNodeName == menuLayer.GCNode.name {
@@ -253,6 +292,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
                     EGC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
                 }
+            } else {
+                removeNodeAction()
             }
         } else if self.nodeAtPoint(location) == highscoreLayer.highscoreNode {
             if gameRestarting == false {
@@ -262,12 +303,16 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                     highscoreLayer.highscoreNode.runAction(fadeOutColorAction, withKey: "fade")
                     restartButton()
                 }
+            } else {
+                removeNodeAction()
             }
         } else if self.nodeAtPoint(location) == highscoreLayer.shareNode {
             if lastNodeName == highscoreLayer.shareNode.name {
                 lastNodeName = ""
                 highscoreLayer.shareNode.runAction(fadeOutColorAction, withKey: "fade")
                 NSNotificationCenter.defaultCenter().postNotificationName("shareHighscore", object: nil)
+            } else {
+                removeNodeAction()
             }
         } else {
             removeNodeAction()
@@ -276,28 +321,36 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func startTimerAfter() {
         if vars.currentGameState == .gameActive {
-            let aSelector : Selector = "updateTime"
-            setupSpawnTimer()
-            timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
-            let newTime:NSTimeInterval = NSDate.timeIntervalSinceReferenceDate()
-            startTime = newTime - (stopTime - startTime)
+            if timerRunning == false {
+                timerRunning = true
+                let aSelector : Selector = "updateTime"
+                setupSpawnTimer()
+                timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
+                let newTime:NSTimeInterval = NSDate.timeIntervalSinceReferenceDate()
+                startTime = newTime - (stopTime - startTime)
+            }
         }
     }
     
     func startTimer() {
-        let aSelector : Selector = "updateTime"
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
-        startTime = NSDate.timeIntervalSinceReferenceDate()
+        if timerRunning == false {
+            timerRunning = true
+            let aSelector : Selector = "updateTime"
+            timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: aSelector, userInfo: nil, repeats: true)
+            startTime = NSDate.timeIntervalSinceReferenceDate()
+        }
     }
     
     func stopTimer() {
         timer.invalidate()
+        timerRunning = false
     }
     
     func stopTimerAfter() {
         stopTime = NSDate.timeIntervalSinceReferenceDate()
         timer.invalidate()
         spawnTimer.invalidate()
+        timerRunning = false
     }
     
     func updateTime() {
@@ -325,6 +378,55 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         let strSeconds = String(format: "%02d", seconds)
         let strFraction = String(format: "%02d", fraction)
         
+        if achievements.fiveSeconds == false {
+            if seconds >= 5 {
+                achievements.fiveSeconds = true
+                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "fiveSeconds")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+        }
+        if achievements.tenSeconds == false {
+            if seconds >= 10 {
+                achievements.tenSeconds = true
+                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "tenSeconds")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+        }
+        if achievements.twentySeconds == false {
+            if seconds >= 20 {
+                achievements.twentySeconds = true
+                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "twentySeconds")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+        }
+        if achievements.thirtySeconds == false {
+            if seconds >= 30 {
+                achievements.thirtySeconds = true
+                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "thirtySeconds")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+        }
+        if achievements.oneMinute == false {
+            if minutes >= 1 {
+                achievements.oneMinute = true
+                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "oneMinute")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+        }
+        if achievements.oneHour == false {
+            if minutes >= 59 && seconds >= 59 && fraction >= 59 {
+                achievements.oneHour = true
+                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "oneHour")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+        }
+        
         gameLayer.scoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
         if newHighscore == true {
             menuLayer.highscoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
@@ -344,7 +446,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.topBar.runAction(gameLayer.topBarInAction)
         gameLayer.bottomBar.runAction(gameLayer.bottomBarInAction)
         gameLayer.scoreNode.runAction(gameLayer.scoreNodeInAction)
-        menuLayer.playButton.runAction(SKAction.scaleTo(0.5, duration: vars.gameLayerFadeTime), completion: {
+        menuLayer.playButton.runAction(SKAction.scaleTo(0.3, duration: vars.gameLayerFadeTime), completion: {
             self.menuLayer.playButton.hidden = true
             self.setupPhysics()
             vars.currentGameState = .gameActive
@@ -569,23 +671,47 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         self.enumerateChildNodesWithName("object") {
             node, stop in
             node.removeAllActions()
-            node.runAction(SKAction.sequence([
-                self.waitAction
-            ]), completion: {
-                node.removeFromParent()
-            })
+            self.objectMoveRightAction = SKAction.moveToX(node.position.x + vars.screenSize.width, duration: 0.5)
+            self.objectMoveRightAction.timingMode = .Linear
+            self.objectMoveLeftAction = SKAction.moveToX(node.position.x - vars.screenSize.width, duration: 0.5)
+            self.objectMoveLeftAction.timingMode = .Linear
+            if node.position.x <= vars.screenSize.width / 2 {
+                node.runAction(SKAction.sequence([
+                    self.waitAction,
+                    self.objectMoveRightAction
+                    ]), completion: {
+                        node.removeFromParent()
+                })
+            } else {
+                node.runAction(SKAction.sequence([
+                    self.waitAction,
+                    self.objectMoveLeftAction
+                    ]), completion: {
+                        node.removeFromParent()
+                })
+            }
         }
         vars.currentGameState = .gameOver
         if newHighscore == true {
-            gotNewHighscore()
+            gameLayer.player.runAction(SKAction.sequence([
+                self.waitAction,
+                SKAction.fadeOutWithDuration(0.5),
+                ]), completion: {
+                    self.gotNewHighscore()
+                })
             newHighscore = false
         } else {
             newHighscore = false
             gameLayer.player.runAction(SKAction.sequence([
                 self.waitAction,
-                SKAction.moveTo(CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2), duration: vars.objectFadeOutDuration)
+                SKAction.fadeOutWithDuration(0.5),
                 ]), completion: {
-                    self.restartGame()
+                    self.gameLayer.player.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
+                    self.gameLayer.player.setScale(0.3)
+                    self.gameLayer.player.alpha = 1
+                    self.gameLayer.player.runAction(SKAction.scaleTo(1, duration: 0.3), completion: {
+                        self.restartGame()
+                    })
             })
         }
     }

@@ -50,3 +50,12 @@ struct colors {
     static var greenBGColor:SKColor = SKColor(red: 83 / 255, green: 215 / 255, blue: 105 / 255, alpha: 1)
     static var greenObjectColor:SKColor = SKColor(red: 53 / 255, green: 185 / 255, blue: 75 / 255, alpha: 1)
 }
+
+struct achievements {
+    static var fiveSeconds:Bool = false
+    static var tenSeconds:Bool = false
+    static var twentySeconds:Bool = false
+    static var thirtySeconds:Bool = false
+    static var oneMinute:Bool = false
+    static var oneHour:Bool = false
+}
