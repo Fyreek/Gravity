@@ -573,13 +573,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         } else {
             object.name = "objectPos"
         }
-        object.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: vars.objectSize, height: vars.objectSize))
-        object.physicsBody?.affectedByGravity = false
-        object.physicsBody?.categoryBitMask = ColliderType.Objects.rawValue
-        object.physicsBody?.contactTestBitMask = ColliderType.Player.rawValue
-        object.physicsBody?.collisionBitMask = ColliderType.Player.rawValue
-        object.physicsBody?.dynamic = false
-        object.physicsBody?.allowsRotation = false
         addChild(object)
         if direction == "right" {
             object.runAction(moveRightAction, completion: {
@@ -599,11 +592,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         
         switch contactMask {
             
+        case ColliderType.Player.rawValue | ColliderType.Objects.rawValue:
+            contact.bodyA.dynamic = false
+            contact.bodyB.dynamic = false
+            gameOver()
+            
         case ColliderType.Player.rawValue | ColliderType.Ground.rawValue:
             switchGravity()
             
-        case ColliderType.Player.rawValue | ColliderType.Objects.rawValue:
-            gameOver()
         default:
             print("unknown collision")
         }
@@ -780,6 +776,15 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             node, stop in
             (node as! SKShapeNode).fillColor = self.menuLayer.backgroundNode.fillColor
             (node as! SKShapeNode).strokeColor = self.gameLayer.topBar.strokeColor
+            if node.position.x < vars.screenSize.width && node.physicsBody == nil {
+                node.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: vars.objectSize, height: vars.objectSize))
+                node.physicsBody?.affectedByGravity = false
+                node.physicsBody?.categoryBitMask = ColliderType.Objects.rawValue
+                node.physicsBody?.contactTestBitMask = ColliderType.Player.rawValue
+                node.physicsBody?.collisionBitMask = ColliderType.Player.rawValue
+                node.physicsBody?.dynamic = false
+                node.physicsBody?.allowsRotation = false
+            }
             if self.objectsCanRotate == true {
                 (node as! SKShapeNode).zRotation = self.objectRotationPos.degreesToRadians
             }
@@ -788,6 +793,15 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             node, stop in
             (node as! SKShapeNode).fillColor = self.menuLayer.backgroundNode.fillColor
             (node as! SKShapeNode).strokeColor = self.gameLayer.topBar.strokeColor
+            if node.position.x > 0 && node.physicsBody == nil {
+                node.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: vars.objectSize, height: vars.objectSize))
+                node.physicsBody?.affectedByGravity = false
+                node.physicsBody?.categoryBitMask = ColliderType.Objects.rawValue
+                node.physicsBody?.contactTestBitMask = ColliderType.Player.rawValue
+                node.physicsBody?.collisionBitMask = ColliderType.Player.rawValue
+                node.physicsBody?.dynamic = false
+                node.physicsBody?.allowsRotation = false
+            }
             if self.objectsCanRotate == true {
                 (node as! SKShapeNode).zRotation = self.objectRotationNeg.degreesToRadians
             }

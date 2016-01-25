@@ -38,7 +38,7 @@ class HighscoreLayer: SKNode {
     
         highscoreText = SKLabelNode(fontNamed: "Helvetia")
         highscoreText.text = "00:00.00"
-        highscoreText.fontSize = 28
+        highscoreText.fontSize = vars.screenSize.height / 13
         highscoreText.alpha = 0
         highscoreText.fontColor = SKColor.whiteColor()
         highscoreText.zPosition = 4

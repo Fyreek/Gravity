@@ -48,11 +48,11 @@ class GameLayer: SKNode {
         
         scoreNode = SKLabelNode(fontNamed: "Helvetia")
         scoreNode.text = "00:00.00"
-        scoreNode.fontSize = 28
+        scoreNode.fontSize = vars.screenSize.height / 13
         scoreNode.fontColor = SKColor.whiteColor()
-        scoreNode.horizontalAlignmentMode = .Right
+        scoreNode.horizontalAlignmentMode = .Left
         scoreNode.zPosition = 2
-        scoreNode.position = CGPoint(x: scoreNode.frame.width + vars.screenSize.width / 60, y: vars.screenSize.height + scoreNode.frame.height + vars.screenSize.height / 40)
+        scoreNode.position = CGPoint(x: vars.screenSize.width / 60, y: vars.screenSize.height + scoreNode.frame.height + vars.screenSize.height / 40)
         scoreNode.name = "scoreNode"
         addChild(scoreNode)
         
