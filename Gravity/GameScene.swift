@@ -43,6 +43,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var barsFadedIn:Bool = true
     var gameRestarting:Bool = false
     var timerRunning:Bool = false
+    var objectRotationPos:Int = 0
+    var objectRotationNeg:Int = 360
+    var objectsCanRotate:Bool = false
+    var spawnTimerRunning:Bool = false
+    var gameStarted:Bool = false
     
     //Actions
     var colorizeBGNodes = SKAction()
@@ -78,7 +83,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func loadValues() {
         vars.screenSize = (view?.frame.size)!
-        vars.barHeight = vars.screenSize.height / 7
+        vars.barHeight = vars.screenSize.height / 6
         vars.objectSize = vars.screenSize.height / 36
         vars.screenOutLeft = -vars.objectSize * 2
         vars.screenOutRight = vars.screenSize.width + vars.objectSize * 2
@@ -202,7 +207,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func setupSpawnTimer() {
-        self.spawnTimer = NSTimer.scheduledTimerWithTimeInterval(vars.timerWait, target: self, selector: Selector("updateSpawnTimer"), userInfo: nil, repeats: true)
+        if spawnTimerRunning == false {
+            spawnTimerRunning = true
+            self.spawnTimer = NSTimer.scheduledTimerWithTimeInterval(vars.timerWait, target: self, selector: Selector("updateSpawnTimer"), userInfo: nil, repeats: true)
+        }
     }
     
     override func screenInteractionStarted(location: CGPoint) {
@@ -278,12 +286,15 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     override func screenInteractionEnded(location: CGPoint) {
         
         if self.nodeAtPoint(location) == menuLayer.playButton {
-            if lastNodeName == menuLayer.playButton.name {
-                lastNodeName = ""
-                menuLayer.playButton.runAction(fadeOutColorAction, withKey: "fade")
-                showGameLayer()
-            } else {
-                removeNodeAction()
+            if gameStarted == false {
+                gameStarted = true
+                if lastNodeName == menuLayer.playButton.name {
+                    lastNodeName = ""
+                    menuLayer.playButton.runAction(fadeOutColorAction, withKey: "fade")
+                    showGameLayer()
+                } else {
+                    removeNodeAction()
+                }
             }
         } else if self.nodeAtPoint(location) == menuLayer.GCNode {
             if lastNodeName == menuLayer.GCNode.name {
@@ -452,6 +463,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             vars.currentGameState = .gameActive
             self.setupSpawnTimer()
             self.barsFadedIn = false
+            self.objectsCanRotate = true
             self.startTimer()
         })
     }
@@ -550,12 +562,17 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func createObjects(location : CGPoint, direction: String) {
-        let object = SKShapeNode(rectOfSize: CGSize(width: vars.objectSize, height: vars.objectSize))
+        let object = SKShapeNode(rectOfSize: CGSize(width: vars.objectSize, height: vars.objectSize), cornerRadius: 3)
         object.position = location
         object.zPosition = 3
-        object.fillColor = gameObjectColor[currentGameColor]
+        object.fillColor = gameBGColor[currentGameColor]
         object.strokeColor = gameObjectColor[currentGameColor]
-        object.name = "object"
+        object.lineWidth = 4
+        if location.x == vars.screenOutLeft {
+            object.name = "objectNeg"
+        } else {
+            object.name = "objectPos"
+        }
         object.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: vars.objectSize, height: vars.objectSize))
         object.physicsBody?.affectedByGravity = false
         object.physicsBody?.categoryBitMask = ColliderType.Objects.rawValue
@@ -663,38 +680,50 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.player.physicsBody?.dynamic = false
         gameLayer.player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
         stopTimer()
+        objectsCanRotate = false
+        spawnTimerRunning = false
         vars.gamesPlayed += 1
         NSUserDefaults.standardUserDefaults().setInteger(vars.gamesPlayed, forKey: "gamesPlayed")
         NSUserDefaults.standardUserDefaults().synchronize()
         print(vars.gamesPlayed)
         EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_timesplayed", score: vars.gamesPlayed)
-        self.enumerateChildNodesWithName("object") {
+        self.enumerateChildNodesWithName("objectPos") {
             node, stop in
             node.removeAllActions()
             self.objectMoveRightAction = SKAction.moveToX(node.position.x + vars.screenSize.width, duration: 0.5)
             self.objectMoveRightAction.timingMode = .Linear
             self.objectMoveLeftAction = SKAction.moveToX(node.position.x - vars.screenSize.width, duration: 0.5)
             self.objectMoveLeftAction.timingMode = .Linear
-            if node.position.x <= vars.screenSize.width / 2 {
-                node.runAction(SKAction.sequence([
-                    self.waitAction,
-                    self.objectMoveRightAction
-                    ]), completion: {
-                        node.removeFromParent()
-                })
-            } else {
-                node.runAction(SKAction.sequence([
-                    self.waitAction,
-                    self.objectMoveLeftAction
-                    ]), completion: {
-                        node.removeFromParent()
-                })
-            }
+            node.runAction(self.waitAction, completion: {
+                self.objectsCanRotate = true
+            })
+            node.runAction(SKAction.sequence([
+                self.waitAction,
+                self.objectMoveLeftAction
+                ]), completion: {
+                    node.removeFromParent()
+            })
+        }
+        self.enumerateChildNodesWithName("objectNeg") {
+            node, stop in
+            node.removeAllActions()
+            self.objectMoveRightAction = SKAction.moveToX(node.position.x + vars.screenSize.width, duration: 0.5)
+            self.objectMoveRightAction.timingMode = .Linear
+            self.objectMoveLeftAction = SKAction.moveToX(node.position.x - vars.screenSize.width, duration: 0.5)
+            self.objectMoveLeftAction.timingMode = .Linear
+            node.runAction(self.waitAction, completion: {
+                self.objectsCanRotate = true
+            })
+            node.runAction(SKAction.sequence([
+                self.waitAction,
+                self.objectMoveRightAction
+                ]), completion: {
+                    node.removeFromParent()
+            })
         }
         vars.currentGameState = .gameOver
         if newHighscore == true {
             gameLayer.player.runAction(SKAction.sequence([
-                self.waitAction,
                 SKAction.fadeOutWithDuration(0.5),
                 ]), completion: {
                     self.gotNewHighscore()
@@ -704,10 +733,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             newHighscore = false
             gameLayer.player.runAction(SKAction.sequence([
                 self.waitAction,
-                SKAction.fadeOutWithDuration(0.5),
+                SKAction.scaleTo(0, duration: 0.3),
+                SKAction.waitForDuration(0.2)
                 ]), completion: {
                     self.gameLayer.player.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
-                    self.gameLayer.player.setScale(0.3)
                     self.gameLayer.player.alpha = 1
                     self.gameLayer.player.runAction(SKAction.scaleTo(1, duration: 0.3), completion: {
                         self.restartGame()
@@ -718,6 +747,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func restartGame() {
         vars.currentGameState = .gameActive
+        objectsCanRotate = true
+        objectRotationPos = 0
+        objectRotationNeg = 360
         gameLayer.scoreNode.text = "00:00:00"
         startTimer()
         setupSpawnTimer()
@@ -744,10 +776,46 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     
     override func update(currentTime: CFTimeInterval) {
-        self.enumerateChildNodesWithName("object") {
+        self.enumerateChildNodesWithName("objectPos") {
             node, stop in
-            (node as! SKShapeNode).fillColor = self.gameLayer.topBar.fillColor
+            (node as! SKShapeNode).fillColor = self.menuLayer.backgroundNode.fillColor
             (node as! SKShapeNode).strokeColor = self.gameLayer.topBar.strokeColor
+            if self.objectsCanRotate == true {
+                (node as! SKShapeNode).zRotation = self.objectRotationPos.degreesToRadians
+            }
+        }
+        self.enumerateChildNodesWithName("objectNeg") {
+            node, stop in
+            (node as! SKShapeNode).fillColor = self.menuLayer.backgroundNode.fillColor
+            (node as! SKShapeNode).strokeColor = self.gameLayer.topBar.strokeColor
+            if self.objectsCanRotate == true {
+                (node as! SKShapeNode).zRotation = self.objectRotationNeg.degreesToRadians
+            }
+        }
+        if objectsCanRotate == true {
+            if vars.currentGameState == .gameOver {
+                if objectRotationPos < 360 {
+                    objectRotationPos += 5
+                } else {
+                    objectRotationPos = 0
+                }
+                if objectRotationNeg > 0 {
+                    objectRotationNeg -= 5
+                } else {
+                    objectRotationNeg = 360
+                }
+            } else {
+                if objectRotationPos < 360 {
+                    objectRotationPos += 1
+                } else {
+                    objectRotationPos = 0
+                }
+                if objectRotationNeg > 0 {
+                    objectRotationNeg -= 1
+                } else {
+                    objectRotationNeg = 360
+                }
+            }
         }
         if barsFadedIn == false {
             colorizeBars()
@@ -785,5 +853,10 @@ extension Double {
     func roundToPlaces(places:Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return round(self * divisor) / divisor
+    }
+}
+extension Int {
+    var degreesToRadians : CGFloat {
+        return CGFloat(self) * CGFloat(M_PI) / 180.0
     }
 }

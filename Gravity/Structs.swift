@@ -24,7 +24,7 @@ struct vars {
     static var gameLayerFadeTime:NSTimeInterval = 0.5
     static var playerSideSpeed:CGFloat = 5
     static var gravity:CGFloat = 9.8
-    static var objectWait:NSTimeInterval = 0.7
+    static var objectWait:NSTimeInterval = 0.5
     static var timerWait:NSTimeInterval = 0.7
     static var objectMoveTime:NSTimeInterval = 3
     static var objectBorderWidth:CGFloat = 4
