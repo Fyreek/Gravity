@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import CoreMotion
 import EasyGameCenter
 
 class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
@@ -25,6 +26,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var highscoreLayer = HighscoreLayer()
     
     //Vars
+    var motionManager = CMMotionManager()
+    var motionX:CGFloat  = 0.0
     var lastNodeName = ""
     var gravityDirection = "down"
     var moveLeft:Bool = false

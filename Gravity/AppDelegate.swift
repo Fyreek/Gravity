@@ -18,6 +18,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         return true
     }
+    
+    @available(iOS 9.0, *)
+    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+        // 3D Touch Start
+        
+        completionHandler(handleQuickAction(shortcutItem))
+        
+    }
+
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -41,10 +50,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if vars.currentGameState == .gameActive {
             NSNotificationCenter.defaultCenter().postNotificationName("resumeGame", object: nil)
         }
+        
+        var gameSettings = Dictionary<String, AnyObject>()
+        gameSettings["motioncontrol"] = false
+        NSUserDefaults.standardUserDefaults().registerDefaults(gameSettings)
+        NSUserDefaults.standardUserDefaults().synchronize()
+        
+        vars.motionControl = NSUserDefaults.standardUserDefaults().boolForKey("motioncontrol")
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    @available(iOS 9.0, *)
+    enum Shortcut: String {
+        case motionControl = "MotionControl"
+        case touchControl = "TouchControl"
+    }
+    
+    @available(iOS 9.0, *)
+    func handleQuickAction(shortcutItem: UIApplicationShortcutItem) -> Bool {
+        
+        var quickActionHandled = false
+        let type = shortcutItem.type.componentsSeparatedByString(".").last!
+        if let shortcutType = Shortcut.init(rawValue: type) {
+            switch shortcutType {
+            case .motionControl:
+                vars.motionControl = true
+                quickActionHandled = true
+            case .touchControl:
+                vars.motionControl = false
+                quickActionHandled = true
+            }
+        }
+        
+        return quickActionHandled
     }
 
 
