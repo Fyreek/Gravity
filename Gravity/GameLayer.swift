@@ -56,7 +56,7 @@ class GameLayer: SKNode {
         scoreNode.name = "scoreNode"
         addChild(scoreNode)
         
-        scoreNodeInAction = SKAction.moveToY(vars.screenSize.height - scoreNode.frame.height - vars.screenSize.height / 40, duration: vars.gameLayerFadeTime)
+        scoreNodeInAction = SKAction.moveToY(vars.screenSize.height - scoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: vars.gameLayerFadeTime)
         
     }
     

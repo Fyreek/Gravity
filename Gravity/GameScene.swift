@@ -90,6 +90,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         vars.objectSize = vars.screenSize.height / 36
         vars.screenOutLeft = -vars.objectSize * 2
         vars.screenOutRight = vars.screenSize.width + vars.objectSize * 2
+        vars.playerSideSpeed = vars.screenSize.width / 160
+        vars.gravity = vars.screenSize.height / 35
         
         gameBGColor.append(colors.redBGColor)
         gameBGColor.append(colors.blueBGColor)
@@ -276,10 +278,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
             self.menuLayer.GCNode.hidden = true
             self.highscoreLayer.removeFromParent()
-            self.menuLayer.highscoreNode.runAction(SKAction.moveToY(self.menuLayer.highscoreNode.position.y - vars.screenSize.height / 8, duration: 0.5))
+            self.menuLayer.highscoreNode.runAction(SKAction.moveToY(vars.screenSize.height - self.menuLayer.highscoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: 0.5))
             self.gameLayer.player.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
             self.gameLayer.player.runAction(SKAction.fadeInWithDuration(0.5))
-            self.gameLayer.scoreNode.runAction(SKAction.moveToY(self.gameLayer.scoreNode.position.y - vars.screenSize.height / 8, duration: 0.5), completion: {
+            self.gameLayer.scoreNode.runAction(SKAction.moveToY(vars.screenSize.height - self.gameLayer.scoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: 0.5), completion: {
                 self.restartGame()
                 self.gameRestarting = false
             })

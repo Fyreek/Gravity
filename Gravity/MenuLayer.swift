@@ -27,7 +27,7 @@ class MenuLayer: SKNode {
         
         playButton = SKSpriteNode(imageNamed: "PlayButton.png")
         playButton.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
-        playButton.setScale(1)
+        playButton.setScale(vars.screenSize.height / 320)
         playButton.zPosition = 2
         playButton.name = "playButton"
         addChild(playButton)
@@ -38,12 +38,14 @@ class MenuLayer: SKNode {
         highscoreNode.fontColor = SKColor.whiteColor()
         highscoreNode.horizontalAlignmentMode = .Left
         highscoreNode.zPosition = 2
-        highscoreNode.position = CGPoint(x: vars.screenSize.width - highscoreNode.frame.width - vars.screenSize.width / 60, y: vars.screenSize.height - highscoreNode.frame.height - vars.screenSize.height / 40)
+        highscoreNode.position = CGPoint(x: vars.screenSize.width - highscoreNode.frame.width - vars.screenSize.width / 60, y: vars.screenSize.height - highscoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2)
         highscoreNode.name = "highscoreNode"
         addChild(highscoreNode)
         
         GCNode = SKSpriteNode(imageNamed: "GameCenter.png")
-        GCNode.position = CGPoint(x: GCNode.frame.size.width / 2 + vars.screenSize.width / 66, y: (vars.screenSize.height - (vars.screenSize.height / 2 - GCNode.frame.size.height / 2) / 6 ))//- vars.screenSize.height / 40)
+        GCNode.setScale(vars.screenSize.height / 320)
+        //GCNode.position = CGPoint(x: GCNode.frame.size.width / 2 + vars.screenSize.width / 66, y: (vars.screenSize.height - (vars.screenSize.height / 2 - GCNode.frame.size.height / 2) / 6 ))
+        GCNode.position = CGPoint(x: GCNode.frame.size.width / 2 + vars.screenSize.width / 66, y: vars.screenSize.height - ((vars.screenSize.height / 7) / 2))
         GCNode.zPosition = 4
         GCNode.name = "GCNode"
         addChild(GCNode)
