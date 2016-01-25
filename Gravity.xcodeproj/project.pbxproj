@@ -12,6 +12,7 @@
 		A108DE4B1C49488F00760D54 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE471C49488F00760D54 /* MenuLayer.swift */; };
 		A108DE4C1C49488F00760D54 /* SKSceneExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE481C49488F00760D54 /* SKSceneExtension.swift */; };
 		A108DE4D1C49488F00760D54 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE491C49488F00760D54 /* Structs.swift */; };
+		A126FADF1C565DA5002D4A85 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A126FADE1C565DA5002D4A85 /* Settings.bundle */; };
 		A127C0211C4E52AE0042258B /* HighscoreLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127C0201C4E52AE0042258B /* HighscoreLayer.swift */; };
 		A19946591C46B8D500A0041B /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A19946581C46B8D500A0041B /* GameKit.framework */; };
 		A1D459911C46B62E0093B6CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459901C46B62E0093B6CB /* AppDelegate.swift */; };
@@ -30,6 +31,7 @@
 		A108DE471C49488F00760D54 /* MenuLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuLayer.swift; sourceTree = "<group>"; };
 		A108DE481C49488F00760D54 /* SKSceneExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSceneExtension.swift; sourceTree = "<group>"; };
 		A108DE491C49488F00760D54 /* Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
+		A126FADE1C565DA5002D4A85 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A127C0201C4E52AE0042258B /* HighscoreLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighscoreLayer.swift; sourceTree = "<group>"; };
 		A19946581C46B8D500A0041B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A1D4598D1C46B62E0093B6CB /* Gravity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gravity.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,6 +124,7 @@
 				A1D459981C46B62E0093B6CB /* Main.storyboard */,
 				A1D4599B1C46B62E0093B6CB /* Assets.xcassets */,
 				A1D4599D1C46B62E0093B6CB /* LaunchScreen.storyboard */,
+				A126FADE1C565DA5002D4A85 /* Settings.bundle */,
 				A1D459A01C46B62E0093B6CB /* Info.plist */,
 				14CA552A1C49896D00E97C8F /* Layers */,
 				14CA552B1C49897B00E97C8F /* Extensions */,
@@ -164,7 +167,7 @@
 				TargetAttributes = {
 					A1D4598C1C46B62E0093B6CB = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 9C545A2GHY;
+						DevelopmentTeam = ZA57B2W688;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 1;
@@ -198,6 +201,7 @@
 			files = (
 				A1D459931C46B62E0093B6CB /* GameScene.sks in Resources */,
 				A1D4599F1C46B62E0093B6CB /* LaunchScreen.storyboard in Resources */,
+				A126FADF1C565DA5002D4A85 /* Settings.bundle in Resources */,
 				A1D4599C1C46B62E0093B6CB /* Assets.xcassets in Resources */,
 				A1D4599A1C46B62E0093B6CB /* Main.storyboard in Resources */,
 			);
@@ -384,7 +388,7 @@
 				INFOPLIST_FILE = Gravity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravitya;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -400,7 +404,7 @@
 				INFOPLIST_FILE = Gravity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravitya;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

@@ -35,6 +35,7 @@ struct vars {
     static var scalingFactor:CGFloat = 1
     static var currentGameState:gameState = .gameMenu
     static var gamesPlayed:Int = 0
+    static var motionControl:Bool = false
 }
 
 struct colors {
