@@ -27,7 +27,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     //Vars
     var motionManager = CMMotionManager()
-    var motionX:CGFloat  = 0.0
     var lastNodeName = ""
     var gravityDirection = "down"
     var moveLeft:Bool = false
@@ -107,6 +106,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopTimerAfter", name: "pauseGame", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "startTimerAfter", name: "resumeGame", object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "initMotionControl", name: "initMotionControl", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "cancelMotionControl", name: "cancelMotionControl", object: nil)
         
         waitAction = SKAction.waitForDuration(vars.objectWait)
         moveLeftAction = SKAction.sequence([
@@ -237,12 +239,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             lastNodeName = gameLayer.menuNode.name!
             gameLayer.menuNode.runAction(fadeColorAction, withKey: "fade")
         } else {
-            if location.x >= vars.screenSize.width / 2 {
-                moveLeft = false
-                moveRight = true
-            } else if location.x <= vars.screenSize.width / 2 {
-                moveRight = false
-                moveLeft = true
+            if vars.motionControl == false {
+                if location.x >= vars.screenSize.width / 2 {
+                    moveLeft = false
+                    moveRight = true
+                } else if location.x <= vars.screenSize.width / 2 {
+                    moveRight = false
+                    moveLeft = true
+                }
             }
         }
     }
@@ -264,13 +268,15 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     override func screenInteractionMoved(location: CGPoint) {
         if vars.currentGameState == .gameActive {
-            if lastNodeName == "" {
-                if location.x >= vars.screenSize.width / 2 {
-                    moveLeft = false
-                    moveRight = true
-                } else if location.x <= vars.screenSize.width / 2 {
-                    moveRight = false
-                    moveLeft = true
+            if vars.motionControl == false {
+                if lastNodeName == "" {
+                    if location.x >= vars.screenSize.width / 2 {
+                        moveLeft = false
+                        moveRight = true
+                    } else if location.x <= vars.screenSize.width / 2 {
+                        moveRight = false
+                        moveLeft = true
+                    }
                 }
             }
         }
@@ -368,9 +374,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
         //dcd0gameLayer.menuNode.runAction(SKAction.reversedAction(gameLayer.menuNodeInAction)())
         gameLayer.menuNode.runAction(SKAction.moveToY(vars.screenSize.height + gameLayer.menuNode.frame.size.height + vars.screenSize.height / 40, duration: vars.gameLayerFadeTime))
-        gameLayer.scoreNode.runAction(SKAction.reversedAction(gameLayer.scoreNodeInAction)())
-        gameLayer.topBar.runAction(SKAction.reversedAction(gameLayer.topBarInAction)())
-        gameLayer.bottomBar.runAction(SKAction.reversedAction(gameLayer.bottomBarInAction)())
+        //gameLayer.scoreNode.runAction(SKAction.reversedAction(gameLayer.scoreNodeInAction)())
+        gameLayer.scoreNode.runAction(SKAction.moveToY(vars.screenSize.height + gameLayer.scoreNode.frame.height + vars.screenSize.height / 40, duration: vars.gameLayerFadeTime))
+        //gameLayer.topBar.runAction(SKAction.reversedAction(gameLayer.topBarInAction)())
+        gameLayer.topBar.runAction(SKAction.moveToY(vars.screenSize.height + vars.barHeight / 2, duration: vars.gameLayerFadeTime))
+        //gameLayer.bottomBar.runAction(SKAction.reversedAction(gameLayer.bottomBarInAction)())
+        gameLayer.bottomBar.runAction(SKAction.moveToY(-(vars.barHeight / 2), duration: vars.gameLayerFadeTime))
         gameLayer.player.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime), completion: {
             self.gameLayer.removeFromParent()
             self.menuLayer.GCNode.hidden = false
@@ -413,6 +422,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         timer.invalidate()
         spawnTimer.invalidate()
         timerRunning = false
+        spawnTimerRunning = false
     }
     
     func updateTime() {
@@ -522,18 +532,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func updateSpawnTimer() {
         getSpawnPositions()
-    }
-    
-    func splitedString(string: String, length: Int) -> [String] {
-        var result = [String]()
-        
-        for var i = 0; i < string.characters.count; i += length {
-            let endIndex = string.endIndex.advancedBy(-i)
-            let startIndex = endIndex.advancedBy(-length, limit: string.startIndex)
-            result.append(string[startIndex..<endIndex])
-        }
-        
-        return result.reverse()
     }
     
     func setupPhysics() {
@@ -820,6 +818,32 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             gameLayer.bottomBar.strokeColor = newColor
             gameLayer.bottomBar.fillColor = newColor
         }
+    }
+    
+    func initMotionControl() {
+        if motionManager.accelerometerAvailable == true {
+            motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler:{
+                data, error in
+                
+                if data!.acceleration.y < -0.075 {
+                    self.moveRight = true
+                    self.moveLeft = false
+                } else if data!.acceleration.y > 0.075 {
+                    self.moveLeft = true
+                    self.moveRight = false
+                } else {
+                    self.moveLeft = false
+                    self.moveRight = false
+                }
+                
+            })
+            
+        }
+
+    }
+    
+    func cancelMotionControl() {
+        motionManager.stopAccelerometerUpdates()
     }
     
     

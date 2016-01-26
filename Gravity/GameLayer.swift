@@ -60,8 +60,8 @@ class GameLayer: SKNode {
         
         scoreNodeInAction = SKAction.moveToY(vars.screenSize.height - scoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: vars.gameLayerFadeTime)
         
-        menuNode = SKSpriteNode(imageNamed: "GameCenter.png")
-        menuNode.setScale(vars.screenSize.height / 320)
+        menuNode = SKSpriteNode(imageNamed: "Back.png")
+        menuNode.setScale(vars.screenSize.height / 1280)
         menuNode.position = CGPoint(x: vars.screenSize.width / 2 - menuNode.frame.size.width / 2, y: vars.screenSize.height + menuNode.frame.size.height + vars.screenSize.height / 40)
         menuNode.zPosition = 4
         menuNode.name = "menuNode"

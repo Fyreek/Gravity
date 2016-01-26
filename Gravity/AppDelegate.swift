@@ -12,7 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var gameSettings = Dictionary<String, AnyObject>()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -51,12 +51,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSNotificationCenter.defaultCenter().postNotificationName("resumeGame", object: nil)
         }
         
-        var gameSettings = Dictionary<String, AnyObject>()
-        gameSettings["motioncontrol"] = false
+        gameSettings = ["motioncontrol": "Motion Control"]
         NSUserDefaults.standardUserDefaults().registerDefaults(gameSettings)
-        NSUserDefaults.standardUserDefaults().synchronize()
-        
         vars.motionControl = NSUserDefaults.standardUserDefaults().boolForKey("motioncontrol")
+        
+        if vars.motionControl == true {
+            NSNotificationCenter.defaultCenter().postNotificationName("initMotionControl", object: nil)
+        } else {
+            NSNotificationCenter.defaultCenter().postNotificationName("cancelMotionControl", object: nil)
+        }
+        
+
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -77,10 +82,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let shortcutType = Shortcut.init(rawValue: type) {
             switch shortcutType {
             case .motionControl:
-                vars.motionControl = true
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "motioncontrol")
+                NSUserDefaults.standardUserDefaults().synchronize()
+                vars.motionControl = NSUserDefaults.standardUserDefaults().boolForKey("motioncontrol")
                 quickActionHandled = true
+                
             case .touchControl:
-                vars.motionControl = false
+                NSUserDefaults.standardUserDefaults().setBool(false, forKey: "motioncontrol")
+                NSUserDefaults.standardUserDefaults().synchronize()
+                vars.motionControl = NSUserDefaults.standardUserDefaults().boolForKey("motioncontrol")
                 quickActionHandled = true
             }
         }
