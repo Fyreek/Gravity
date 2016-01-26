@@ -50,6 +50,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var objectsCanRotate:Bool = false
     var spawnTimerRunning:Bool = false
     var gameStarted:Bool = false
+    var timesPlayedWithoutInteraction:Int = 0
+    var interactionHappend:Bool = false
     
     //Actions
     var colorizeBGNodes = SKAction()
@@ -241,9 +243,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         } else {
             if vars.motionControl == false {
                 if location.x >= vars.screenSize.width / 2 {
+                    interactionHappend = true
                     moveLeft = false
                     moveRight = true
                 } else if location.x <= vars.screenSize.width / 2 {
+                    interactionHappend = true
                     moveRight = false
                     moveLeft = true
                 }
@@ -271,9 +275,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             if vars.motionControl == false {
                 if lastNodeName == "" {
                     if location.x >= vars.screenSize.width / 2 {
+                        interactionHappend = true
                         moveLeft = false
                         moveRight = true
                     } else if location.x <= vars.screenSize.width / 2 {
+                        interactionHappend = true
                         moveRight = false
                         moveLeft = true
                     }
@@ -386,6 +392,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.menuLayer.playButton.hidden = false
                 self.menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 1280, duration: vars.gameLayerFadeTime))
                 self.gameStarted = false
+                vars.currentGameState = .gameMenu
             })
         } else if vars.currentGameState == .gameOver {
             gameLayer.menuNode.runAction(SKAction.moveToY(vars.screenSize.height + gameLayer.menuNode.frame.size.height + vars.screenSize.height / 40, duration: vars.gameLayerFadeTime))
@@ -400,8 +407,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 1280, duration: vars.gameLayerFadeTime))
                 self.menuLayer.highscoreNode.runAction(SKAction.moveToY(vars.screenSize.height - self.menuLayer.highscoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: vars.gameLayerFadeTime))
                 self.gameStarted = false
+                vars.currentGameState = .gameMenu
             })
-            
         }
     }
     
@@ -526,6 +533,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         setColors()
         addChild(gameLayer)
         barsFadedIn = false
+        interactionHappend = false
         
         menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime), completion:  {
             self.menuLayer.GCNode.hidden = true
@@ -735,18 +743,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         )
     }
     
-    func gameOver() {
-        spawnTimer.invalidate()
-        gameLayer.player.physicsBody?.affectedByGravity = false
-        gameLayer.player.physicsBody?.dynamic = false
-        gameLayer.player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-        stopTimer()
-        objectsCanRotate = false
-        spawnTimerRunning = false
-        vars.gamesPlayed += 1
+    func gameOverAfter() {
         NSUserDefaults.standardUserDefaults().setInteger(vars.gamesPlayed, forKey: "gamesPlayed")
         NSUserDefaults.standardUserDefaults().synchronize()
-        print(vars.gamesPlayed)
         EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_timesplayed", score: vars.gamesPlayed)
         self.enumerateChildNodesWithName("objectPos") {
             node, stop in
@@ -788,7 +787,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 SKAction.fadeOutWithDuration(0.5),
                 ]), completion: {
                     self.gotNewHighscore()
-                })
+            })
             newHighscore = false
         } else {
             newHighscore = false
@@ -806,11 +805,37 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
     }
     
+    func gameOver() {
+        spawnTimer.invalidate()
+        gameLayer.player.physicsBody?.affectedByGravity = false
+        gameLayer.player.physicsBody?.dynamic = false
+        gameLayer.player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+        stopTimer()
+        objectsCanRotate = false
+        spawnTimerRunning = false
+        vars.gamesPlayed += 1
+        if interactionHappend == false {
+            timesPlayedWithoutInteraction += 1
+            if timesPlayedWithoutInteraction == 3 {
+                print("Show Tutorial")
+                gameOverAfter()
+            } else if timesPlayedWithoutInteraction == 5 {
+                goToMenu()
+            } else {
+                gameOverAfter()
+            }
+        } else {
+            timesPlayedWithoutInteraction = 0
+            gameOverAfter()
+        }
+    }
+    
     func restartGame() {
         vars.currentGameState = .gameActive
         objectsCanRotate = true
         objectRotationPos = 0
         objectRotationNeg = 360
+        interactionHappend = false
         gameLayer.scoreNode.text = "00:00:00"
         startTimer()
         setupSpawnTimer()
@@ -841,9 +866,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 data, error in
                 
                 if data!.acceleration.y < -0.075 {
+                    self.interactionHappend = true
                     self.moveRight = true
                     self.moveLeft = false
                 } else if data!.acceleration.y > 0.075 {
+                    self.interactionHappend = true
                     self.moveLeft = true
                     self.moveRight = false
                 } else {

@@ -80,7 +80,8 @@ class GameViewController: UIViewController, EGCDelegate {
     }
     
     func shareHighscore() {
-        
+        var device = UIDevice.currentDevice().name
+
         let sharingText = "I've survived for " + ((NSString(format: "%.02f", vars.highscore)) as String) + " seconds in Gr4vity. Can you beat me?\nhttp://apple.co/1P2rkrT"
         
         let activityViewController : UIActivityViewController = UIActivityViewController(
@@ -99,8 +100,12 @@ class GameViewController: UIViewController, EGCDelegate {
             UIActivityTypePostToVimeo,
             UIActivityTypePostToTencentWeibo
         ]
-        
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+        if device.containsString("iPhone") || device.containsString("iPod"){
+            self.presentViewController(activityViewController, animated: true, completion: nil)
+        } else if device.containsString("iPad") {
+            let popup: UIPopoverController = UIPopoverController(contentViewController: activityViewController)
+            popup.presentPopoverFromRect(CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 + 30, 0, 0), inView: self.view, permittedArrowDirections: .Up, animated: true)
+        }
     }
 
 
