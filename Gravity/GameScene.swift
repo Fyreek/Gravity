@@ -233,6 +233,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         } else if self.nodeAtPoint(location) == highscoreLayer.shareNode {
             lastNodeName = highscoreLayer.shareNode.name!
             highscoreLayer.shareNode.runAction(fadeColorAction, withKey: "fade")
+        } else if self.nodeAtPoint(location) == gameLayer.menuNode {
+            lastNodeName = gameLayer.menuNode.name!
+            gameLayer.menuNode.runAction(fadeColorAction, withKey: "fade")
         } else {
             if location.x >= vars.screenSize.width / 2 {
                 moveLeft = false
@@ -249,10 +252,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         menuLayer.GCNode.removeActionForKey("fade")
         highscoreLayer.shareNode.removeActionForKey("fade")
         highscoreLayer.highscoreNode.removeActionForKey("fade")
+        gameLayer.menuNode.removeActionForKey("fade")
         menuLayer.playButton.runAction(fadeOutColorAction)
         menuLayer.GCNode.runAction(fadeOutColorAction)
         highscoreLayer.shareNode.runAction(fadeOutColorAction)
         highscoreLayer.highscoreNode.runAction(fadeOutColorAction)
+        gameLayer.menuNode.runAction(fadeOutColorAction)
         moveRight = false
         moveLeft = false
     }
@@ -330,9 +335,50 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             } else {
                 removeNodeAction()
             }
+        } else if self.nodeAtPoint(location) == gameLayer.menuNode {
+            if lastNodeName == gameLayer.menuNode.name {
+                lastNodeName = ""
+                gameLayer.menuNode.runAction(fadeOutColorAction, withKey: "fade")
+                goToMenu()
+            } else {
+                removeNodeAction()
+            }
         } else {
             removeNodeAction()
         }
+    }
+    
+    func goToMenu() {
+        spawnTimer.invalidate()
+        gameLayer.player.physicsBody?.affectedByGravity = false
+        gameLayer.player.physicsBody?.dynamic = false
+        gameLayer.player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+        stopTimer()
+        objectsCanRotate = false
+        spawnTimerRunning = false
+        self.enumerateChildNodesWithName("objectPos") {
+            node, stop in
+            node.removeAllActions()
+            node.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+        }
+        self.enumerateChildNodesWithName("objectNeg") {
+            node, stop in
+            node.removeAllActions()
+            node.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+        }
+        //dcd0gameLayer.menuNode.runAction(SKAction.reversedAction(gameLayer.menuNodeInAction)())
+        gameLayer.menuNode.runAction(SKAction.moveToY(vars.screenSize.height + gameLayer.menuNode.frame.size.height + vars.screenSize.height / 40, duration: vars.gameLayerFadeTime))
+        gameLayer.scoreNode.runAction(SKAction.reversedAction(gameLayer.scoreNodeInAction)())
+        gameLayer.topBar.runAction(SKAction.reversedAction(gameLayer.topBarInAction)())
+        gameLayer.bottomBar.runAction(SKAction.reversedAction(gameLayer.bottomBarInAction)())
+        gameLayer.player.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime), completion: {
+            self.gameLayer.removeFromParent()
+            self.menuLayer.GCNode.hidden = false
+            self.menuLayer.GCNode.runAction(SKAction.fadeInWithDuration(vars.gameLayerFadeTime))
+            self.menuLayer.playButton.hidden = false
+            self.menuLayer.playButton.runAction(SKAction.scaleTo(1.0, duration: vars.gameLayerFadeTime))
+            self.gameStarted = false
+        })
     }
     
     func startTimerAfter() {
@@ -462,6 +508,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.topBar.runAction(gameLayer.topBarInAction)
         gameLayer.bottomBar.runAction(gameLayer.bottomBarInAction)
         gameLayer.scoreNode.runAction(gameLayer.scoreNodeInAction)
+        gameLayer.menuNode.runAction(gameLayer.menuNodeInAction)
         menuLayer.playButton.runAction(SKAction.scaleTo(0.3, duration: vars.gameLayerFadeTime), completion: {
             self.menuLayer.playButton.hidden = true
             self.setupPhysics()

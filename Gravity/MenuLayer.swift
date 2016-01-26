@@ -44,7 +44,6 @@ class MenuLayer: SKNode {
         
         GCNode = SKSpriteNode(imageNamed: "GameCenter.png")
         GCNode.setScale(vars.screenSize.height / 320)
-        //GCNode.position = CGPoint(x: GCNode.frame.size.width / 2 + vars.screenSize.width / 66, y: (vars.screenSize.height - (vars.screenSize.height / 2 - GCNode.frame.size.height / 2) / 6 ))
         GCNode.position = CGPoint(x: GCNode.frame.size.width / 2 + vars.screenSize.width / 66, y: vars.screenSize.height - ((vars.screenSize.height / 7) / 2))
         GCNode.zPosition = 4
         GCNode.name = "GCNode"

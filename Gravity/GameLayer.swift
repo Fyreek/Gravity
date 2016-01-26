@@ -15,12 +15,14 @@ class GameLayer: SKNode {
     var topBarInAction:SKAction = SKAction()
     var bottomBarInAction:SKAction = SKAction()
     var scoreNodeInAction:SKAction = SKAction()
+    var menuNodeInAction:SKAction = SKAction()
     
     //Nodes
     var topBar:SKShapeNode = SKShapeNode()
     var bottomBar:SKShapeNode = SKShapeNode()
     var player:SKShapeNode = SKShapeNode()
     var scoreNode = SKLabelNode()
+    var menuNode = SKSpriteNode()
     
     override init() {
         super.init()
@@ -58,10 +60,19 @@ class GameLayer: SKNode {
         
         scoreNodeInAction = SKAction.moveToY(vars.screenSize.height - scoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: vars.gameLayerFadeTime)
         
+        menuNode = SKSpriteNode(imageNamed: "GameCenter.png")
+        menuNode.setScale(vars.screenSize.height / 320)
+        menuNode.position = CGPoint(x: vars.screenSize.width / 2 - menuNode.frame.size.width / 2, y: vars.screenSize.height + menuNode.frame.size.height + vars.screenSize.height / 40)
+        menuNode.zPosition = 4
+        menuNode.name = "menuNode"
+        addChild(menuNode)
+        
+        menuNodeInAction = SKAction.moveToY(vars.screenSize.height - ((vars.screenSize.height / 7) / 2), duration: vars.gameLayerFadeTime)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) hast not been implemented")
+        fatalError("init(coder:) has not been implemented")
     }
     
 }
