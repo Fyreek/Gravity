@@ -62,7 +62,7 @@ class GameLayer: SKNode {
         
         menuNode = SKSpriteNode(imageNamed: "Back.png")
         menuNode.setScale(vars.screenSize.height / 1280)
-        menuNode.position = CGPoint(x: vars.screenSize.width / 2 - menuNode.frame.size.width / 2, y: vars.screenSize.height + menuNode.frame.size.height + vars.screenSize.height / 40)
+        menuNode.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height + menuNode.frame.size.height + vars.screenSize.height / 40)
         menuNode.zPosition = 4
         menuNode.name = "menuNode"
         addChild(menuNode)
