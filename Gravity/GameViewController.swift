@@ -24,7 +24,7 @@ class GameViewController: UIViewController, EGCDelegate {
             let skView = self.view as! SKView
             skView.showsFPS = false
             skView.showsNodeCount = false
-            skView.showsPhysics = false
+            skView.showsPhysics = true
             
             /* Sprite Kit applies additional optimizations to improve rendering performance */
             skView.ignoresSiblingOrder = true
@@ -72,15 +72,13 @@ class GameViewController: UIViewController, EGCDelegate {
                     } else {
                         EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_timesplayed", score: vars.gamesPlayed)
                     }
-                    
                 }
             }
-
         }
     }
     
     func shareHighscore() {
-        var device = UIDevice.currentDevice().name
+        let device = UIDevice.currentDevice().name
 
         let sharingText = "I've survived for " + ((NSString(format: "%.02f", vars.highscore)) as String) + " seconds in Gr4vity. Can you beat me?\nhttp://apple.co/1P2rkrT"
         

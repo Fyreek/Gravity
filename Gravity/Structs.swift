@@ -21,21 +21,19 @@ struct vars {
     static var objectSize:CGFloat = 0
     static var screenOutLeft:CGFloat = 0
     static var screenOutRight:CGFloat = 0
-    static var gameLayerFadeTime:NSTimeInterval = 0.5
-    static var playerSideSpeed:CGFloat = 5
-    static var gravity:CGFloat = 9.8
-    static var objectWait:NSTimeInterval = 0.5
-    static var timerWait:NSTimeInterval = 0.7
-    static var objectMoveTime:NSTimeInterval = 3
-    static var objectBorderWidth:CGFloat = 4
-    static var objectFadeOutDuration:NSTimeInterval = 1
-    static var gameCenterLoggedIn:Bool = false
-    static var highscore:Double = 0
-    static var colorChangeTime:NSTimeInterval = 1
-    static var scalingFactor:CGFloat = 1
-    static var currentGameState:gameState = .gameMenu
-    static var gamesPlayed:Int = 0
-    static var motionControl:Bool = false
+    static var gravity:CGFloat = 0
+    static var playerSideSpeed:CGFloat = 0
+    static var gameLayerFadeTime:NSTimeInterval = 0.5 //AnimationTime - normal: 0.5
+    static var objectWait:NSTimeInterval = 0.5 //How long a object waits before it moves - normal: 0.7
+    static var timerWait:NSTimeInterval = 1 //How often an object spawns - normal: 0.7
+    static var objectMoveTime:NSTimeInterval = 4 //How long it takes an object to reach the other side - normal: 3
+    static var objectBorderWidth:CGFloat = 4 //How wide the border of an object is - normal: 4
+    static var gameCenterLoggedIn:Bool = false //If the game is connected to GameCenter
+    static var highscore:Double = 0 //Time Highscore
+    static var colorChangeTime:NSTimeInterval = 1.5 //How long it takes the game to switch between 2 colors - normal: 1
+    static var currentGameState:gameState = .gameMenu //What state the game is in
+    static var gamesPlayed:Int = 0 //Times played Highscore
+    static var motionControl:Bool = false //If the game is controlled by motion control
 }
 
 struct colors {

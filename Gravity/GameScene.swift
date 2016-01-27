@@ -52,6 +52,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var gameStarted:Bool = false
     var timesPlayedWithoutInteraction:Int = 0
     var interactionHappend:Bool = false
+    var isAnimating:Bool = false
     
     //Actions
     var colorizeBGNodes = SKAction()
@@ -86,13 +87,13 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func loadValues() {
-        vars.screenSize = (view?.frame.size)!
-        vars.barHeight = vars.screenSize.height / 6
-        vars.objectSize = vars.screenSize.height / 36
-        vars.screenOutLeft = -vars.objectSize * 2
-        vars.screenOutRight = vars.screenSize.width + vars.objectSize * 2
-        vars.playerSideSpeed = vars.screenSize.width / 160
-        vars.gravity = vars.screenSize.height / 35
+        vars.screenSize = (view?.frame.size)! //What size the display has
+        vars.barHeight = vars.screenSize.height / 6 //How high the bars at top and bottom are - normal: / 6
+        vars.objectSize = vars.screenSize.height / 36 //How big the objects are - normal: / 36
+        vars.screenOutLeft = -vars.objectSize * 2 //Spawnpoint on the left side
+        vars.screenOutRight = vars.screenSize.width + vars.objectSize * 2 //Spawnpoint on the right side
+        vars.playerSideSpeed = vars.screenSize.width / 180 //How fast the player moves sideways - normal: / 160
+        vars.gravity = vars.screenSize.height / 40 //How fast the player moves up and down - normal: / 35
         
         gameBGColor.append(colors.redBGColor)
         gameBGColor.append(colors.blueBGColor)
@@ -291,9 +292,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     func restartButton() {
         highscoreLayer.highscoreNode.runAction(SKAction.fadeOutWithDuration(0.5))
         highscoreLayer.highscoreText.runAction(SKAction.fadeOutWithDuration(0.5))
-        highscoreLayer.shareNode.runAction(SKAction.fadeOutWithDuration(0.5))
-        menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
-            self.menuLayer.GCNode.hidden = true
+        highscoreLayer.shareNode.runAction(SKAction.moveToY(vars.screenSize.height + highscoreLayer.shareNode.frame.height + vars.screenSize.height / 40, duration: 0.5))
+        menuLayer.GCNode.runAction(SKAction.moveToY(vars.screenSize.height + menuLayer.GCNode.frame.height + vars.screenSize.height / 40, duration: 0.5), completion: {
+            self.menuLayer.GCNode.zPosition = 1
+            self.menuLayer.GCNode.position.y = vars.screenSize.height - ((vars.screenSize.height / 7) / 2)
             self.highscoreLayer.removeFromParent()
             self.menuLayer.highscoreNode.runAction(SKAction.moveToY(vars.screenSize.height - self.menuLayer.highscoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: 0.5))
             self.gameLayer.player.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
@@ -308,52 +310,62 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     override func screenInteractionEnded(location: CGPoint) {
         
         if self.nodeAtPoint(location) == menuLayer.playButton {
-            if gameStarted == false {
-                gameStarted = true
-                if lastNodeName == menuLayer.playButton.name {
+            if isAnimating == false {
+                if gameStarted == false {
+                    gameStarted = true
+                    if lastNodeName == menuLayer.playButton.name {
+                        lastNodeName = ""
+                        menuLayer.playButton.runAction(fadeOutColorAction, withKey: "fade")
+                        showGameLayer()
+                    } else {
+                        removeNodeAction()
+                    }
+                }
+            }
+        } else if self.nodeAtPoint(location) == menuLayer.GCNode {
+            if isAnimating == false {
+                if lastNodeName == menuLayer.GCNode.name {
                     lastNodeName = ""
-                    menuLayer.playButton.runAction(fadeOutColorAction, withKey: "fade")
-                    showGameLayer()
+                    menuLayer.GCNode.runAction(fadeOutColorAction, withKey: "fade")
+                    if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
+                        EGC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
+                    }
                 } else {
                     removeNodeAction()
                 }
             }
-        } else if self.nodeAtPoint(location) == menuLayer.GCNode {
-            if lastNodeName == menuLayer.GCNode.name {
-                lastNodeName = ""
-                menuLayer.GCNode.runAction(fadeOutColorAction, withKey: "fade")
-                if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
-                    EGC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
-                }
-            } else {
-                removeNodeAction()
-            }
         } else if self.nodeAtPoint(location) == highscoreLayer.highscoreNode {
-            if gameRestarting == false {
-                gameRestarting = true
-                if lastNodeName == highscoreLayer.highscoreNode.name {
-                    lastNodeName = ""
-                    highscoreLayer.highscoreNode.runAction(fadeOutColorAction, withKey: "fade")
-                    restartButton()
+            if isAnimating == false {
+                if gameRestarting == false {
+                    gameRestarting = true
+                    if lastNodeName == highscoreLayer.highscoreNode.name {
+                        lastNodeName = ""
+                        highscoreLayer.highscoreNode.runAction(fadeOutColorAction, withKey: "fade")
+                        restartButton()
+                    }
+                } else {
+                    removeNodeAction()
                 }
-            } else {
-                removeNodeAction()
             }
         } else if self.nodeAtPoint(location) == highscoreLayer.shareNode {
-            if lastNodeName == highscoreLayer.shareNode.name {
-                lastNodeName = ""
-                highscoreLayer.shareNode.runAction(fadeOutColorAction, withKey: "fade")
-                NSNotificationCenter.defaultCenter().postNotificationName("shareHighscore", object: nil)
-            } else {
-                removeNodeAction()
+            if isAnimating == false {
+                if lastNodeName == highscoreLayer.shareNode.name {
+                    lastNodeName = ""
+                    highscoreLayer.shareNode.runAction(fadeOutColorAction, withKey: "fade")
+                    NSNotificationCenter.defaultCenter().postNotificationName("shareHighscore", object: nil)
+                } else {
+                    removeNodeAction()
+                }
             }
         } else if self.nodeAtPoint(location) == gameLayer.menuNode {
-            if lastNodeName == gameLayer.menuNode.name {
-                lastNodeName = ""
-                gameLayer.menuNode.runAction(fadeOutColorAction, withKey: "fade")
-                goToMenu()
-            } else {
-                removeNodeAction()
+            if isAnimating == false {
+                if lastNodeName == gameLayer.menuNode.name {
+                    lastNodeName = ""
+                    gameLayer.menuNode.runAction(fadeOutColorAction, withKey: "fade")
+                    goToMenu()
+                } else {
+                    removeNodeAction()
+                }
             }
         } else {
             removeNodeAction()
@@ -361,6 +373,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func goToMenu() {
+        isAnimating = true
         spawnTimer.invalidate()
         gameLayer.player.physicsBody?.affectedByGravity = false
         gameLayer.player.physicsBody?.dynamic = false
@@ -373,12 +386,16 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         self.enumerateChildNodesWithName("objectPos") {
             node, stop in
             node.removeAllActions()
-            node.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+            node.runAction(SKAction.moveToX(node.position.x - vars.screenSize.width, duration: vars.gameLayerFadeTime), completion:  {
+                node.removeFromParent()
+            })
         }
         self.enumerateChildNodesWithName("objectNeg") {
             node, stop in
             node.removeAllActions()
-            node.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+            node.runAction(SKAction.moveToX(node.position.x + vars.screenSize.width, duration: vars.gameLayerFadeTime), completion: {
+                node.removeFromParent()
+            })
         }
         if vars.currentGameState == .gameActive {
             gameLayer.menuNode.runAction(SKAction.moveToY(vars.screenSize.height + gameLayer.menuNode.frame.size.height + vars.screenSize.height / 40, duration: vars.gameLayerFadeTime))
@@ -393,10 +410,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 1280, duration: vars.gameLayerFadeTime))
                 self.gameStarted = false
                 vars.currentGameState = .gameMenu
+                self.isAnimating = false
             })
         } else if vars.currentGameState == .gameOver {
             gameLayer.menuNode.runAction(SKAction.moveToY(vars.screenSize.height + gameLayer.menuNode.frame.size.height + vars.screenSize.height / 40, duration: vars.gameLayerFadeTime))
-            highscoreLayer.shareNode.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+            highscoreLayer.shareNode.runAction(SKAction.moveToY(vars.screenSize.height + highscoreLayer.shareNode.frame.height + vars.screenSize.height / 40, duration: vars.gameLayerFadeTime))
             gameLayer.topBar.runAction(SKAction.moveToY(vars.screenSize.height + vars.barHeight / 2, duration: vars.gameLayerFadeTime))
             gameLayer.bottomBar.runAction(SKAction.moveToY(-(vars.barHeight / 2), duration: vars.gameLayerFadeTime))
             highscoreLayer.highscoreNode.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
@@ -408,6 +426,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.menuLayer.highscoreNode.runAction(SKAction.moveToY(vars.screenSize.height - self.menuLayer.highscoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: vars.gameLayerFadeTime))
                 self.gameStarted = false
                 vars.currentGameState = .gameMenu
+                self.isAnimating = false
+                self.menuLayer.GCNode.zPosition = 1
             })
         }
     }
@@ -529,15 +549,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func showGameLayer() {
+        print("ShowGameLayer")
+        isAnimating = true
         gameLayer = GameLayer()
         setColors()
         addChild(gameLayer)
         barsFadedIn = false
         interactionHappend = false
         
-        menuLayer.GCNode.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime), completion:  {
-            self.menuLayer.GCNode.hidden = true
-        })
         gameLayer.topBar.runAction(gameLayer.topBarInAction)
         gameLayer.bottomBar.runAction(gameLayer.bottomBarInAction)
         gameLayer.scoreNode.runAction(gameLayer.scoreNodeInAction)
@@ -550,6 +569,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             self.barsFadedIn = false
             self.objectsCanRotate = true
             self.startTimer()
+            self.isAnimating = false
         })
     }
     
@@ -580,6 +600,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.player.physicsBody!.contactTestBitMask = ColliderType.Ground.rawValue | ColliderType.Objects.rawValue
         gameLayer.player.physicsBody!.collisionBitMask = ColliderType.Ground.rawValue | ColliderType.Objects.rawValue
         gameLayer.player.physicsBody!.allowsRotation = false
+        gameLayer.player.physicsBody?.linearDamping = 0.0
+        gameLayer.player.physicsBody?.angularDamping = 0.0
+        gameLayer.player.physicsBody?.restitution = 0.0
+        gameLayer.player.physicsBody?.friction = 0.0
     }
     
     func switchGravity() {
@@ -696,20 +720,23 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func openNewHighScore() {
+        isAnimating = true
         highscoreLayer = HighscoreLayer()
         self.addChild(highscoreLayer)
         
+        menuLayer.GCNode.position.y = vars.screenSize.height + menuLayer.GCNode.frame.height + vars.screenSize.height / 40
         gameLayer.scoreNode.runAction(SKAction.moveToY(gameLayer.scoreNode.position.y + vars.screenSize.height / 8, duration: 0.5))
         menuLayer.highscoreNode.runAction(SKAction.moveToY(menuLayer.highscoreNode.position.y + vars.screenSize.height / 8, duration: 0.5), completion: {
-            self.menuLayer.GCNode.hidden = false
-            self.menuLayer.GCNode.runAction(SKAction.fadeInWithDuration(0.5))
-            self.highscoreLayer.shareNode.runAction(SKAction.fadeInWithDuration(0.5))
+            self.menuLayer.GCNode.zPosition = 3
+            self.menuLayer.GCNode.runAction(SKAction.moveToY(vars.screenSize.height - (vars.screenSize.height / 7) / 2, duration: 0.5))
+            self.highscoreLayer.shareNode.runAction(SKAction.moveToY(vars.screenSize.height - (vars.screenSize.height / 7) / 2, duration: 0.5))
         })
         gameLayer.player.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
             self.highscoreLayer.highscoreText.fontColor = self.gameLayer.topBar.fillColor
             self.highscoreLayer.highscoreText.text = self.menuLayer.highscoreNode.text
             self.highscoreLayer.highscoreNode.runAction(SKAction.fadeInWithDuration(1))
             self.highscoreLayer.highscoreText.runAction(SKAction.fadeInWithDuration(1))
+            self.isAnimating = false
         })
     }
     
@@ -744,15 +771,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func gameOverAfter() {
+        isAnimating = true
         NSUserDefaults.standardUserDefaults().setInteger(vars.gamesPlayed, forKey: "gamesPlayed")
         NSUserDefaults.standardUserDefaults().synchronize()
         EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_timesplayed", score: vars.gamesPlayed)
         self.enumerateChildNodesWithName("objectPos") {
             node, stop in
             node.removeAllActions()
-            self.objectMoveRightAction = SKAction.moveToX(node.position.x + vars.screenSize.width, duration: 0.5)
-            self.objectMoveRightAction.timingMode = .Linear
-            self.objectMoveLeftAction = SKAction.moveToX(node.position.x - vars.screenSize.width, duration: 0.5)
+            self.objectMoveLeftAction = SKAction.moveToX(node.position.x - vars.screenSize.width, duration: vars.gameLayerFadeTime)
             self.objectMoveLeftAction.timingMode = .Linear
             node.runAction(self.waitAction, completion: {
                 self.objectsCanRotate = true
@@ -767,10 +793,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         self.enumerateChildNodesWithName("objectNeg") {
             node, stop in
             node.removeAllActions()
-            self.objectMoveRightAction = SKAction.moveToX(node.position.x + vars.screenSize.width, duration: 0.5)
+            self.objectMoveRightAction = SKAction.moveToX(node.position.x + vars.screenSize.width, duration: vars.gameLayerFadeTime)
             self.objectMoveRightAction.timingMode = .Linear
-            self.objectMoveLeftAction = SKAction.moveToX(node.position.x - vars.screenSize.width, duration: 0.5)
-            self.objectMoveLeftAction.timingMode = .Linear
             node.runAction(self.waitAction, completion: {
                 self.objectsCanRotate = true
             })
@@ -800,6 +824,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                     self.gameLayer.player.alpha = 1
                     self.gameLayer.player.runAction(SKAction.scaleTo(1, duration: 0.3), completion: {
                         self.restartGame()
+                        self.isAnimating = false
                     })
             })
         }
