@@ -130,6 +130,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         } else {
             vars.highscore = 0
         }
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("firstTimePlaying") {
+            vars.firstTimePlaying = NSUserDefaults.standardUserDefaults().boolForKey("firstTimePlaying")
+        } else {
+            vars.firstTimePlaying = false
+        }
         if let _ = NSUserDefaults.standardUserDefaults().objectForKey("gamesPlayed") {
             vars.gamesPlayed = NSUserDefaults.standardUserDefaults().integerForKey("gamesPlayed")
         } else {
@@ -245,11 +250,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             if vars.motionControl == false {
                 if location.x >= vars.screenSize.width / 2 {
                     interactionHappend = true
-                    moveLeft = false
                     moveRight = true
                 } else if location.x <= vars.screenSize.width / 2 {
                     interactionHappend = true
-                    moveRight = false
                     moveLeft = true
                 }
             }
@@ -277,11 +280,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 if lastNodeName == "" {
                     if location.x >= vars.screenSize.width / 2 {
                         interactionHappend = true
-                        moveLeft = false
                         moveRight = true
                     } else if location.x <= vars.screenSize.width / 2 {
                         interactionHappend = true
-                        moveRight = false
                         moveLeft = true
                     }
                 }
@@ -368,11 +369,21 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 }
             }
         } else {
+            if vars.motionControl == false {
+                if location.x >= vars.screenSize.width / 2 {
+                    interactionHappend = true
+                    moveRight = false
+                } else if location.x <= vars.screenSize.width / 2 {
+                    interactionHappend = true
+                    moveLeft = false
+                }
+            }
             removeNodeAction()
         }
     }
     
     func goToMenu() {
+        self.view?.paused = true
         isAnimating = true
         spawnTimer.invalidate()
         gameLayer.player.physicsBody?.affectedByGravity = false
@@ -545,11 +556,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if newHighscore == true {
             menuLayer.highscoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
         }
-        
     }
     
     func showGameLayer() {
-        print("ShowGameLayer")
+        if vars.firstTimePlaying == false {
+            print("Show Tutorial")
+        }
         isAnimating = true
         gameLayer = GameLayer()
         setColors()
@@ -740,8 +752,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         })
     }
     
-    func lerp(a : CGFloat, b : CGFloat, fraction : CGFloat) -> CGFloat
-    {
+    func lerp(a : CGFloat, b : CGFloat, fraction : CGFloat) -> CGFloat {
         return (b-a) * fraction + a
     }
     
@@ -839,6 +850,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         objectsCanRotate = false
         spawnTimerRunning = false
         vars.gamesPlayed += 1
+        if vars.firstTimePlaying == false {
+            vars.firstTimePlaying = true
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstTimePlaying")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
         if interactionHappend == false {
             timesPlayedWithoutInteraction += 1
             if timesPlayedWithoutInteraction == 3 {
@@ -889,24 +905,35 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if motionManager.accelerometerAvailable == true {
             motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler:{
                 data, error in
-                
-                if data!.acceleration.y < -0.075 {
-                    self.interactionHappend = true
-                    self.moveRight = true
-                    self.moveLeft = false
-                } else if data!.acceleration.y > 0.075 {
-                    self.interactionHappend = true
-                    self.moveLeft = true
-                    self.moveRight = false
-                } else {
-                    self.moveLeft = false
-                    self.moveRight = false
+                if vars.deviceOrientation == 3 {
+                    if data!.acceleration.y < -0.075 {
+                        self.interactionHappend = true
+                        self.moveRight = true
+                        self.moveLeft = false
+                    } else if data!.acceleration.y > 0.075 {
+                        self.interactionHappend = true
+                        self.moveLeft = true
+                        self.moveRight = false
+                    } else {
+                        self.moveLeft = false
+                        self.moveRight = false
+                    }
+                } else if vars.deviceOrientation == 4 {
+                    if data!.acceleration.y > 0.075 {
+                        self.interactionHappend = true
+                        self.moveRight = true
+                        self.moveLeft = false
+                    } else if data!.acceleration.y < -0.075 {
+                        self.interactionHappend = true
+                        self.moveLeft = true
+                        self.moveRight = false
+                    } else {
+                        self.moveLeft = false
+                        self.moveRight = false
+                    }
                 }
-                
             })
-            
         }
-
     }
     
     func cancelMotionControl() {
@@ -981,12 +1008,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             highscoreLayer.highscoreText.fontColor = gameLayer.topBar.strokeColor
         }
         if vars.currentGameState == .gameActive {
-            if moveRight == true {
+            if moveRight == true && moveLeft == false {
                 gameLayer.player.position.x += vars.playerSideSpeed
                 if gameLayer.player.position.x >= vars.screenSize.width {
                     gameLayer.player.position.x = 0
                 }
-            } else if moveLeft == true {
+            } else if moveLeft == true && moveRight == false {
                 gameLayer.player.position.x -= vars.playerSideSpeed
                 if gameLayer.player.position.x <= 0 {
                     gameLayer.player.position.x = vars.screenSize.width

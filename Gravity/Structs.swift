@@ -34,6 +34,8 @@ struct vars {
     static var currentGameState:gameState = .gameMenu //What state the game is in
     static var gamesPlayed:Int = 0 //Times played Highscore
     static var motionControl:Bool = false //If the game is controlled by motion control
+    static var deviceOrientation:Int = 3 //Home button to the right
+    static var firstTimePlaying:Bool = false
 }
 
 struct colors {

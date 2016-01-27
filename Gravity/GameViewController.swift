@@ -111,6 +111,22 @@ class GameViewController: UIViewController, EGCDelegate {
         return true
     }
 
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        if UIDevice.currentDevice().orientation == .LandscapeLeft {
+            vars.deviceOrientation = 3
+            if vars.motionControl == true {
+                NSNotificationCenter.defaultCenter().postNotificationName("cancelMotionControl", object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName("initMotionControl", object: nil)
+            }
+        } else if UIDevice.currentDevice().orientation == .LandscapeRight {
+            vars.deviceOrientation = 4
+            if vars.motionControl == true {
+                NSNotificationCenter.defaultCenter().postNotificationName("cancelMotionControl", object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName("initMotionControl", object: nil)
+            }
+        }
+    }
+    
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
             return .AllButUpsideDown
