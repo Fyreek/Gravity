@@ -9,6 +9,7 @@
 import UIKit
 import SpriteKit
 import EasyGameCenter
+import GameKit
 
 class GameViewController: UIViewController, EGCDelegate {
 
@@ -16,7 +17,7 @@ class GameViewController: UIViewController, EGCDelegate {
         super.viewDidLoad()
         
         EGC.sharedInstance(self)
-        self.view.multipleTouchEnabled = true
+        self.view.multipleTouchEnabled = false
         //EGC.showLoginPage = false
 
         if let scene = GameScene(fileNamed:"GameScene") {
@@ -24,7 +25,7 @@ class GameViewController: UIViewController, EGCDelegate {
             let skView = self.view as! SKView
             skView.showsFPS = false
             skView.showsNodeCount = false
-            skView.showsPhysics = true
+            skView.showsPhysics = false
             
             /* Sprite Kit applies additional optimizations to improve rendering performance */
             skView.ignoresSiblingOrder = true
@@ -36,12 +37,14 @@ class GameViewController: UIViewController, EGCDelegate {
             skView.presentScene(scene)
             
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "shareHighscore", name: "shareHighscore", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "getScores", name: "getScores", object: nil)
             
         }
     }
     
     func EGCAuthentified(authentified:Bool) {
         if authentified {
+            //getScores()
             EGC.getHighScore(leaderboardIdentifier: "gravity_leaderboard") {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
@@ -75,6 +78,30 @@ class GameViewController: UIViewController, EGCDelegate {
                 }
             }
         }
+    }
+    
+    func getScores() {
+        vars.highscorePlayerNames = []
+        vars.highscorePlayerScore = []
+        let leaderboardRequest: GKLeaderboard = GKLeaderboard()
+        leaderboardRequest.playerScope = .FriendsOnly
+        leaderboardRequest.timeScope = .AllTime
+        leaderboardRequest.identifier = "gravity_leaderboard"
+        leaderboardRequest.range = NSMakeRange(1, 5)
+        leaderboardRequest.loadScoresWithCompletionHandler({(scores: [GKScore]?, error: NSError?) -> Void in
+            if error != nil {
+                print("error retrieving scores")
+            }
+            if scores != nil {
+                for var i = 0; i <= (scores?.count)! - 1; i++ {
+                    let player = scores![i].player.alias!
+                    vars.highscorePlayerNames.append(String(player))
+                    let score:String = String(scores![i].formattedValue!)
+                    vars.highscorePlayerScore.append(score)
+                }
+                NSNotificationCenter.defaultCenter().postNotificationName("openNewHighScore", object: nil)
+            }
+        })
     }
     
     func shareHighscore() {

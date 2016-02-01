@@ -113,6 +113,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "initMotionControl", name: "initMotionControl", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "cancelMotionControl", name: "cancelMotionControl", object: nil)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "openNewHighScore", name: "openNewHighScore", object: nil)
+        
         waitAction = SKAction.waitForDuration(vars.objectWait)
         moveLeftAction = SKAction.sequence([
             waitAction,
@@ -612,8 +614,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.player.physicsBody!.contactTestBitMask = ColliderType.Ground.rawValue | ColliderType.Objects.rawValue
         gameLayer.player.physicsBody!.collisionBitMask = ColliderType.Ground.rawValue | ColliderType.Objects.rawValue
         gameLayer.player.physicsBody!.allowsRotation = false
-        gameLayer.player.physicsBody?.linearDamping = 0.0
-        gameLayer.player.physicsBody?.angularDamping = 0.0
+        gameLayer.player.physicsBody?.linearDamping = 1.0
+        gameLayer.player.physicsBody?.angularDamping = 1.0
         gameLayer.player.physicsBody?.restitution = 0.0
         gameLayer.player.physicsBody?.friction = 0.0
     }
@@ -704,6 +706,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         case ColliderType.Player.rawValue | ColliderType.Objects.rawValue:
             contact.bodyA.dynamic = false
             contact.bodyB.dynamic = false
+            if contact.bodyA.node?.name == "objectPos" || contact.bodyA.node?.name == "objectNeg" {
+                contact.bodyA.node?.removeAllActions()
+            } else if contact.bodyB.node?.name == "objectNeg" || contact.bodyB.node?.name == "objectNeg" {
+                contact.bodyB.node?.removeAllActions()
+            }
             gameOver()
             
         case ColliderType.Player.rawValue | ColliderType.Ground.rawValue:
@@ -728,13 +735,72 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "highscore")
         NSUserDefaults.standardUserDefaults().synchronize()
         EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(vars.highscore * 100))
-        openNewHighScore()
+        if vars.gameCenterLoggedIn == true {
+            NSNotificationCenter.defaultCenter().postNotificationName("getScores", object: nil)
+        } else {
+            openNewHighScore()
+        }
+    }
+    
+    func setHighscoreTextBGSize(number: Int) {
+        highscoreLayer.highscoreTextBG = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width / 3, height: highscoreLayer.firstHighscoreText.frame.size.height * CGFloat(number * 2)), cornerRadius: vars.screenSize.height / 20)
+        highscoreLayer.highscoreTextBG.position = CGPoint(x: -vars.screenSize.width / 2, y: vars.screenSize.height / 2)
+        highscoreLayer.highscoreTextBG.fillColor = SKColor.whiteColor()
+        highscoreLayer.highscoreTextBG.strokeColor = colors.blueObjectColor
+        highscoreLayer.highscoreTextBG.zPosition = 3
+        highscoreLayer.highscoreTextBG.lineWidth = 6
+        highscoreLayer.highscoreTextBG.alpha = 1
+        highscoreLayer.highscoreTextBG.name = "highscoreTextBG"
+        highscoreLayer.addChild(highscoreLayer.highscoreTextBG)
     }
     
     func openNewHighScore() {
         isAnimating = true
         highscoreLayer = HighscoreLayer()
         self.addChild(highscoreLayer)
+        
+        if vars.highscorePlayerNames.count >= 0 {
+            if vars.highscorePlayerNames.count >= 1 {
+                setHighscoreTextBGSize(1)
+                highscoreLayer.firstHighscoreText.text = "\(vars.highscorePlayerScore[0]) - \(vars.highscorePlayerNames[0])"
+                highscoreLayer.firstHighscoreText.alpha = 1
+                highscoreLayer.firstHighscoreText.position.y = vars.screenSize.height / 2 - highscoreLayer.thirdHighscoreText.frame.size.height / 2
+            }
+            if vars.highscorePlayerNames.count >= 2 {
+                setHighscoreTextBGSize(2)
+                highscoreLayer.secondHighscoreText.text = "\(vars.highscorePlayerScore[1]) - \(vars.highscorePlayerNames[1])"
+                highscoreLayer.secondHighscoreText.alpha = 1
+                highscoreLayer.firstHighscoreText.position.y = vars.screenSize.height / 2 + highscoreLayer.thirdHighscoreText.frame.size.height * 0.25
+                highscoreLayer.secondHighscoreText.position.y = vars.screenSize.height / 2 - highscoreLayer.thirdHighscoreText.frame.size.height * 1.25
+            }
+            if vars.highscorePlayerNames.count >= 3 {
+                setHighscoreTextBGSize(3)
+                highscoreLayer.thirdHighscoreText.text = "\(vars.highscorePlayerScore[2]) - \(vars.highscorePlayerNames[2])"
+                highscoreLayer.thirdHighscoreText.alpha = 1
+                highscoreLayer.firstHighscoreText.position.y = vars.screenSize.height / 2 + highscoreLayer.thirdHighscoreText.frame.size.height
+                highscoreLayer.secondHighscoreText.position.y = vars.screenSize.height / 2 - highscoreLayer.thirdHighscoreText.frame.size.height / 2
+                highscoreLayer.thirdHighscoreText.position.y = vars.screenSize.height / 2 - highscoreLayer.thirdHighscoreText.frame.size.height * 2
+            }
+            if vars.highscorePlayerNames.count >= 4 {
+                setHighscoreTextBGSize(4)
+                highscoreLayer.fourthHighscoreText.text = "\(vars.highscorePlayerScore[3]) - \(vars.highscorePlayerNames[3])"
+                highscoreLayer.fourthHighscoreText.alpha = 1
+                highscoreLayer.firstHighscoreText.position.y = vars.screenSize.height / 2 + highscoreLayer.thirdHighscoreText.frame.size.height * 1.75
+                highscoreLayer.secondHighscoreText.position.y = vars.screenSize.height / 2 + highscoreLayer.thirdHighscoreText.frame.size.height * 0.25
+                highscoreLayer.thirdHighscoreText.position.y = vars.screenSize.height / 2 - highscoreLayer.thirdHighscoreText.frame.size.height * 1.25
+                highscoreLayer.fourthHighscoreText.position.y = vars.screenSize.height / 2 - highscoreLayer.thirdHighscoreText.frame.size.height * 2.75
+            }
+            if vars.highscorePlayerNames.count >= 5 {
+                setHighscoreTextBGSize(5)
+                highscoreLayer.fifthHighscoreText.text = "\(vars.highscorePlayerScore[4]) - \(vars.highscorePlayerNames[4])"
+                highscoreLayer.fifthHighscoreText.alpha = 1
+                highscoreLayer.firstHighscoreText.position.y = vars.screenSize.height / 2 + highscoreLayer.thirdHighscoreText.frame.size.height * 2 + highscoreLayer.thirdHighscoreText.frame.size.height / 2
+                highscoreLayer.secondHighscoreText.position.y = vars.screenSize.height / 2 + highscoreLayer.thirdHighscoreText.frame.size.height
+                highscoreLayer.thirdHighscoreText.position.y = vars.screenSize.height / 2 - highscoreLayer.thirdHighscoreText.frame.size.height / 2
+                highscoreLayer.fourthHighscoreText.position.y = vars.screenSize.height / 2 - highscoreLayer.thirdHighscoreText.frame.size.height * 2
+                highscoreLayer.fifthHighscoreText.position.y = vars.screenSize.height / 2 - highscoreLayer.thirdHighscoreText.frame.size.height * 3 - highscoreLayer.thirdHighscoreText.frame.size.height / 2
+            }
+        }
         
         menuLayer.GCNode.position.y = vars.screenSize.height + menuLayer.GCNode.frame.height + vars.screenSize.height / 40
         gameLayer.scoreNode.runAction(SKAction.moveToY(gameLayer.scoreNode.position.y + vars.screenSize.height / 8, duration: 0.5))
@@ -747,8 +813,22 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             self.highscoreLayer.highscoreText.fontColor = self.gameLayer.topBar.fillColor
             self.highscoreLayer.highscoreText.text = self.menuLayer.highscoreNode.text
             self.highscoreLayer.highscoreNode.runAction(SKAction.fadeInWithDuration(1))
-            self.highscoreLayer.highscoreText.runAction(SKAction.fadeInWithDuration(1))
-            self.isAnimating = false
+            self.highscoreLayer.highscoreText.runAction(SKAction.fadeInWithDuration(1), completion: {
+                if vars.highscorePlayerNames.count > 0 {
+                    self.highscoreLayer.highscoreText.runAction(SKAction.moveToX(vars.screenSize.width / 1.33, duration: vars.gameLayerFadeTime))
+                    self.highscoreLayer.highscoreNode.runAction(SKAction.moveToX(vars.screenSize.width / 1.33, duration: vars.gameLayerFadeTime))
+                    self.highscoreLayer.highscoreTextBG.runAction(SKAction.moveToX(vars.screenSize.width / 6 + self.highscoreLayer.firstHighscoreText.frame.size.width / 2, duration: vars.gameLayerFadeTime))
+                    self.highscoreLayer.secondHighscoreText.runAction(SKAction.moveToX(vars.screenSize.width / 6, duration: vars.gameLayerFadeTime))
+                    self.highscoreLayer.thirdHighscoreText.runAction(SKAction.moveToX(vars.screenSize.width / 6, duration: vars.gameLayerFadeTime))
+                    self.highscoreLayer.fourthHighscoreText.runAction(SKAction.moveToX(vars.screenSize.width / 6, duration: vars.gameLayerFadeTime))
+                    self.highscoreLayer.fifthHighscoreText.runAction(SKAction.moveToX(vars.screenSize.width / 6, duration: vars.gameLayerFadeTime))
+                    self.highscoreLayer.firstHighscoreText.runAction(SKAction.moveToX(vars.screenSize.width / 6, duration: vars.gameLayerFadeTime), completion: {
+                        self.isAnimating = false
+                    })
+                } else {
+                    self.isAnimating = false
+                }
+            })
         })
     }
     
@@ -1006,6 +1086,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
         if vars.currentGameState == .gameOver {
             highscoreLayer.highscoreText.fontColor = gameLayer.topBar.strokeColor
+            highscoreLayer.highscoreTextBG.strokeColor = gameLayer.topBar.strokeColor
+            highscoreLayer.firstHighscoreText.fontColor = gameLayer.topBar.strokeColor
+            highscoreLayer.secondHighscoreText.fontColor = gameLayer.topBar.strokeColor
+            highscoreLayer.thirdHighscoreText.fontColor = gameLayer.topBar.strokeColor
+            highscoreLayer.fourthHighscoreText.fontColor = gameLayer.topBar.strokeColor
+            highscoreLayer.fifthHighscoreText.fontColor = gameLayer.topBar.strokeColor
         }
         if vars.currentGameState == .gameActive {
             if moveRight == true && moveLeft == false {

@@ -36,6 +36,9 @@ struct vars {
     static var motionControl:Bool = false //If the game is controlled by motion control
     static var deviceOrientation:Int = 3 //Home button to the right
     static var firstTimePlaying:Bool = false
+    static var highscorePlayerNames:[String] = []
+    static var highscorePlayerScore:[String] = []
+    static var highscoreLocalScore:[String] = []
 }
 
 struct colors {
