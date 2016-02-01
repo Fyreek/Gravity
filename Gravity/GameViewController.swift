@@ -48,6 +48,7 @@ class GameViewController: UIViewController, EGCDelegate {
             EGC.getHighScore(leaderboardIdentifier: "gravity_leaderboard") {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
+                    vars.localPlayerName = tupleIsOk.playerName
                     if vars.highscore < Double(tupleIsOk.score) / 100 {
                         
                         vars.highscore = Double(tupleIsOk.score) / 100
@@ -97,7 +98,8 @@ class GameViewController: UIViewController, EGCDelegate {
                     let player = scores![i].player.alias!
                     vars.highscorePlayerNames.append(String(player))
                     let score:String = String(scores![i].formattedValue!)
-                    vars.highscorePlayerScore.append(score)
+                    let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
+                    vars.highscorePlayerScore.append(newScore)
                 }
                 NSNotificationCenter.defaultCenter().postNotificationName("openNewHighScore", object: nil)
             }
@@ -132,7 +134,6 @@ class GameViewController: UIViewController, EGCDelegate {
             popup.presentPopoverFromRect(CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 + 30, 0, 0), inView: self.view, permittedArrowDirections: .Up, animated: true)
         }
     }
-
 
     override func shouldAutorotate() -> Bool {
         return true

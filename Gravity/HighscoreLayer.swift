@@ -36,7 +36,7 @@ class HighscoreLayer: SKNode {
         addChild(shareNode)
         
         highscoreNode = SKShapeNode(circleOfRadius: vars.screenSize.height / 5)
-        highscoreNode.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
+        highscoreNode.position = CGPoint(x: vars.screenSize.width * 1.5, y: vars.screenSize.height / 2)
         highscoreNode.fillColor = SKColor.whiteColor()
         highscoreNode.zPosition = 3
         highscoreNode.alpha = 0
@@ -49,7 +49,7 @@ class HighscoreLayer: SKNode {
         highscoreText.alpha = 0
         highscoreText.fontColor = SKColor.whiteColor()
         highscoreText.zPosition = 4
-        highscoreText.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2 - highscoreText.frame.size.height / 2)
+        highscoreText.position = CGPoint(x: vars.screenSize.width * 1.5, y: vars.screenSize.height / 2 - highscoreText.frame.size.height / 2)
         highscoreText.name = "highscoreTextEnd"
         addChild(highscoreText)
         

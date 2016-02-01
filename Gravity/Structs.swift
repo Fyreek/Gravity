@@ -35,10 +35,10 @@ struct vars {
     static var gamesPlayed:Int = 0 //Times played Highscore
     static var motionControl:Bool = false //If the game is controlled by motion control
     static var deviceOrientation:Int = 3 //Home button to the right
-    static var firstTimePlaying:Bool = false
-    static var highscorePlayerNames:[String] = []
-    static var highscorePlayerScore:[String] = []
-    static var highscoreLocalScore:[String] = []
+    static var firstTimePlaying:Bool = false //If the game is started the first time
+    static var highscorePlayerNames:[String] = [] //Stores Friends Gamecenter names
+    static var highscorePlayerScore:[String] = [] //Stores Friends Gamecenter scores
+    static var localPlayerName:String = "" //Stores players Gamecenter name
 }
 
 struct colors {
