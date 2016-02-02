@@ -87,13 +87,18 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func loadValues() {
+        
         vars.screenSize = (view?.frame.size)! //What size the display has
         vars.barHeight = vars.screenSize.height / 6 //How high the bars at top and bottom are - normal: / 6
         vars.objectSize = vars.screenSize.height / 36 //How big the objects are - normal: / 36
         vars.screenOutLeft = -vars.objectSize * 2 //Spawnpoint on the left side
         vars.screenOutRight = vars.screenSize.width + vars.objectSize * 2 //Spawnpoint on the right side
-        vars.playerSideSpeed = vars.screenSize.width / 180 //How fast the player moves sideways - normal: / 160
-        vars.gravity = vars.screenSize.height / 40 //How fast the player moves up and down - normal: / 35
+        
+        if vars.extremeMode == false {
+            initNormalMode()
+        } else {
+            initExtremeMode()
+        }
         
         gameBGColor.append(colors.redBGColor)
         gameBGColor.append(colors.blueBGColor)
@@ -113,17 +118,44 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "initMotionControl", name: "initMotionControl", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "cancelMotionControl", name: "cancelMotionControl", object: nil)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "initExtremeMode", name: "initExtremeMode", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "initNormalMode", name: "initNormalMode", object: nil)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "openNewHighScore", name: "openNewHighScore", object: nil)
+    }
+    
+    func initExtremeMode() {
+        vars.playerSideSpeed = vars.screenSize.width / 130 //How fast the player moves sideways - normal: / 160
+        vars.gravity = vars.screenSize.height / 30 //How fast the player moves up and down - normal: / 35
+        vars.objectMoveTime = 2
+        vars.colorChangeTime = 0.5
         
         waitAction = SKAction.waitForDuration(vars.objectWait)
         moveLeftAction = SKAction.sequence([
             waitAction,
             SKAction.moveToX(vars.screenOutLeft, duration: vars.objectMoveTime)
-        ])
+            ])
         moveRightAction = SKAction.sequence([
-                waitAction,
+            waitAction,
             SKAction.moveToX(vars.screenOutRight, duration: vars.objectMoveTime)
-        ])
+            ])
+    }
+    
+    func initNormalMode() {
+        vars.playerSideSpeed = vars.screenSize.width / 160 //How fast the player moves sideways - normal: / 160
+        vars.gravity = vars.screenSize.height / 40 //How fast the player moves up and down - normal: / 35
+        vars.objectMoveTime = 4
+        vars.colorChangeTime = 5
+        
+        waitAction = SKAction.waitForDuration(vars.objectWait)
+        moveLeftAction = SKAction.sequence([
+            waitAction,
+            SKAction.moveToX(vars.screenOutLeft, duration: vars.objectMoveTime)
+            ])
+        moveRightAction = SKAction.sequence([
+            waitAction,
+            SKAction.moveToX(vars.screenOutRight, duration: vars.objectMoveTime)
+            ])
     }
     
     func loadNSUserData() {
@@ -399,6 +431,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func goToMenu() {
         isAnimating = true
+        timesPlayedWithoutInteraction = 0
         spawnTimer.invalidate()
         gameLayer.player.physicsBody?.affectedByGravity = false
         gameLayer.player.physicsBody?.dynamic = false
@@ -423,6 +456,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             })
         }
         if vars.currentGameState == .gameActive {
+            gameLayer.tutorialNodeLeft.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+            gameLayer.tutorialNodeRight.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+            vars.showTutorial = false
             gameLayer.menuNode.runAction(SKAction.moveToY(vars.screenSize.height + gameLayer.menuNode.frame.size.height + vars.screenSize.height / 40, duration: vars.gameLayerFadeTime))
             gameLayer.scoreNode.runAction(SKAction.moveToY(vars.screenSize.height + gameLayer.scoreNode.frame.height + vars.screenSize.height / 40, duration: vars.gameLayerFadeTime))
             gameLayer.topBar.runAction(SKAction.moveToY(vars.screenSize.height + vars.barHeight / 2, duration: vars.gameLayerFadeTime))
@@ -523,6 +559,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         let strSeconds = String(format: "%02d", seconds)
         let strFraction = String(format: "%02d", fraction)
         
+        if vars.showTutorial == true && seconds >= 5 {
+            vars.showTutorial = false
+            gameLayer.tutorialNodeLeft.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+            gameLayer.tutorialNodeRight.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+        }
+        
         if achievements.fiveSeconds == false {
             if seconds >= 5 {
                 achievements.fiveSeconds = true
@@ -580,7 +622,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func showGameLayer() {
         if vars.firstTimePlaying == false {
-            print("Show Tutorial")
+            vars.showTutorial = true
         }
         isAnimating = true
         gameLayer = GameLayer()
@@ -593,10 +635,17 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.bottomBar.runAction(gameLayer.bottomBarInAction)
         gameLayer.scoreNode.runAction(gameLayer.scoreNodeInAction)
         gameLayer.menuNode.runAction(gameLayer.menuNodeInAction)
-        menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 3190/*2560*/, duration: vars.gameLayerFadeTime), completion: {
+        menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 3190, duration: vars.gameLayerFadeTime), completion: {
+            if vars.showTutorial == true {
+                self.gameLayer.tutorialNodeRight.runAction(SKAction.fadeAlphaTo(vars.tutorialArrowAlpha, duration: vars.gameLayerFadeTime))
+                self.gameLayer.tutorialNodeLeft.runAction(SKAction.fadeAlphaTo(vars.tutorialArrowAlpha, duration: vars.gameLayerFadeTime))
+            }
             self.menuLayer.playButton.hidden = true
             self.setupPhysics()
             vars.currentGameState = .gameActive
+            if vars.motionControl == true && self.motionManager.accelerometerActive == false {
+                self.initMotionControl()
+            }
             self.setupSpawnTimer()
             self.barsFadedIn = false
             self.objectsCanRotate = true
@@ -693,10 +742,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     func createObjects(location : CGPoint, direction: String) {
         let object = SKShapeNode(rectOfSize: CGSize(width: vars.objectSize, height: vars.objectSize), cornerRadius: 3)
         object.position = location
-        object.zPosition = 3
+        object.zPosition = 4
         object.fillColor = gameBGColor[currentGameColor]
         object.strokeColor = gameObjectColor[currentGameColor]
-        object.lineWidth = 4
+        object.lineWidth = vars.screenSize.height / 128
         if location.x == vars.screenOutLeft {
             object.name = "objectNeg"
         } else {
@@ -773,7 +822,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func openNewHighScore() {
         isAnimating = true
-        
+        timesPlayedWithoutInteraction = 0
+         
         highscoreLayer = HighscoreLayer()
         self.addChild(highscoreLayer)
         
@@ -822,6 +872,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             }
         }
         
+        gameLayer.tutorialNodeLeft.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+        gameLayer.tutorialNodeRight.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
+        vars.showTutorial = false
         menuLayer.GCNode.position.y = vars.screenSize.height + menuLayer.GCNode.frame.height + vars.screenSize.height / 40
         gameLayer.scoreNode.runAction(SKAction.moveToY(gameLayer.scoreNode.position.y + vars.screenSize.height / 8, duration: 0.5))
         menuLayer.highscoreNode.runAction(SKAction.moveToY(menuLayer.highscoreNode.position.y + vars.screenSize.height / 8, duration: 0.5), completion: {
@@ -971,8 +1024,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
         if interactionHappend == false {
             timesPlayedWithoutInteraction += 1
-            if timesPlayedWithoutInteraction == 3 {
-                print("Show Tutorial")
+            if timesPlayedWithoutInteraction == 2 {
+                vars.showTutorial = true
                 gameOverAfter()
             } else if timesPlayedWithoutInteraction == 5 {
                 goToMenu()
@@ -997,6 +1050,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.player.physicsBody?.affectedByGravity = true
         gameLayer.player.physicsBody?.dynamic = true
         gravityDirection = "up"
+        if vars.showTutorial == true {
+            gameLayer.tutorialNodeRight.runAction(SKAction.fadeAlphaTo(vars.tutorialArrowAlpha, duration: vars.gameLayerFadeTime))
+            gameLayer.tutorialNodeLeft.runAction(SKAction.fadeAlphaTo(vars.tutorialArrowAlpha, duration: vars.gameLayerFadeTime))
+        }
         switchGravity()
     }
     
@@ -1016,7 +1073,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func initMotionControl() {
-        if motionManager.accelerometerAvailable == true {
+        if motionManager.accelerometerAvailable == true && vars.motionControl == true && vars.currentGameState == .gameActive {
             motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler:{
                 data, error in
                 if vars.deviceOrientation == 3 {
@@ -1051,7 +1108,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func cancelMotionControl() {
-        motionManager.stopAccelerometerUpdates()
+        if motionManager.accelerometerActive == true {
+            motionManager.stopAccelerometerUpdates()
+        }
     }
     
     

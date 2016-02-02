@@ -18,7 +18,6 @@ class GameViewController: UIViewController, EGCDelegate {
         
         EGC.sharedInstance(self)
         self.view.multipleTouchEnabled = false
-        //EGC.showLoginPage = false
 
         if let scene = GameScene(fileNamed:"GameScene") {
             // Configure the view.
@@ -44,7 +43,6 @@ class GameViewController: UIViewController, EGCDelegate {
     
     func EGCAuthentified(authentified:Bool) {
         if authentified {
-            //getScores()
             EGC.getHighScore(leaderboardIdentifier: "gravity_leaderboard") {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
@@ -142,16 +140,8 @@ class GameViewController: UIViewController, EGCDelegate {
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         if UIDevice.currentDevice().orientation == .LandscapeLeft {
             vars.deviceOrientation = 3
-            if vars.motionControl == true {
-                NSNotificationCenter.defaultCenter().postNotificationName("cancelMotionControl", object: nil)
-                NSNotificationCenter.defaultCenter().postNotificationName("initMotionControl", object: nil)
-            }
         } else if UIDevice.currentDevice().orientation == .LandscapeRight {
             vars.deviceOrientation = 4
-            if vars.motionControl == true {
-                NSNotificationCenter.defaultCenter().postNotificationName("cancelMotionControl", object: nil)
-                NSNotificationCenter.defaultCenter().postNotificationName("initMotionControl", object: nil)
-            }
         }
     }
     

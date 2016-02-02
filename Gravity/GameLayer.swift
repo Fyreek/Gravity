@@ -23,6 +23,8 @@ class GameLayer: SKNode {
     var player:SKShapeNode = SKShapeNode()
     var scoreNode = SKLabelNode()
     var menuNode = SKSpriteNode()
+    var tutorialNodeLeft = SKSpriteNode()
+    var tutorialNodeRight = SKSpriteNode()
     
     override init() {
         super.init()
@@ -60,7 +62,7 @@ class GameLayer: SKNode {
         
         scoreNodeInAction = SKAction.moveToY(vars.screenSize.height - scoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: vars.gameLayerFadeTime)
         
-        menuNode = SKSpriteNode(imageNamed: "Back.png")
+        menuNode = SKSpriteNode(imageNamed: "Back")
         menuNode.setScale(vars.screenSize.height / 1280)
         menuNode.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height + menuNode.frame.size.height + vars.screenSize.height / 40)
         menuNode.zPosition = 4
@@ -68,6 +70,23 @@ class GameLayer: SKNode {
         addChild(menuNode)
         
         menuNodeInAction = SKAction.moveToY(vars.screenSize.height - ((vars.screenSize.height / 7) / 2), duration: vars.gameLayerFadeTime)
+        
+        tutorialNodeLeft = SKSpriteNode(imageNamed: "Tutorial-Touch")
+        tutorialNodeLeft.setScale(vars.screenSize.height / 1280)
+        tutorialNodeLeft.position = CGPoint(x: tutorialNodeLeft.size.width / 1.5, y: bottomBar.frame.size.height + tutorialNodeLeft.size.height / 1.5)
+        tutorialNodeLeft.zPosition = 3
+        tutorialNodeLeft.alpha = 0
+        tutorialNodeLeft.name = "tutorialNodeLeft"
+        addChild(tutorialNodeLeft)
+        
+        tutorialNodeRight = SKSpriteNode(imageNamed: "Tutorial-Touch")
+        tutorialNodeRight.setScale(vars.screenSize.height / 1280)
+        tutorialNodeRight.position = CGPoint(x: vars.screenSize.width - tutorialNodeRight.size.width / 1.5, y: bottomBar.frame.size.height + tutorialNodeRight.size.height / 1.5)
+        tutorialNodeRight.zPosition = 3
+        tutorialNodeRight.zRotation = CGFloat(M_PI)
+        tutorialNodeRight.alpha = 0
+        tutorialNodeRight.name = "tutorialNodeRight"
+        addChild(tutorialNodeRight)
         
     }
     

@@ -30,7 +30,7 @@ struct vars {
     static var objectBorderWidth:CGFloat = 4 //How wide the border of an object is - normal: 4
     static var gameCenterLoggedIn:Bool = false //If the game is connected to GameCenter
     static var highscore:Double = 0 //Time Highscore
-    static var colorChangeTime:NSTimeInterval = 1.5 //How long it takes the game to switch between 2 colors - normal: 1
+    static var colorChangeTime:NSTimeInterval = 5 //How long it takes the game to switch between 2 colors - normal: 1
     static var currentGameState:gameState = .gameMenu //What state the game is in
     static var gamesPlayed:Int = 0 //Times played Highscore
     static var motionControl:Bool = false //If the game is controlled by motion control
@@ -39,6 +39,10 @@ struct vars {
     static var highscorePlayerNames:[String] = [] //Stores Friends Gamecenter names
     static var highscorePlayerScore:[String] = [] //Stores Friends Gamecenter scores
     static var localPlayerName:String = "" //Stores players Gamecenter name
+    static var motionOrientation:String = "left"
+    static var extremeMode:Bool = false //DIZ IS DE EXTREME MODE!!!!!
+    static var showTutorial:Bool = false //If the Tutorial is shown. Do not change
+    static var tutorialArrowAlpha:CGFloat = 1 //Alpha of the Tutorial arrows
 }
 
 struct colors {

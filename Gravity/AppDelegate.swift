@@ -52,16 +52,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         gameSettings = ["motioncontrol": "Motion Control"]
+        gameSettings = ["extreme": "Extreme Mode"]
         NSUserDefaults.standardUserDefaults().registerDefaults(gameSettings)
         vars.motionControl = NSUserDefaults.standardUserDefaults().boolForKey("motioncontrol")
+        vars.extremeMode = NSUserDefaults.standardUserDefaults().boolForKey("extreme")
         
-        if vars.motionControl == true {
+        if vars.motionControl == true && vars.currentGameState == .gameActive {
             NSNotificationCenter.defaultCenter().postNotificationName("initMotionControl", object: nil)
         } else {
             NSNotificationCenter.defaultCenter().postNotificationName("cancelMotionControl", object: nil)
         }
-        
-
+        if vars.extremeMode == true {
+            NSNotificationCenter.defaultCenter().postNotificationName("initExtremeMode", object: nil)
+        } else {
+            NSNotificationCenter.defaultCenter().postNotificationName("initNormalMode", object: nil)
+        }
     }
 
     func applicationWillTerminate(application: UIApplication) {
