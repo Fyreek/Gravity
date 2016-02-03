@@ -43,6 +43,8 @@ struct vars {
     static var extremeMode:Bool = false //DIZ IS DE EXTREME MODE!!!!!
     static var showTutorial:Bool = false //If the Tutorial is shown. Do not change
     static var tutorialArrowAlpha:CGFloat = 1 //Alpha of the Tutorial arrows
+    static var musicState:Bool = false //If the music should play or not
+    static var musicPlaying:Bool = false
 }
 
 struct colors {
@@ -61,9 +63,10 @@ struct colors {
 
 struct achievements {
     static var fiveSeconds:Bool = false
-    static var tenSeconds:Bool = false
-    static var twentySeconds:Bool = false
+    static var fifthteenSeconds:Bool = false
     static var thirtySeconds:Bool = false
-    static var oneMinute:Bool = false
-    static var oneHour:Bool = false
+    static var sixtySeconds:Bool = false
+    static var onehundredtwentySeconds:Bool = false
+    static var pi:Bool = false
+    static var newton:Bool = false
 }

@@ -10,15 +10,17 @@ import UIKit
 import SpriteKit
 import EasyGameCenter
 import GameKit
+import AVFoundation
 
 class GameViewController: UIViewController, EGCDelegate {
 
+    var backgroundMusicPlayer: AVAudioPlayer!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         EGC.sharedInstance(self)
-        self.view.multipleTouchEnabled = false
-
+        self.view.multipleTouchEnabled = true
+        
         if let scene = GameScene(fileNamed:"GameScene") {
             // Configure the view.
             let skView = self.view as! SKView
@@ -37,6 +39,9 @@ class GameViewController: UIViewController, EGCDelegate {
             
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "shareHighscore", name: "shareHighscore", object: nil)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "getScores", name: "getScores", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MusicOn", name: "MusicOn", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MusicOff", name: "MusicOff", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MusicPause", name: "MusicPause", object: nil)
             
         }
     }
@@ -142,6 +147,64 @@ class GameViewController: UIViewController, EGCDelegate {
             vars.deviceOrientation = 3
         } else if UIDevice.currentDevice().orientation == .LandscapeRight {
             vars.deviceOrientation = 4
+        }
+    }
+    
+    func playBackgroundMusic(filename: String) {
+        let url = NSBundle.mainBundle().URLForResource(
+            filename, withExtension: nil)
+        if (url == nil) {
+            print("Could not find file: \(filename)")
+            return
+        }
+        
+        do {
+            
+            backgroundMusicPlayer = try AVAudioPlayer(contentsOfURL: url!)
+        } catch {
+            
+        }
+        if backgroundMusicPlayer == nil {
+            print("Could not create audio player!")
+            return
+        }
+        if vars.musicState == true {
+            backgroundMusicPlayer.numberOfLoops = -1
+            backgroundMusicPlayer.prepareToPlay()
+            backgroundMusicPlayer.volume = 1
+            backgroundMusicPlayer.play()
+        }
+    }
+    
+    func MusicPause() {
+        if vars.musicPlaying == true {
+            backgroundMusicPlayer.pause()
+        }
+    }
+    
+    func MusicOn() {
+        let sess = AVAudioSession.sharedInstance()
+        if sess.otherAudioPlaying {
+            _ = try? sess.setCategory(AVAudioSessionCategoryAmbient)
+            _ = try? sess.setActive(true, withOptions: [])
+        }
+        if vars.musicPlaying == true {
+            vars.musicPlaying = false
+            backgroundMusicPlayer.stop()
+        }
+    }
+    
+    func MusicOff() {
+        let sess = AVAudioSession.sharedInstance()
+        if sess.otherAudioPlaying {
+            _ = try? sess.setCategory(AVAudioSessionCategoryAmbient)
+            _ = try? sess.setActive(true, withOptions: [])
+        }
+        if vars.musicPlaying == false {
+            vars.musicPlaying = true
+            //playBackgroundMusic("music.caf")
+        } else {
+            backgroundMusicPlayer.play()
         }
     }
     

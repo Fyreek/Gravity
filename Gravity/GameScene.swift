@@ -179,30 +179,35 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         } else {
             achievements.fiveSeconds = false
         }
-        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("tenSeconds") {
-            achievements.tenSeconds = NSUserDefaults.standardUserDefaults().boolForKey("tenSeconds")
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("fifthteenSeconds") {
+            achievements.fifthteenSeconds = NSUserDefaults.standardUserDefaults().boolForKey("fifthteenSeconds")
         } else {
-            achievements.tenSeconds = false
-        }
-        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("twentySeconds") {
-            achievements.twentySeconds = NSUserDefaults.standardUserDefaults().boolForKey("twentySeconds")
-        } else {
-            achievements.twentySeconds = false
+            achievements.fifthteenSeconds = false
         }
         if let _ = NSUserDefaults.standardUserDefaults().objectForKey("thirtySeconds") {
             achievements.thirtySeconds = NSUserDefaults.standardUserDefaults().boolForKey("thirtySeconds")
         } else {
             achievements.thirtySeconds = false
         }
-        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("oneMinute") {
-            achievements.oneMinute = NSUserDefaults.standardUserDefaults().boolForKey("oneMinute")
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("sixytSeconds") {
+            achievements.sixtySeconds = NSUserDefaults.standardUserDefaults().boolForKey("sixtySeconds")
         } else {
-            achievements.oneMinute = false
+            achievements.sixtySeconds = false
         }
-        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("oneHour") {
-            achievements.oneHour = NSUserDefaults.standardUserDefaults().boolForKey("oneHour")
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("onehundredtwentySeconds") {
+            achievements.onehundredtwentySeconds = NSUserDefaults.standardUserDefaults().boolForKey("onehundredtwentySeconds")
         } else {
-            achievements.oneHour = false
+            achievements.onehundredtwentySeconds = false
+        }
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("pi") {
+            achievements.pi = NSUserDefaults.standardUserDefaults().boolForKey("pi")
+        } else {
+            achievements.pi = false
+        }
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("newton") {
+            achievements.newton = NSUserDefaults.standardUserDefaults().boolForKey("newton")
+        } else {
+            achievements.newton = false
         }
     }
     
@@ -236,6 +241,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func setHighscore() {
+        
+        achievementProgress()
+        
         var highscoreTime = vars.highscore.roundToPlaces(2)
         
         let minutes = UInt8(highscoreTime / 60.0)
@@ -285,9 +293,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 if location.x >= vars.screenSize.width / 2 {
                     interactionHappend = true
                     moveRight = true
+                    moveLeft = false
                 } else if location.x <= vars.screenSize.width / 2 {
                     interactionHappend = true
                     moveLeft = true
+                    moveRight = false
                 }
             }
         }
@@ -568,48 +578,40 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if achievements.fiveSeconds == false {
             if seconds >= 5 {
                 achievements.fiveSeconds = true
-                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
+                EGC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_5seconds", showBannnerIfCompleted: true, addToExisting: false)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "fiveSeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
-        if achievements.tenSeconds == false {
-            if seconds >= 10 {
-                achievements.tenSeconds = true
-                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "tenSeconds")
-                NSUserDefaults.standardUserDefaults().synchronize()
-            }
-        }
-        if achievements.twentySeconds == false {
-            if seconds >= 20 {
-                achievements.twentySeconds = true
-                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "twentySeconds")
+        if achievements.fifthteenSeconds == false {
+            if seconds >= 15 {
+                achievements.fifthteenSeconds = true
+                EGC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_15seconds", showBannnerIfCompleted: true, addToExisting: false)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "fifthteenSeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
         if achievements.thirtySeconds == false {
             if seconds >= 30 {
                 achievements.thirtySeconds = true
-                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
+                EGC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_30seconds", showBannnerIfCompleted: true, addToExisting: false)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "thirtySeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
-        if achievements.oneMinute == false {
+        if achievements.sixtySeconds == false {
             if minutes >= 1 {
-                achievements.oneMinute = true
-                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "oneMinute")
+                achievements.sixtySeconds = true
+                EGC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_60seconds", showBannnerIfCompleted: true, addToExisting: false)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "sixtySeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
-        if achievements.oneHour == false {
-            if minutes >= 59 && seconds >= 59 && fraction >= 59 {
-                achievements.oneHour = true
-                //EGC.reportAchievement(progress: 100.00, achievementIdentifier: "name", showBannnerIfCompleted: true, addToExisting: false)
-                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "oneHour")
+        if achievements.onehundredtwentySeconds == false {
+            if minutes >= 2 {
+                achievements.onehundredtwentySeconds = true
+                EGC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_120seconds", showBannnerIfCompleted: true, addToExisting: false)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "onehundredtwentySeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
@@ -775,8 +777,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             contact.bodyB.dynamic = false
             if contact.bodyA.node?.name == "objectPos" || contact.bodyA.node?.name == "objectNeg" {
                 contact.bodyA.node?.removeAllActions()
+                contact.bodyB.node?.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                contact.bodyB.node?.removeAllActions()
             } else if contact.bodyB.node?.name == "objectNeg" || contact.bodyB.node?.name == "objectNeg" {
                 contact.bodyB.node?.removeAllActions()
+                contact.bodyA.node?.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                contact.bodyA.node?.removeAllActions()
             }
             gameOver()
             
@@ -802,11 +808,31 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "highscore")
         NSUserDefaults.standardUserDefaults().synchronize()
         EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(vars.highscore * 100))
+        achievementProgress()
         if vars.gameCenterLoggedIn == true {
             NSNotificationCenter.defaultCenter().postNotificationName("getScores", object: nil)
         } else {
             openNewHighScore()
         }
+    }
+    
+    func achievementProgress() {
+        if achievements.fiveSeconds == false {
+            EGC.reportAchievement(progress: (vars.highscore / 0.05), achievementIdentifier: "gravity.achievement_5seconds")
+        }
+        if achievements.fifthteenSeconds == false {
+            EGC.reportAchievement(progress: (vars.highscore / 0.15), achievementIdentifier: "gravity.achievement_15seconds")
+        }
+        if achievements.thirtySeconds == false {
+            EGC.reportAchievement(progress: (vars.highscore / 0.3), achievementIdentifier: "gravity.achievement_30seconds")
+        }
+        if achievements.sixtySeconds == false {
+            EGC.reportAchievement(progress: (vars.highscore / 0.6), achievementIdentifier: "gravity.achievement_60seconds")
+        }
+        if achievements.onehundredtwentySeconds == false {
+            EGC.reportAchievement(progress: (vars.highscore / 1.2), achievementIdentifier: "gravity.achievement_120seconds")
+        }
+
     }
     
     func setHighscoreTextBGSize(number: Int) {
@@ -923,14 +949,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func colorTransitionAction(fromColor : UIColor, toColor : UIColor, duration : Double = 1.0) -> SKAction {
-        var fr = CGFloat(0.0)
-        var fg = CGFloat(0.0)
-        var fb = CGFloat(0.0)
-        var fa = CGFloat(0.0)
-        var tr = CGFloat(0.0)
-        var tg = CGFloat(0.0)
-        var tb = CGFloat(0.0)
-        var ta = CGFloat(0.0)
+        var fr:CGFloat = 0
+        var fg:CGFloat = 0
+        var fb:CGFloat = 0
+        var fa:CGFloat = 0
+        var tr:CGFloat = 0
+        var tg:CGFloat = 0
+        var tb:CGFloat = 0
+        var ta:CGFloat = 0
         
         fromColor.getRed(&fr, green: &fg, blue: &fb, alpha: &fa)
         toColor.getRed(&tr, green: &tg, blue: &tb, alpha: &ta)
@@ -1022,6 +1048,26 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "firstTimePlaying")
             NSUserDefaults.standardUserDefaults().synchronize()
         }
+        
+        let score:Double = currentScore.roundToPlaces(2)
+        
+        if achievements.pi == false {
+            if score == 3.14 {
+                achievements.pi = true
+                EGC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_pi", showBannnerIfCompleted: true, addToExisting: false)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "pi")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+        }
+        if achievements.newton == false {
+            if score == 9.81 {
+                achievements.newton = true
+                EGC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_newton", showBannnerIfCompleted: true, addToExisting: false)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "newton")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+        }
+        
         if interactionHappend == false {
             timesPlayedWithoutInteraction += 1
             if timesPlayedWithoutInteraction == 2 {
