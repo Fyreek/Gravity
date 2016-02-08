@@ -441,6 +441,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func goToMenu() {
         isAnimating = true
+        UIApplication.sharedApplication().idleTimerDisabled = false
         timesPlayedWithoutInteraction = 0
         spawnTimer.invalidate()
         gameLayer.player.physicsBody?.affectedByGravity = false
@@ -627,6 +628,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             vars.showTutorial = true
         }
         isAnimating = true
+        UIApplication.sharedApplication().idleTimerDisabled = true
         gameLayer = GameLayer()
         setColors()
         addChild(gameLayer)
@@ -1086,6 +1088,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func restartGame() {
         vars.currentGameState = .gameActive
+        UIApplication.sharedApplication().idleTimerDisabled = true
         objectsCanRotate = true
         objectRotationPos = 0
         objectRotationNeg = 360

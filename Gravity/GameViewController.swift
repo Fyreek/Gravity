@@ -52,9 +52,11 @@ class GameViewController: UIViewController, EGCDelegate {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
                     vars.localPlayerName = tupleIsOk.playerName
-                    if vars.highscore < Double(tupleIsOk.score) / 100 {
+                    var gcScore:Double = Double(tupleIsOk.score)
+                    gcScore = gcScore / 100
+                    if vars.highscore < gcScore {
                         
-                        vars.highscore = Double(tupleIsOk.score) / 100
+                        vars.highscore = gcScore
                         vars.highscore = vars.highscore.roundToPlaces(2)
                             
                         NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "highscore")
@@ -177,7 +179,7 @@ class GameViewController: UIViewController, EGCDelegate {
     }
     
     func MusicPause() {
-        if vars.musicPlaying == true {
+        if vars.musicPlaying == true && backgroundMusicPlayer != nil {
             backgroundMusicPlayer.pause()
         }
     }
@@ -204,7 +206,9 @@ class GameViewController: UIViewController, EGCDelegate {
             vars.musicPlaying = true
             //playBackgroundMusic("music.caf")
         } else {
-            backgroundMusicPlayer.play()
+            if backgroundMusicPlayer != nil {
+                backgroundMusicPlayer.play()
+            }
         }
     }
     
