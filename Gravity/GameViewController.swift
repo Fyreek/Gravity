@@ -13,37 +13,29 @@ import GameKit
 import AVFoundation
 
 class GameViewController: UIViewController, EGCDelegate {
-
-    var backgroundMusicPlayer: AVAudioPlayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         EGC.sharedInstance(self)
         self.view.multipleTouchEnabled = true
         
-        if let scene = GameScene(fileNamed:"GameScene") {
-            // Configure the view.
-            let skView = self.view as! SKView
-            skView.showsFPS = false
-            skView.showsNodeCount = false
-            skView.showsPhysics = false
-            
-            /* Sprite Kit applies additional optimizations to improve rendering performance */
-            skView.ignoresSiblingOrder = true
-            
-            /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .AspectFill
-            scene.size = skView.bounds.size
-            
-            skView.presentScene(scene)
-            
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "shareHighscore", name: "shareHighscore", object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "getScores", name: "getScores", object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MusicOn", name: "MusicOn", object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MusicOff", name: "MusicOff", object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MusicPause", name: "MusicPause", object: nil)
-            
-        }
+        vars.gameScene = GameScene()
+        // Configure the view.
+        let skView = self.view as! SKView
+        skView.showsFPS = false
+        skView.showsNodeCount = false
+        skView.showsPhysics = false
+        
+        /* Sprite Kit applies additional optimizations to improve rendering performance */
+        skView.ignoresSiblingOrder = true
+        
+        /* Set the scale mode to scale to fit the window */
+        vars.gameScene!.scaleMode = .AspectFill
+        vars.gameScene!.size = skView.bounds.size
+        
+        skView.presentScene(vars.gameScene)
+        
+        vars.gameScene!.viewController = self
     }
     
     func EGCAuthentified(authentified:Bool) {
@@ -57,13 +49,31 @@ class GameViewController: UIViewController, EGCDelegate {
                     if vars.highscore < gcScore {
                         
                         vars.highscore = gcScore
-                        vars.highscore = vars.highscore.roundToPlaces(2)
                             
                         NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "highscore")
                         NSUserDefaults.standardUserDefaults().synchronize()
                         
                     } else {
                         EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(vars.highscore * 100))
+                    }
+                    vars.gameCenterLoggedIn = true
+                }
+            }
+            EGC.getHighScore(leaderboardIdentifier: "gravity_extreme") {
+                (tupleHighScore) -> Void in
+                if let tupleIsOk = tupleHighScore {
+                    vars.localPlayerName = tupleIsOk.playerName
+                    var gcExtScore:Double = Double(tupleIsOk.score)
+                    gcExtScore = gcExtScore / 100
+                    if vars.extHighscore < gcExtScore {
+                        
+                        vars.extHighscore = gcExtScore
+                        
+                        NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "extHighscore")
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                        
+                    } else {
+                        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_extHighscore", score: Int(vars.extHighscore * 100))
                     }
                     vars.gameCenterLoggedIn = true
                 }
@@ -106,7 +116,31 @@ class GameViewController: UIViewController, EGCDelegate {
                     let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
                     vars.highscorePlayerScore.append(newScore)
                 }
-                NSNotificationCenter.defaultCenter().postNotificationName("openNewHighScore", object: nil)
+                vars.gameScene?.openNewHighScore()
+            }
+        })
+    }
+    func getExtScores() {
+        vars.highscorePlayerNames = []
+        vars.highscorePlayerScore = []
+        let leaderboardRequest: GKLeaderboard = GKLeaderboard()
+        leaderboardRequest.playerScope = .FriendsOnly
+        leaderboardRequest.timeScope = .AllTime
+        leaderboardRequest.identifier = "gravity_extreme"
+        leaderboardRequest.range = NSMakeRange(1, 5)
+        leaderboardRequest.loadScoresWithCompletionHandler({(scores: [GKScore]?, error: NSError?) -> Void in
+            if error != nil {
+                print("error retrieving scores")
+            }
+            if scores != nil {
+                for var i = 0; i <= (scores?.count)! - 1; i++ {
+                    let player = scores![i].player.alias!
+                    vars.highscorePlayerNames.append(String(player))
+                    let score:String = String(scores![i].formattedValue!)
+                    let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
+                    vars.highscorePlayerScore.append(newScore)
+                }
+                vars.gameScene?.openNewHighScore()
             }
         })
     }
@@ -162,29 +196,29 @@ class GameViewController: UIViewController, EGCDelegate {
         
         do {
             
-            backgroundMusicPlayer = try AVAudioPlayer(contentsOfURL: url!)
+            vars.backgroundMusicPlayer = try AVAudioPlayer(contentsOfURL: url!)
         } catch {
             
         }
-        if backgroundMusicPlayer == nil {
+        if vars.backgroundMusicPlayer == nil {
             print("Could not create audio player!")
             return
         }
         if vars.musicState == true {
-            backgroundMusicPlayer.numberOfLoops = -1
-            backgroundMusicPlayer.prepareToPlay()
-            backgroundMusicPlayer.volume = 1
-            backgroundMusicPlayer.play()
+            vars.backgroundMusicPlayer.numberOfLoops = -1
+            vars.backgroundMusicPlayer.prepareToPlay()
+            vars.backgroundMusicPlayer.volume = 1
+            vars.backgroundMusicPlayer.play()
         }
     }
     
-    func MusicPause() {
-        if vars.musicPlaying == true && backgroundMusicPlayer != nil {
-            backgroundMusicPlayer.pause()
+    class func MusicPause() {
+        if vars.musicPlaying == true && vars.backgroundMusicPlayer != nil {
+            vars.backgroundMusicPlayer.pause()
         }
     }
     
-    func MusicOn() {
+    class func MusicOn() {
         let sess = AVAudioSession.sharedInstance()
         if sess.otherAudioPlaying {
             _ = try? sess.setCategory(AVAudioSessionCategoryAmbient)
@@ -192,11 +226,11 @@ class GameViewController: UIViewController, EGCDelegate {
         }
         if vars.musicPlaying == true {
             vars.musicPlaying = false
-            backgroundMusicPlayer.stop()
+            vars.backgroundMusicPlayer.stop()
         }
     }
     
-    func MusicOff() {
+    class func MusicOff() {
         let sess = AVAudioSession.sharedInstance()
         if sess.otherAudioPlaying {
             _ = try? sess.setCategory(AVAudioSessionCategoryAmbient)
@@ -206,8 +240,8 @@ class GameViewController: UIViewController, EGCDelegate {
             vars.musicPlaying = true
             //playBackgroundMusic("music.caf")
         } else {
-            if backgroundMusicPlayer != nil {
-                backgroundMusicPlayer.play()
+            if vars.backgroundMusicPlayer != nil {
+                vars.backgroundMusicPlayer.play()
             }
         }
     }

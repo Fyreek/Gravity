@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import AVFoundation
 
 enum gameState {
     case gameMenu
@@ -30,6 +31,7 @@ struct vars {
     static var objectBorderWidth:CGFloat = 4 //How wide the border of an object is - normal: 4
     static var gameCenterLoggedIn:Bool = false //If the game is connected to GameCenter
     static var highscore:Double = 0 //Time Highscore
+    static var extHighscore:Double = 0 //Extreme Time Highscore
     static var colorChangeTime:NSTimeInterval = 5 //How long it takes the game to switch between 2 colors - normal: 1
     static var currentGameState:gameState = .gameMenu //What state the game is in
     static var gamesPlayed:Int = 0 //Times played Highscore
@@ -44,7 +46,10 @@ struct vars {
     static var showTutorial:Bool = false //If the Tutorial is shown. Do not change
     static var tutorialArrowAlpha:CGFloat = 1 //Alpha of the Tutorial arrows
     static var musicState:Bool = false //If the music should play or not
-    static var musicPlaying:Bool = false
+    static var musicPlaying:Bool = false //If music is playing
+    static var gameScene = GameScene(fileNamed: "GameScene") //Gamescene reference
+    static var backgroundMusicPlayer: AVAudioPlayer! //Player for the background music
+    static var gameModeBefore:Bool = false
 }
 
 struct colors {

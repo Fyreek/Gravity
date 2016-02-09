@@ -13,9 +13,10 @@ class MenuLayer: SKNode {
     //Nodes
     var backgroundNode:SKShapeNode = SKShapeNode()
     var playButton = SKSpriteNode()
-    var playArrow = SKShapeNode()
     var highscoreNode = SKLabelNode()
     var GCNode = SKSpriteNode()
+    var circleNode = SKShapeNode()
+    var circleNode2 = SKShapeNode()
     
     override init() {
         super.init()
@@ -31,6 +32,20 @@ class MenuLayer: SKNode {
         playButton.zPosition = 2
         playButton.name = "playButton"
         addChild(playButton)
+        
+        circleNode = SKShapeNode(circleOfRadius: vars.screenSize.height / 6.5)
+        circleNode.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
+        circleNode.zPosition = 1
+        circleNode.strokeColor = SKColor.whiteColor()
+        circleNode.lineWidth = vars.screenSize.height / 64
+        addChild(circleNode)
+        
+        circleNode2 = SKShapeNode(circleOfRadius: vars.screenSize.height / 5)
+        circleNode2.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
+        circleNode2.zPosition = 1
+        circleNode2.strokeColor = SKColor.whiteColor()
+        circleNode2.lineWidth = vars.screenSize.height / 128
+        addChild(circleNode2)
         
         highscoreNode = SKLabelNode(fontNamed: "Helvetica")
         highscoreNode.text = "00:00.00"

@@ -33,10 +33,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
         if vars.musicPlaying == true {
-            NSNotificationCenter.defaultCenter().postNotificationName("MusicPause", object: nil)
+            GameViewController.MusicPause()
         }
         if vars.currentGameState == .gameActive {
-            NSNotificationCenter.defaultCenter().postNotificationName("pauseGame", object: nil)
+            vars.gameScene?.stopTimerAfter()
+            vars.gameModeBefore = vars.extremeMode
         }
     }
 
@@ -54,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         updateSoundState()
         
         if vars.currentGameState == .gameActive {
-            NSNotificationCenter.defaultCenter().postNotificationName("resumeGame", object: nil)
+            vars.gameScene?.startTimerAfter()
         }
         
         gameSettings = ["motioncontrol": "Motion Control"]
@@ -63,15 +64,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         vars.motionControl = NSUserDefaults.standardUserDefaults().boolForKey("motioncontrol")
         vars.extremeMode = NSUserDefaults.standardUserDefaults().boolForKey("extreme")
         
+        if vars.currentGameState == .gameActive && vars.extremeMode == true && vars.gameModeBefore == false {
+            vars.gameScene?.goToMenu()
+        } else if vars.currentGameState == .gameActive && vars.extremeMode == false && vars.gameModeBefore == true {
+            vars.gameScene?.goToMenu()
+        }
+        
         if vars.motionControl == true && vars.currentGameState == .gameActive {
-            NSNotificationCenter.defaultCenter().postNotificationName("initMotionControl", object: nil)
+            vars.gameScene?.initMotionControl()
         } else {
-            NSNotificationCenter.defaultCenter().postNotificationName("cancelMotionControl", object: nil)
+            vars.gameScene?.cancelMotionControl()
         }
         if vars.extremeMode == true {
-            NSNotificationCenter.defaultCenter().postNotificationName("initExtremeMode", object: nil)
+            vars.gameScene?.initExtremeMode()
         } else {
-            NSNotificationCenter.defaultCenter().postNotificationName("initNormalMode", object: nil)
+            vars.gameScene?.initNormalMode()
         }
     }
 
@@ -83,11 +90,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             vars.musicState =  true
         }
         if vars.musicState == true {
-            NSNotificationCenter.defaultCenter().postNotificationName("MusicOff", object: nil)
+            GameViewController.MusicOff()
         } else {
-            NSNotificationCenter.defaultCenter().postNotificationName("MusicOn", object: nil)
+            GameViewController.MusicOn()
         }
-        
     }
     
     func applicationWillTerminate(application: UIApplication) {
