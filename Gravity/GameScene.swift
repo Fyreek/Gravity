@@ -7,7 +7,9 @@
 //
 
 import SpriteKit
+#if os(iOS)
 import CoreMotion
+#endif
 import EasyGameCenter
 
 class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
@@ -29,7 +31,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var highscoreLayer = HighscoreLayer()
     
     //Vars
+    #if os(iOS)
     var motionManager = CMMotionManager()
+    #endif
     var lastNodeName = ""
     var gravityDirection = "down"
     var moveLeft:Bool = false
@@ -87,6 +91,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         loadValues()
         loadNSUserData()
         interfaceSetup()
+        #if os(tvOS)
+        initMenuSwipe()
+        #endif
     }
     
     func loadValues() {
@@ -338,7 +345,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func screenInteractionEnded(location: CGPoint) {
-        
         if self.nodeAtPoint(location) == menuLayer.playButton {
             if isAnimating == false {
                 if gameStarted == false {
@@ -382,7 +388,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 if lastNodeName == highscoreLayer.shareNode.name {
                     lastNodeName = ""
                     highscoreLayer.shareNode.runAction(fadeOutColorAction, withKey: "fade")
+                    #if os(iOS)
                     viewController.shareHighscore()
+                    #endif
                 } else {
                     removeNodeAction()
                 }
@@ -408,6 +416,32 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 }
             }
             removeNodeAction()
+        }
+    }
+    
+    func initMenuSwipe() {
+        menuLayer.playButton.setScale(vars.screenSize.height / 1000)
+    }
+    
+    func tvOSMenuSwipeLeft() {
+        if vars.currentGameState == .gameMenu {
+            if vars.selectedMenuItem == 0 {
+                menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 1280, duration: vars.gameLayerFadeTime))
+                menuLayer.GCNode.runAction(SKAction.scaleTo(vars.screenSize.height / 1000, duration: vars.gameLayerFadeTime), completion: {
+                     vars.selectedMenuItem = 1
+                })
+            }
+        }
+    }
+    
+    func tvOSMenuSwipeRight() {
+        if vars.currentGameState == .gameMenu {
+            if vars.selectedMenuItem == 1 {
+                menuLayer.GCNode.runAction(SKAction.scaleTo(vars.screenSize.height / 1280, duration: vars.gameLayerFadeTime))
+                menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 1000, duration: vars.gameLayerFadeTime), completion: {
+                    vars.selectedMenuItem = 0
+                })
+            }
         }
     }
     
@@ -657,9 +691,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             self.menuLayer.playButton.hidden = true
             self.setupPhysics()
             vars.currentGameState = .gameActive
+            #if os(iOS)
             if vars.motionControl == true && self.motionManager.accelerometerActive == false {
                 self.initMotionControl()
             }
+            #endif
             self.setupSpawnTimer()
             self.barsFadedIn = false
             self.objectsCanRotate = true
@@ -1034,6 +1070,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             })
         }
         vars.currentGameState = .gameOver
+        //DEBUG
+        newHighscore = true
+        
         if newHighscore == true {
             gameLayer.player.runAction(SKAction.sequence([
                 SKAction.scaleTo(0, duration: 0.3),
@@ -1143,7 +1182,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             gameLayer.bottomBar.fillColor = newColor
         }
     }
-    
+    #if os(iOS)
     func initMotionControl() {
         if motionManager.accelerometerAvailable == true && vars.motionControl == true && vars.currentGameState == .gameActive {
             motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler:{
@@ -1184,7 +1223,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             motionManager.stopAccelerometerUpdates()
         }
     }
-    
+    #endif
     
     override func update(currentTime: CFTimeInterval) {
         self.enumerateChildNodesWithName("objectPos") {

@@ -7,7 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14EE10811C74B410004CA811 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EE107F1C74B410004CA811 /* Main.storyboard */; };
+		14EE10831C74B410004CA811 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14EE10821C74B410004CA811 /* Assets.xcassets */; };
+		14EE10881C74B421004CA811 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE491C49488F00760D54 /* Structs.swift */; };
+		14EE10891C74B423004CA811 /* SKSceneExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE481C49488F00760D54 /* SKSceneExtension.swift */; };
+		14EE108A1C74B426004CA811 /* HighscoreLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127C0201C4E52AE0042258B /* HighscoreLayer.swift */; };
+		14EE108B1C74B428004CA811 /* GameLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE461C49488F00760D54 /* GameLayer.swift */; };
+		14EE108C1C74B42C004CA811 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE471C49488F00760D54 /* MenuLayer.swift */; };
+		14EE108D1C74B430004CA811 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A1D459921C46B62E0093B6CB /* GameScene.sks */; };
+		14EE108E1C74B433004CA811 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459941C46B62E0093B6CB /* GameScene.swift */; };
+		14EE108F1C74B434004CA811 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459961C46B62E0093B6CB /* GameViewController.swift */; };
+		14EE10911C74B43F004CA811 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1D4599B1C46B62E0093B6CB /* Assets.xcassets */; };
+		14EE10931C74B4C3004CA811 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EE10921C74B4C3004CA811 /* AppDelegate.swift */; };
 		43DE4E38274867BEBBD9A134 /* Pods_Gravity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9336EEF0D7F40A40E657062A /* Pods_Gravity.framework */; };
+		9F71E68B9D94BCF7A2E59607 /* Pods_Gravity_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24F3C00A83C3DE47752EA737 /* Pods_Gravity_tvOS.framework */; };
 		A108DE4A1C49488F00760D54 /* GameLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE461C49488F00760D54 /* GameLayer.swift */; };
 		A108DE4B1C49488F00760D54 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE471C49488F00760D54 /* MenuLayer.swift */; };
 		A108DE4C1C49488F00760D54 /* SKSceneExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE481C49488F00760D54 /* SKSceneExtension.swift */; };
@@ -26,7 +39,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1039E7CB4A9495FF3AA441EC /* Pods-Gravity tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gravity tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gravity tvOS/Pods-Gravity tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		14EE10751C74B410004CA811 /* Gravity tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		14EE10801C74B410004CA811 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		14EE10821C74B410004CA811 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		14EE10841C74B410004CA811 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14EE10921C74B4C3004CA811 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2369AD6B09CE19CAF640F3F4 /* Pods-Gravity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gravity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Gravity/Pods-Gravity.debug.xcconfig"; sourceTree = "<group>"; };
+		24F3C00A83C3DE47752EA737 /* Pods_Gravity_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gravity_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9336EEF0D7F40A40E657062A /* Pods_Gravity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gravity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A108DE461C49488F00760D54 /* GameLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLayer.swift; sourceTree = "<group>"; };
 		A108DE471C49488F00760D54 /* MenuLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuLayer.swift; sourceTree = "<group>"; };
@@ -45,10 +65,19 @@
 		A1D4599B1C46B62E0093B6CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1D4599E1C46B62E0093B6CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1D459A01C46B62E0093B6CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BFA4C00B0A8FC3138952DE52 /* Pods-Gravity tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gravity tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Gravity tvOS/Pods-Gravity tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		F968D0DCB8B0D37544904FB3 /* Pods-Gravity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gravity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gravity/Pods-Gravity.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		14EE10721C74B410004CA811 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F71E68B9D94BCF7A2E59607 /* Pods_Gravity_tvOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A1D4598A1C46B62E0093B6CB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -80,11 +109,24 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		14EE10761C74B410004CA811 /* Gravity tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				14EE10921C74B4C3004CA811 /* AppDelegate.swift */,
+				14EE107F1C74B410004CA811 /* Main.storyboard */,
+				14EE10821C74B410004CA811 /* Assets.xcassets */,
+				14EE10841C74B410004CA811 /* Info.plist */,
+			);
+			path = "Gravity tvOS";
+			sourceTree = "<group>";
+		};
 		5E8AB73335BD743FC12F52CF /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				2369AD6B09CE19CAF640F3F4 /* Pods-Gravity.debug.xcconfig */,
 				F968D0DCB8B0D37544904FB3 /* Pods-Gravity.release.xcconfig */,
+				BFA4C00B0A8FC3138952DE52 /* Pods-Gravity tvOS.debug.xcconfig */,
+				1039E7CB4A9495FF3AA441EC /* Pods-Gravity tvOS.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -94,6 +136,7 @@
 			children = (
 				A19946581C46B8D500A0041B /* GameKit.framework */,
 				9336EEF0D7F40A40E657062A /* Pods_Gravity.framework */,
+				24F3C00A83C3DE47752EA737 /* Pods_Gravity_tvOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -102,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				A1D4598F1C46B62E0093B6CB /* Gravity */,
+				14EE10761C74B410004CA811 /* Gravity tvOS */,
 				A1D4598E1C46B62E0093B6CB /* Products */,
 				5E8AB73335BD743FC12F52CF /* Pods */,
 				8C4A506B52B050643EA03376 /* Frameworks */,
@@ -112,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				A1D4598D1C46B62E0093B6CB /* Gravity.app */,
+				14EE10751C74B410004CA811 /* Gravity tvOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,6 +183,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		14EE10741C74B410004CA811 /* Gravity tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14EE10871C74B410004CA811 /* Build configuration list for PBXNativeTarget "Gravity tvOS" */;
+			buildPhases = (
+				94634BD6C4BADB75B27EA354 /* Check Pods Manifest.lock */,
+				14EE10711C74B410004CA811 /* Sources */,
+				14EE10721C74B410004CA811 /* Frameworks */,
+				14EE10731C74B410004CA811 /* Resources */,
+				813CBEE0D45EE21385D2EA75 /* Embed Pods Frameworks */,
+				9DD96DAD923442EFA4C25D08 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Gravity tvOS";
+			productName = "Gravity tvOS";
+			productReference = 14EE10751C74B410004CA811 /* Gravity tvOS.app */;
+			productType = "com.apple.product-type.application";
+		};
 		A1D4598C1C46B62E0093B6CB /* Gravity */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1D459A31C46B62E0093B6CB /* Build configuration list for PBXNativeTarget "Gravity" */;
@@ -168,6 +233,10 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = YaLu;
 				TargetAttributes = {
+					14EE10741C74B410004CA811 = {
+						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 9C545A2GHY;
+					};
 					A1D4598C1C46B62E0093B6CB = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = ZA57B2W688;
@@ -193,11 +262,23 @@
 			projectRoot = "";
 			targets = (
 				A1D4598C1C46B62E0093B6CB /* Gravity */,
+				14EE10741C74B410004CA811 /* Gravity tvOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		14EE10731C74B410004CA811 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14EE10831C74B410004CA811 /* Assets.xcassets in Resources */,
+				14EE108D1C74B430004CA811 /* GameScene.sks in Resources */,
+				14EE10911C74B43F004CA811 /* Assets.xcassets in Resources */,
+				14EE10811C74B410004CA811 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A1D4598B1C46B62E0093B6CB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -244,6 +325,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gravity/Pods-Gravity-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		813CBEE0D45EE21385D2EA75 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gravity tvOS/Pods-Gravity tvOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9291C3A13F06EBFC3D049F16 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -259,9 +355,54 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		94634BD6C4BADB75B27EA354 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9DD96DAD923442EFA4C25D08 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gravity tvOS/Pods-Gravity tvOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		14EE10711C74B410004CA811 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14EE108F1C74B434004CA811 /* GameViewController.swift in Sources */,
+				14EE108E1C74B433004CA811 /* GameScene.swift in Sources */,
+				14EE10931C74B4C3004CA811 /* AppDelegate.swift in Sources */,
+				14EE10891C74B423004CA811 /* SKSceneExtension.swift in Sources */,
+				14EE108B1C74B428004CA811 /* GameLayer.swift in Sources */,
+				14EE108C1C74B42C004CA811 /* MenuLayer.swift in Sources */,
+				14EE10881C74B421004CA811 /* Structs.swift in Sources */,
+				14EE108A1C74B426004CA811 /* HighscoreLayer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A1D459891C46B62E0093B6CB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -280,6 +421,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		14EE107F1C74B410004CA811 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				14EE10801C74B410004CA811 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		A1D459981C46B62E0093B6CB /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -299,6 +448,38 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		14EE10851C74B410004CA811 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BFA4C00B0A8FC3138952DE52 /* Pods-Gravity tvOS.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = "Gravity tvOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "YaLu.Gravity-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Debug;
+		};
+		14EE10861C74B410004CA811 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1039E7CB4A9495FF3AA441EC /* Pods-Gravity tvOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = "Gravity tvOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "YaLu.Gravity-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Release;
+		};
 		A1D459A11C46B62E0093B6CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -417,6 +598,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		14EE10871C74B410004CA811 /* Build configuration list for PBXNativeTarget "Gravity tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14EE10851C74B410004CA811 /* Debug */,
+				14EE10861C74B410004CA811 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A1D459881C46B62E0093B6CB /* Build configuration list for PBXProject "Gravity" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

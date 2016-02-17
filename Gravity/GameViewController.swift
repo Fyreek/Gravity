@@ -17,8 +17,9 @@ class GameViewController: UIViewController, EGCDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         EGC.sharedInstance(self)
+        #if os(iOS)
         self.view.multipleTouchEnabled = true
-        
+        #endif
         vars.gameScene = GameScene()
         // Configure the view.
         let skView = self.view as! SKView
@@ -36,6 +37,19 @@ class GameViewController: UIViewController, EGCDelegate {
         skView.presentScene(vars.gameScene)
         
         vars.gameScene!.viewController = self
+        #if os(tvOS)
+        loadGestureRecognizers()
+        #endif
+    }
+    
+    func loadGestureRecognizers() {
+        let swipeRecognizerRight = UISwipeGestureRecognizer(target: self, action:"swipedRight:")
+        swipeRecognizerRight.direction = .Right
+        self.view.addGestureRecognizer(swipeRecognizerRight)
+        
+        let swipeRecognizerLeft = UISwipeGestureRecognizer(target: self, action:"swipedLeft:")
+        swipeRecognizerLeft.direction = .Left
+        self.view.addGestureRecognizer(swipeRecognizerLeft)
     }
     
     func EGCAuthentified(authentified:Bool) {
@@ -144,7 +158,7 @@ class GameViewController: UIViewController, EGCDelegate {
             }
         })
     }
-    
+    #if os(iOS)
     func shareHighscore() {
         let device = UIDevice.currentDevice().name
 
@@ -173,11 +187,13 @@ class GameViewController: UIViewController, EGCDelegate {
             popup.presentPopoverFromRect(CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 + 30, 0, 0), inView: self.view, permittedArrowDirections: .Up, animated: true)
         }
     }
-
+    #endif
+    
+    #if os(iOS)
     override func shouldAutorotate() -> Bool {
         return true
     }
-
+    
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         if UIDevice.currentDevice().orientation == .LandscapeLeft {
             vars.deviceOrientation = 3
@@ -185,6 +201,7 @@ class GameViewController: UIViewController, EGCDelegate {
             vars.deviceOrientation = 4
         }
     }
+    #endif
     
     func playBackgroundMusic(filename: String) {
         let url = NSBundle.mainBundle().URLForResource(
@@ -245,7 +262,7 @@ class GameViewController: UIViewController, EGCDelegate {
             }
         }
     }
-    
+    #if os(iOS)
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
             return .AllButUpsideDown
@@ -253,13 +270,77 @@ class GameViewController: UIViewController, EGCDelegate {
             return .All
         }
     }
-    
+    #endif
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
     }
-
+    #if os(iOS)
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
+    #endif
+    
+    #if os(tvOS)
+    override func pressesBegan(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+        for item in presses {
+            if item.type == .Menu {
+                if vars.currentGameState == .gameOver || vars.currentGameState == .gameActive {
+                    vars.gameScene!.goToMenu()
+                } else if vars.currentGameState == .gameMenu {
+                    EGC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
+                }
+            } else if item.type == .PlayPause {
+                if vars.currentGameState == .gameMenu {
+                    vars.gameScene!.showGameLayer()
+                } else if vars.currentGameState == .gameOver {
+                    vars.gameScene!.restartButton()
+                }
+            } else if item.type == .RightArrow {
+                if vars.currentGameState == .gameActive {
+                    vars.gameScene?.moveLeft = false
+                    vars.gameScene?.moveRight = true
+                }
+            } else if item.type == .LeftArrow {
+                if vars.currentGameState == .gameActive {
+                    vars.gameScene?.moveRight = false
+                    vars.gameScene?.moveLeft = true
+                }
+            }
+        }
+    }
+
+    override func pressesEnded(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+        for item in presses {
+            if item.type == .Menu {
+                if vars.currentGameState == .gameOver || vars.currentGameState == .gameActive {
+                    vars.gameScene!.goToMenu()
+                } else if vars.currentGameState == .gameMenu {
+                    EGC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
+                }
+            } else if item.type == .PlayPause {
+                if vars.currentGameState == .gameMenu {
+                    vars.gameScene!.showGameLayer()
+                } else if vars.currentGameState == .gameOver {
+                    vars.gameScene!.restartButton()
+                }
+            } else if item.type == .RightArrow {
+                if vars.currentGameState == .gameActive {
+                    vars.gameScene?.moveRight = false
+                }
+            } else if item.type == .LeftArrow {
+                if vars.currentGameState == .gameActive {
+                    vars.gameScene?.moveLeft = false
+                }
+            }
+        }
+    }
+    
+    func swipedRight(gesture:UISwipeGestureRecognizer) {
+        vars.gameScene?.tvOSMenuSwipeRight()
+    }
+    func swipedLeft(gesture:UISwipeGestureRecognizer) {
+        vars.gameScene?.tvOSMenuSwipeLeft()
+    }
+    #endif
 }
