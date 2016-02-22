@@ -51,6 +51,7 @@ struct vars {
     static var backgroundMusicPlayer: AVAudioPlayer! //Player for the background music
     static var gameModeBefore:Bool = false
     static var selectedMenuItem:Int = 0 //Which Item is Selected in the Main Menu(0=Play; 1=GC)
+    static var normalTextFrameHeight:CGFloat = 0 //Normal Height for the highscoreLabelTexts
 }
 
 struct colors {
