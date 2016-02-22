@@ -83,7 +83,7 @@ class GameViewController: UIViewController, EGCDelegate {
                         
                         vars.extHighscore = gcExtScore
                         
-                        NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "extHighscore")
+                        NSUserDefaults.standardUserDefaults().setDouble(vars.extHighscore, forKey: "extHighscore")
                         NSUserDefaults.standardUserDefaults().synchronize()
                         
                     } else {
@@ -130,6 +130,8 @@ class GameViewController: UIViewController, EGCDelegate {
                     let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
                     vars.highscorePlayerScore.append(newScore)
                 }
+                vars.highscorePlayerNames.append("balboag")
+                vars.highscorePlayerScore.append("00:45.12")
                 vars.gameScene?.openNewHighScore()
             }
         })

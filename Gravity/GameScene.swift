@@ -692,7 +692,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.scoreNode.runAction(gameLayer.scoreNodeInAction)
         gameLayer.menuNode.runAction(gameLayer.menuNodeInAction)
         menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 3190, duration: vars.gameLayerFadeTime), completion: {
-            if vars.showTutorial == true {
+            if vars.showTutorial == true && vars.extremeMode == false {
                 self.gameLayer.tutorialNodeRight.runAction(SKAction.fadeAlphaTo(vars.tutorialArrowAlpha, duration: vars.gameLayerFadeTime))
                 self.gameLayer.tutorialNodeLeft.runAction(SKAction.fadeAlphaTo(vars.tutorialArrowAlpha, duration: vars.gameLayerFadeTime))
             }
@@ -862,7 +862,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     func gotNewHighscore() {
         if vars.extremeMode == true {
             vars.extHighscore = vars.extHighscore.roundToPlaces(2)
-            NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "extHighscore")
+            NSUserDefaults.standardUserDefaults().setDouble(vars.extHighscore, forKey: "extHighscore")
             NSUserDefaults.standardUserDefaults().synchronize()
             EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_extreme", score: Int(vars.extHighscore * 100))
             achievementProgress()
@@ -942,34 +942,27 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         for size in sizes {
             if size > vars.normalTextFrameHeight {
                 let sizeDiff = (size - vars.normalTextFrameHeight) / 4
-                print(sizeDiff)
                 if number == 0 {
                     highscoreLayer.firstHighscoreText.position.y = highscoreLayer.firstHighscoreText.position.y - sizeDiff
                     highscoreLayer.firstHighscoreBG.position.y = highscoreLayer.firstHighscoreBG.position.y + sizeDiff
-                    number++
                 } else if number == 1 {
                     highscoreLayer.secondHighscoreText.position.y = highscoreLayer.secondHighscoreText.position.y - sizeDiff
                     highscoreLayer.secondHighscoreBG.position.y = highscoreLayer.secondHighscoreBG.position.y + sizeDiff
-                    number++
                 } else if number == 2 {
                     highscoreLayer.thirdHighscoreText.position.y = highscoreLayer.thirdHighscoreText.position.y - sizeDiff
                     highscoreLayer.thirdHighscoreBG.position.y = highscoreLayer.thirdHighscoreBG.position.y + sizeDiff
-                    number++
                 } else if number == 3 {
                     highscoreLayer.fourthHighscoreText.position.y = highscoreLayer.fourthHighscoreText.position.y - sizeDiff
                     highscoreLayer.fourthHighscoreBG.position.y = highscoreLayer.fourthHighscoreBG.position.y + sizeDiff
-                    number++
                 } else if number == 4 {
                     highscoreLayer.fifthHighscoreText.position.y = highscoreLayer.fifthHighscoreText.position.y - sizeDiff
                     highscoreLayer.fifthHighscoreBG.position.y = highscoreLayer.fifthHighscoreBG.position.y + sizeDiff
-                    number++
                 } else {
                     print("Frame height comparing error!")
                 }
             }
-            
+            number++
         }
-        
     }
     
     func openNewHighScore() {
@@ -1141,6 +1134,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
         vars.currentGameState = .gameOver
         
+        //DEBUG
+        newHighscore = true
+        
         if newHighscore == true {
             gameLayer.player.runAction(SKAction.sequence([
                 SKAction.scaleTo(0, duration: 0.3),
@@ -1229,7 +1225,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.player.physicsBody?.affectedByGravity = true
         gameLayer.player.physicsBody?.dynamic = true
         gravityDirection = "up"
-        if vars.showTutorial == true {
+        if vars.showTutorial == true && vars.extremeMode == false {
             gameLayer.tutorialNodeRight.runAction(SKAction.fadeAlphaTo(vars.tutorialArrowAlpha, duration: vars.gameLayerFadeTime))
             gameLayer.tutorialNodeLeft.runAction(SKAction.fadeAlphaTo(vars.tutorialArrowAlpha, duration: vars.gameLayerFadeTime))
         }
