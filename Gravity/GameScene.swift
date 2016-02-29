@@ -217,6 +217,24 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
     }
     
+    func pulsingPlayButton() {
+        let factor:CGFloat = menuLayer.playButton.xScale
+        let pulseUp = SKAction.scaleTo(factor + 0.02, duration: 2.0)
+        let pulseDown = SKAction.scaleTo(factor - 0.02, duration: 2.0)
+        let pulse = SKAction.sequence([pulseUp, pulseDown])
+        let repeatPulse = SKAction.repeatActionForever(pulse)
+        menuLayer.playButton.runAction(repeatPulse, withKey: "pulse")
+    }
+    
+    func pulsingReplayButton() {
+        let factor:CGFloat = highscoreLayer.highscoreNode.xScale
+        let pulseUp = SKAction.scaleTo(factor + 0.02, duration: 2.0)
+        let pulseDown = SKAction.scaleTo(factor - 0.02, duration: 2.0)
+        let pulse = SKAction.sequence([pulseUp, pulseDown])
+        let repeatPulse = SKAction.repeatActionForever(pulse)
+        highscoreLayer.highscoreNode.runAction(repeatPulse, withKey: "pulse")
+    }
+    
     func changeColor() {
         if isColorizing == true {
             if currentGameColor <= gameBGColor.count - 2 {
@@ -244,6 +262,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         setHighscore()
         isColorizing = true
         changeColor()
+        pulsingPlayButton()
     }
     
     func setHighscore() {
@@ -283,6 +302,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     override func screenInteractionStarted(location: CGPoint) {
         if self.nodeAtPoint(location) == menuLayer.playButton {
             lastNodeName = menuLayer.playButton.name!
+            menuLayer.playButton.removeActionForKey("pulse")
             menuLayer.playButton.runAction(fadeColorAction, withKey: "fade")
         } else if self.nodeAtPoint(location) == menuLayer.GCNode {
             lastNodeName = menuLayer.GCNode.name!
@@ -290,6 +310,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         } else if self.nodeAtPoint(location) == highscoreLayer.highscoreNode || self.nodeAtPoint(location) == highscoreLayer.highscoreText {
             if gameRestarting == false {
                 lastNodeName = highscoreLayer.highscoreNode.name!
+                highscoreLayer.highscoreNode.removeActionForKey("pulse")
                 highscoreLayer.highscoreNode.runAction(fadeColorAction, withKey: "fade")
             }
         } else if self.nodeAtPoint(location) == highscoreLayer.shareNode {
@@ -326,6 +347,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.menuNode.runAction(fadeOutColorAction)
         moveRight = false
         moveLeft = false
+        if vars.currentGameState == .gameMenu {
+            pulsingPlayButton()
+        } else if vars.currentGameState == .gameOver {
+            pulsingReplayButton()
+        }
     }
     
     override func screenInteractionMoved(location: CGPoint) {
@@ -524,6 +550,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.gameStarted = false
                 vars.currentGameState = .gameMenu
                 self.isAnimating = false
+                self.pulsingPlayButton()
             })
         } else if vars.currentGameState == .gameOver {
             highscoreLayer.highscoreNode.runAction(SKAction.moveToX(vars.screenSize.width + highscoreLayer.highscoreNode.frame.size.width / 2, duration: vars.gameLayerFadeTime))
@@ -551,6 +578,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 vars.currentGameState = .gameMenu
                 self.isAnimating = false
                 self.menuLayer.GCNode.zPosition = 1
+                self.pulsingPlayButton()
             })
         }
     }
@@ -972,6 +1000,30 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         highscoreLayer = HighscoreLayer()
         self.addChild(highscoreLayer)
         
+        var namePos:Int = 10
+        for var i = 0; i < vars.highscorePlayerNames.count - 1; i++ {
+            if vars.highscorePlayerNames[i] == vars.localPlayerName {
+                vars.highscorePlayerScore[i] = self.menuLayer.highscoreNode.text!
+                namePos = i
+            }
+        }
+        if namePos != 10 {
+            for var i = namePos; i > 0; i-- {
+                let firstStep:String = vars.highscorePlayerScore[i].stringByReplacingOccurrencesOfString(":", withString: "")
+                let firstNumber:Int = Int(firstStep.stringByReplacingOccurrencesOfString(".", withString: ""))!
+                let secondStep:String = vars.highscorePlayerScore[i - 1].stringByReplacingOccurrencesOfString(":", withString: "")
+                let secondNumber:Int = Int(secondStep.stringByReplacingOccurrencesOfString(".", withString: ""))!
+                if firstNumber > secondNumber {
+                    let cacheScore:String = vars.highscorePlayerScore[i - 1]
+                    let cacheName:String = vars.highscorePlayerNames[i - 1]
+                    vars.highscorePlayerScore[i - 1] = vars.highscorePlayerScore[i]
+                    vars.highscorePlayerNames[i - 1] = vars.highscorePlayerNames[i]
+                    vars.highscorePlayerScore[i] = cacheScore
+                    vars.highscorePlayerNames[i] = cacheName
+                }
+            }
+        }
+        
         if vars.gameCenterLoggedIn == true {
             if vars.highscorePlayerNames.count >= 0 {
                 if vars.highscorePlayerNames.count >= 1 {
@@ -1031,11 +1083,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         gameLayer.player.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
             if vars.gameCenterLoggedIn == true {
                 self.highscoreLayer.highscoreText.text = self.menuLayer.highscoreNode.text
-                for var i = 0; i < vars.highscorePlayerNames.count - 1; i++ {
-                    if vars.highscorePlayerNames[i] == vars.localPlayerName {
-                        vars.highscorePlayerScore[i] = self.menuLayer.highscoreNode.text!
-                    }
-                }
                 self.highscoreLayer.highscoreNode.alpha = 1
                 self.highscoreLayer.highscoreText.alpha = 1
                 self.highscoreLayer.highscoreNode.runAction(SKAction.moveToX(vars.screenSize.width / 1.33, duration: vars.gameLayerFadeTime))
@@ -1051,6 +1098,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.highscoreLayer.fifthHighscoreText.runAction(SKAction.moveToX(vars.screenSize.width / 6 + self.highscoreLayer.firstHighscoreText.frame.size.width / 2, duration: vars.gameLayerFadeTime))
                 self.highscoreLayer.firstHighscoreText.runAction(SKAction.moveToX(vars.screenSize.width / 6 + self.highscoreLayer.firstHighscoreText.frame.size.width / 2, duration: vars.gameLayerFadeTime), completion: {
                     self.isAnimating = false
+                    self.pulsingReplayButton()
                 })
             } else {
                 self.highscoreLayer.highscoreNode.position.x = vars.screenSize.width / 2
@@ -1062,6 +1110,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.highscoreLayer.highscoreNode.runAction(SKAction.scaleTo(1, duration: vars.gameLayerFadeTime), completion: {
                     self.highscoreLayer.highscoreText.runAction(SKAction.fadeInWithDuration(vars.gameLayerFadeTime / 2), completion: {
                         self.isAnimating = false
+                        self.pulsingReplayButton()
                     })
                 })
             }
@@ -1133,9 +1182,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             })
         }
         vars.currentGameState = .gameOver
-        
-        //DEBUG
-        newHighscore = true
         
         if newHighscore == true {
             gameLayer.player.runAction(SKAction.sequence([
