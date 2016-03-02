@@ -546,11 +546,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.menuLayer.GCNode.hidden = false
                 self.menuLayer.GCNode.runAction(SKAction.fadeInWithDuration(vars.gameLayerFadeTime))
                 self.menuLayer.playButton.hidden = false
-                self.menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 1280, duration: vars.gameLayerFadeTime))
+                self.menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 1280, duration: vars.gameLayerFadeTime), completion: {
+                    self.pulsingPlayButton()
+                })
                 self.gameStarted = false
                 vars.currentGameState = .gameMenu
                 self.isAnimating = false
-                self.pulsingPlayButton()
             })
         } else if vars.currentGameState == .gameOver {
             highscoreLayer.highscoreNode.runAction(SKAction.moveToX(vars.screenSize.width + highscoreLayer.highscoreNode.frame.size.width / 2, duration: vars.gameLayerFadeTime))
@@ -572,13 +573,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.gameLayer.removeFromParent()
                 self.highscoreLayer.removeFromParent()
                 self.menuLayer.playButton.hidden = false
-                self.menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 1280, duration: vars.gameLayerFadeTime))
+                self.menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 1280, duration: vars.gameLayerFadeTime), completion: {
+                    self.pulsingPlayButton()
+                })
                 self.menuLayer.highscoreNode.runAction(SKAction.moveToY(vars.screenSize.height - self.menuLayer.highscoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: vars.gameLayerFadeTime))
                 self.gameStarted = false
                 vars.currentGameState = .gameMenu
                 self.isAnimating = false
                 self.menuLayer.GCNode.zPosition = 1
-                self.pulsingPlayButton()
             })
         }
     }
