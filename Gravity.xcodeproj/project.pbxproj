@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1447A9221CA18E2D0074332E /* GameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1447A9211CA18E2D0074332E /* GameCenter.swift */; };
 		14EE10811C74B410004CA811 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EE107F1C74B410004CA811 /* Main.storyboard */; };
 		14EE10831C74B410004CA811 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14EE10821C74B410004CA811 /* Assets.xcassets */; };
 		14EE10881C74B421004CA811 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE491C49488F00760D54 /* Structs.swift */; };
@@ -19,8 +20,6 @@
 		14EE108F1C74B434004CA811 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459961C46B62E0093B6CB /* GameViewController.swift */; };
 		14EE10911C74B43F004CA811 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1D4599B1C46B62E0093B6CB /* Assets.xcassets */; };
 		14EE10931C74B4C3004CA811 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EE10921C74B4C3004CA811 /* AppDelegate.swift */; };
-		43DE4E38274867BEBBD9A134 /* Pods_Gravity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9336EEF0D7F40A40E657062A /* Pods_Gravity.framework */; };
-		9F71E68B9D94BCF7A2E59607 /* Pods_Gravity_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24F3C00A83C3DE47752EA737 /* Pods_Gravity_tvOS.framework */; };
 		A108DE4A1C49488F00760D54 /* GameLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE461C49488F00760D54 /* GameLayer.swift */; };
 		A108DE4B1C49488F00760D54 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE471C49488F00760D54 /* MenuLayer.swift */; };
 		A108DE4C1C49488F00760D54 /* SKSceneExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE481C49488F00760D54 /* SKSceneExtension.swift */; };
@@ -38,15 +37,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1039E7CB4A9495FF3AA441EC /* Pods-Gravity tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gravity tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gravity tvOS/Pods-Gravity tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		1447A9211CA18E2D0074332E /* GameCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCenter.swift; sourceTree = "<group>"; };
 		14EE10751C74B410004CA811 /* Gravity tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EE10801C74B410004CA811 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		14EE10821C74B410004CA811 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14EE10841C74B410004CA811 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14EE10921C74B4C3004CA811 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2369AD6B09CE19CAF640F3F4 /* Pods-Gravity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gravity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Gravity/Pods-Gravity.debug.xcconfig"; sourceTree = "<group>"; };
-		24F3C00A83C3DE47752EA737 /* Pods_Gravity_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gravity_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9336EEF0D7F40A40E657062A /* Pods_Gravity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Gravity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A108DE461C49488F00760D54 /* GameLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLayer.swift; sourceTree = "<group>"; };
 		A108DE471C49488F00760D54 /* MenuLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuLayer.swift; sourceTree = "<group>"; };
 		A108DE481C49488F00760D54 /* SKSceneExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSceneExtension.swift; sourceTree = "<group>"; };
@@ -63,8 +59,6 @@
 		A1D459991C46B62E0093B6CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A1D4599B1C46B62E0093B6CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1D459A01C46B62E0093B6CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BFA4C00B0A8FC3138952DE52 /* Pods-Gravity tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gravity tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Gravity tvOS/Pods-Gravity tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		F968D0DCB8B0D37544904FB3 /* Pods-Gravity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gravity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Gravity/Pods-Gravity.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +66,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F71E68B9D94BCF7A2E59607 /* Pods_Gravity_tvOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,7 +73,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43DE4E38274867BEBBD9A134 /* Pods_Gravity.framework in Frameworks */,
 				A19946591C46B8D500A0041B /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +95,7 @@
 			children = (
 				A108DE481C49488F00760D54 /* SKSceneExtension.swift */,
 				A108DE491C49488F00760D54 /* Structs.swift */,
+				1447A9211CA18E2D0074332E /* GameCenter.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -118,23 +111,10 @@
 			path = "Gravity tvOS";
 			sourceTree = "<group>";
 		};
-		5E8AB73335BD743FC12F52CF /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				2369AD6B09CE19CAF640F3F4 /* Pods-Gravity.debug.xcconfig */,
-				F968D0DCB8B0D37544904FB3 /* Pods-Gravity.release.xcconfig */,
-				BFA4C00B0A8FC3138952DE52 /* Pods-Gravity tvOS.debug.xcconfig */,
-				1039E7CB4A9495FF3AA441EC /* Pods-Gravity tvOS.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		8C4A506B52B050643EA03376 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				A19946581C46B8D500A0041B /* GameKit.framework */,
-				9336EEF0D7F40A40E657062A /* Pods_Gravity.framework */,
-				24F3C00A83C3DE47752EA737 /* Pods_Gravity_tvOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -145,7 +125,6 @@
 				A1D4598F1C46B62E0093B6CB /* Gravity */,
 				14EE10761C74B410004CA811 /* Gravity tvOS */,
 				A1D4598E1C46B62E0093B6CB /* Products */,
-				5E8AB73335BD743FC12F52CF /* Pods */,
 				8C4A506B52B050643EA03376 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -204,12 +183,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1D459A31C46B62E0093B6CB /* Build configuration list for PBXNativeTarget "Gravity" */;
 			buildPhases = (
-				9291C3A13F06EBFC3D049F16 /* Check Pods Manifest.lock */,
 				A1D459891C46B62E0093B6CB /* Sources */,
 				A1D4598A1C46B62E0093B6CB /* Frameworks */,
 				A1D4598B1C46B62E0093B6CB /* Resources */,
-				52C2E1BE10F8EC1DAEE67083 /* Embed Pods Frameworks */,
-				6C691F45DCA5A9883423A05E /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -236,7 +212,7 @@
 					};
 					A1D4598C1C46B62E0093B6CB = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = ZA57B2W688;
+						DevelopmentTeam = 9C545A2GHY;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 1;
@@ -291,36 +267,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		52C2E1BE10F8EC1DAEE67083 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gravity/Pods-Gravity-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6C691F45DCA5A9883423A05E /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gravity/Pods-Gravity-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		813CBEE0D45EE21385D2EA75 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -334,21 +280,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gravity tvOS/Pods-Gravity tvOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9291C3A13F06EBFC3D049F16 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		94634BD6C4BADB75B27EA354 /* Check Pods Manifest.lock */ = {
@@ -408,6 +339,7 @@
 				A108DE4A1C49488F00760D54 /* GameLayer.swift in Sources */,
 				A108DE4B1C49488F00760D54 /* MenuLayer.swift in Sources */,
 				A108DE4D1C49488F00760D54 /* Structs.swift in Sources */,
+				1447A9221CA18E2D0074332E /* GameCenter.swift in Sources */,
 				A1D459971C46B62E0093B6CB /* GameViewController.swift in Sources */,
 				A108DE4C1C49488F00760D54 /* SKSceneExtension.swift in Sources */,
 				A1D459911C46B62E0093B6CB /* AppDelegate.swift in Sources */,
@@ -438,7 +370,6 @@
 /* Begin XCBuildConfiguration section */
 		14EE10851C74B410004CA811 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BFA4C00B0A8FC3138952DE52 /* Pods-Gravity tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -457,7 +388,6 @@
 		};
 		14EE10861C74B410004CA811 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1039E7CB4A9495FF3AA441EC /* Pods-Gravity tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -559,7 +489,6 @@
 		};
 		A1D459A41C46B62E0093B6CB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2369AD6B09CE19CAF640F3F4 /* Pods-Gravity.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -568,7 +497,7 @@
 				INFOPLIST_FILE = Gravity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravitya;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -576,7 +505,6 @@
 		};
 		A1D459A51C46B62E0093B6CB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F968D0DCB8B0D37544904FB3 /* Pods-Gravity.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -585,7 +513,7 @@
 				INFOPLIST_FILE = Gravity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravitya;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

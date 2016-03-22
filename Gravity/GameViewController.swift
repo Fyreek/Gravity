@@ -8,15 +8,14 @@
 
 import UIKit
 import SpriteKit
-import EasyGameCenter
 import GameKit
 import AVFoundation
 
-class GameViewController: UIViewController, EGCDelegate {
+class GameViewController: UIViewController, GCDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        EGC.sharedInstance(self)
+        GC.sharedInstance(self)
         #if os(iOS)
         self.view.multipleTouchEnabled = true
         #endif
@@ -42,19 +41,24 @@ class GameViewController: UIViewController, EGCDelegate {
         #endif
     }
     
-    func loadGestureRecognizers() {
-        let swipeRecognizerRight = UISwipeGestureRecognizer(target: self, action:"swipedRight:")
-        swipeRecognizerRight.direction = .Right
-        self.view.addGestureRecognizer(swipeRecognizerRight)
-        
-        let swipeRecognizerLeft = UISwipeGestureRecognizer(target: self, action:"swipedLeft:")
-        swipeRecognizerLeft.direction = .Left
-        self.view.addGestureRecognizer(swipeRecognizerLeft)
-    }
+    //only important for tvOS
+//    func loadGestureRecognizers() {
+//        
+//        //let aSelector : Selector = #selector(GameScene.updateTime)
+//        
+//        //let swipeRecognizerRight = UISwipeGestureRecognizer(target: self, action:Selector("swipedRight:"))
+//        let swipeRecognizerRight = UISwipeGestureRecognizer(target: self, action: #selector("swipedRight:"))
+//        swipeRecognizerRight.direction = .Right
+//        self.view.addGestureRecognizer(swipeRecognizerRight)
+//        
+//        let swipeRecognizerLeft = UISwipeGestureRecognizer(target: self, action:Selector("swipedLeft:"))
+//        swipeRecognizerLeft.direction = .Left
+//        self.view.addGestureRecognizer(swipeRecognizerLeft)
+//    }
     
-    func EGCAuthentified(authentified:Bool) {
+    func GCAuthentified(authentified:Bool) {
         if authentified {
-            EGC.getHighScore(leaderboardIdentifier: "gravity_leaderboard") {
+            GC.getHighScore(leaderboardIdentifier: "gravity_leaderboard") {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
                     vars.localPlayerName = tupleIsOk.playerName
@@ -68,12 +72,12 @@ class GameViewController: UIViewController, EGCDelegate {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         
                     } else {
-                        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(vars.highscore * 100))
+                        GC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(vars.highscore * 100))
                     }
                     vars.gameCenterLoggedIn = true
                 }
             }
-            EGC.getHighScore(leaderboardIdentifier: "gravity_extreme") {
+            GC.getHighScore(leaderboardIdentifier: "gravity_extreme") {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
                     vars.localPlayerName = tupleIsOk.playerName
@@ -87,12 +91,12 @@ class GameViewController: UIViewController, EGCDelegate {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         
                     } else {
-                        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_extHighscore", score: Int(vars.extHighscore * 100))
+                        GC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_extHighscore", score: Int(vars.extHighscore * 100))
                     }
                     vars.gameCenterLoggedIn = true
                 }
             }
-            EGC.getHighScore(leaderboardIdentifier: "gravity_timesplayed") {
+            GC.getHighScore(leaderboardIdentifier: "gravity_timesplayed") {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
                     if vars.gamesPlayed < tupleIsOk.score {
@@ -103,7 +107,7 @@ class GameViewController: UIViewController, EGCDelegate {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         
                     } else {
-                        EGC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_timesplayed", score: vars.gamesPlayed)
+                        GC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_timesplayed", score: vars.gamesPlayed)
                     }
                 }
             }
@@ -123,7 +127,7 @@ class GameViewController: UIViewController, EGCDelegate {
                 print("error retrieving scores")
             }
             if scores != nil {
-                for var i = 0; i <= (scores?.count)! - 1; i++ {
+                for i in 0 ..< (scores?.count)! - 1 {
                     let player = scores![i].player.alias!
                     vars.highscorePlayerNames.append(String(player))
                     let score:String = String(scores![i].formattedValue!)
@@ -149,7 +153,7 @@ class GameViewController: UIViewController, EGCDelegate {
                 print("error retrieving scores")
             }
             if scores != nil {
-                for var i = 0; i <= (scores?.count)! - 1; i++ {
+                for i in 0 ..< (scores?.count)! - 1 {
                     let player = scores![i].player.alias!
                     vars.highscorePlayerNames.append(String(player))
                     let score:String = String(scores![i].formattedValue!)
@@ -290,7 +294,7 @@ class GameViewController: UIViewController, EGCDelegate {
                 if vars.currentGameState == .gameOver || vars.currentGameState == .gameActive {
                     vars.gameScene!.goToMenu()
                 } else if vars.currentGameState == .gameMenu {
-                    EGC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
+                    GC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
                 }
             } else if item.type == .PlayPause {
                 if vars.currentGameState == .gameMenu {
@@ -318,7 +322,7 @@ class GameViewController: UIViewController, EGCDelegate {
                 if vars.currentGameState == .gameOver || vars.currentGameState == .gameActive {
                     vars.gameScene!.goToMenu()
                 } else if vars.currentGameState == .gameMenu {
-                    EGC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
+                    GC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
                 }
             } else if item.type == .PlayPause {
                 if vars.currentGameState == .gameMenu {
