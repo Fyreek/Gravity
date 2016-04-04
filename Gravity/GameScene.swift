@@ -1002,10 +1002,13 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         self.addChild(highscoreLayer)
         
         var namePos:Int = 10
-        for i in 0 ..< vars.highscorePlayerNames.count - 1 {
-            if vars.highscorePlayerNames[i] == vars.localPlayerName {
-                vars.highscorePlayerScore[i] = self.menuLayer.highscoreNode.text!
-                namePos = i
+        
+        if vars.highscorePlayerNames.count >= 1  && vars.gameCenterLoggedIn == true {
+            for i in 0 ..< vars.highscorePlayerNames.count - 1 {
+                if vars.highscorePlayerNames[i] == vars.localPlayerName {
+                    vars.highscorePlayerScore[i] = self.menuLayer.highscoreNode.text!
+                    namePos = i
+                }
             }
         }
         if namePos != 10 {
@@ -1025,6 +1028,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 }
             }
         }
+            
         
         if vars.gameCenterLoggedIn == true {
             if vars.highscorePlayerNames.count >= 0 {
