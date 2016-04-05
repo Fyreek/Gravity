@@ -10,6 +10,7 @@ import SpriteKit
 
 class SKSceneExtension: SKScene {
     
+    #if os(iOS)
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         for touch: AnyObject in  touches {
@@ -33,6 +34,22 @@ class SKSceneExtension: SKScene {
             screenInteractionEnded(location)
         }
     }
+    #endif
+    
+    #if os(OSX)
+    override func mouseDown(theEvent: NSEvent) {
+        let location = theEvent.locationInNode(self)
+        screenInteractionStarted(location)
+    }
+    override func mouseDragged(theEvent: NSEvent) {
+        let location = theEvent.locationInNode(self)
+        screenInteractionMoved(location)
+    }
+    override func mouseUp(theEvent: NSEvent) {
+        let location = theEvent.locationInNode(self)
+        screenInteractionEnded(location)
+    }
+    #endif
     
     func screenInteractionStarted(location: CGPoint) {
     }

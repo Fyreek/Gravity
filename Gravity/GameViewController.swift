@@ -16,9 +16,7 @@ class GameViewController: UIViewController, GCDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         GC.sharedInstance(self)
-        #if os(iOS)
         self.view.multipleTouchEnabled = true
-        #endif
         vars.gameScene = GameScene()
         // Configure the view.
         let skView = self.view as! SKView
@@ -58,7 +56,7 @@ class GameViewController: UIViewController, GCDelegate {
     
     func GCAuthentified(authentified:Bool) {
         if authentified {
-            GC.getHighScore(leaderboardIdentifier: "gravity_leaderboard") {
+            GC.getHighScore(leaderboardIdentifier: identifiers.iOSnormalLeaderboard) {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
                     vars.localPlayerName = tupleIsOk.playerName
@@ -72,12 +70,12 @@ class GameViewController: UIViewController, GCDelegate {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         
                     } else {
-                        GC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_leaderboard", score: Int(vars.highscore * 100))
+                        GC.reportScoreLeaderboard(leaderboardIdentifier: identifiers.iOSnormalLeaderboard, score: Int(vars.highscore * 100))
                     }
                     vars.gameCenterLoggedIn = true
                 }
             }
-            GC.getHighScore(leaderboardIdentifier: "gravity_extreme") {
+            GC.getHighScore(leaderboardIdentifier: identifiers.iOSextremeLeaderboard) {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
                     vars.localPlayerName = tupleIsOk.playerName
@@ -91,12 +89,12 @@ class GameViewController: UIViewController, GCDelegate {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         
                     } else {
-                        GC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_extHighscore", score: Int(vars.extHighscore * 100))
+                        GC.reportScoreLeaderboard(leaderboardIdentifier: identifiers.iOSextremeLeaderboard, score: Int(vars.extHighscore * 100))
                     }
                     vars.gameCenterLoggedIn = true
                 }
             }
-            GC.getHighScore(leaderboardIdentifier: "gravity_timesplayed") {
+            GC.getHighScore(leaderboardIdentifier: identifiers.iOStimesLeaderboard) {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
                     if vars.gamesPlayed < tupleIsOk.score {
@@ -107,7 +105,7 @@ class GameViewController: UIViewController, GCDelegate {
                         NSUserDefaults.standardUserDefaults().synchronize()
                         
                     } else {
-                        GC.reportScoreLeaderboard(leaderboardIdentifier: "gravity_timesplayed", score: vars.gamesPlayed)
+                        GC.reportScoreLeaderboard(leaderboardIdentifier: identifiers.iOStimesLeaderboard, score: vars.gamesPlayed)
                     }
                 }
             }
@@ -120,7 +118,7 @@ class GameViewController: UIViewController, GCDelegate {
         let leaderboardRequest: GKLeaderboard = GKLeaderboard()
         leaderboardRequest.playerScope = .FriendsOnly
         leaderboardRequest.timeScope = .AllTime
-        leaderboardRequest.identifier = "gravity_leaderboard"
+        leaderboardRequest.identifier = identifiers.iOSnormalLeaderboard
         leaderboardRequest.range = NSMakeRange(1, 5)
         leaderboardRequest.loadScoresWithCompletionHandler({(scores: [GKScore]?, error: NSError?) -> Void in
             if error != nil {
@@ -134,8 +132,6 @@ class GameViewController: UIViewController, GCDelegate {
                     let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
                     vars.highscorePlayerScore.append(newScore)
                 }
-                vars.highscorePlayerNames.append("balboag")
-                vars.highscorePlayerScore.append("00:45.12")
                 vars.gameScene?.openNewHighScore()
             }
         })
@@ -146,7 +142,7 @@ class GameViewController: UIViewController, GCDelegate {
         let leaderboardRequest: GKLeaderboard = GKLeaderboard()
         leaderboardRequest.playerScope = .FriendsOnly
         leaderboardRequest.timeScope = .AllTime
-        leaderboardRequest.identifier = "gravity_extreme"
+        leaderboardRequest.identifier = identifiers.iOSextremeLeaderboard
         leaderboardRequest.range = NSMakeRange(1, 5)
         leaderboardRequest.loadScoresWithCompletionHandler({(scores: [GKScore]?, error: NSError?) -> Void in
             if error != nil {

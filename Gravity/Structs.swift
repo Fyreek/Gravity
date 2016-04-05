@@ -77,3 +77,11 @@ struct achievements {
     static var pi:Bool = false
     static var newton:Bool = false
 }
+
+struct identifiers {
+    static var iOSnormalLeaderboard:String = "gravity_leaderboard"
+    static var iOStimesLeaderboard:String = "gravity_timesplayed"
+    static var iOSextremeLeaderboard:String = "gravity_extreme"
+    static var OSXnormalLeaderboard:String = "gravity_leaderboard_osx"
+    static var OSXtimesLeaderboard:String = "gravity_timesplayed_osx"
+}

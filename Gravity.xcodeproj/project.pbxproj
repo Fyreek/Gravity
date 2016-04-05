@@ -8,6 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		1447A9221CA18E2D0074332E /* GameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1447A9211CA18E2D0074332E /* GameCenter.swift */; };
+		148AA26C1CB3DC6200E81CAB /* GameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148AA26B1CB3DC6200E81CAB /* GameCenter.swift */; };
+		14994BD71CB30D840009A545 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14994BD61CB30D840009A545 /* AppDelegate.swift */; };
+		14994BD91CB30D840009A545 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14994BD81CB30D840009A545 /* GameScene.swift */; };
+		14994BDB1CB30D840009A545 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 14994BDA1CB30D840009A545 /* GameScene.sks */; };
+		14994BDD1CB30D840009A545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14994BDC1CB30D840009A545 /* Assets.xcassets */; };
+		14994BE01CB30D840009A545 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14994BDE1CB30D840009A545 /* MainMenu.xib */; };
+		14994BE51CB30DA20009A545 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE471C49488F00760D54 /* MenuLayer.swift */; };
+		14994BE61CB30DA40009A545 /* GameLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE461C49488F00760D54 /* GameLayer.swift */; };
+		14994BE71CB30DA70009A545 /* HighscoreLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127C0201C4E52AE0042258B /* HighscoreLayer.swift */; };
+		14994BE81CB30DC10009A545 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE491C49488F00760D54 /* Structs.swift */; };
+		14994BF01CB310210009A545 /* SKSceneExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE481C49488F00760D54 /* SKSceneExtension.swift */; };
+		14994BF21CB32D300009A545 /* music.caf in Resources */ = {isa = PBXBuildFile; fileRef = A19EFE871C623D8F00868776 /* music.caf */; };
+		14994BF31CB32D300009A545 /* music.caf in Resources */ = {isa = PBXBuildFile; fileRef = A19EFE871C623D8F00868776 /* music.caf */; };
 		14EE10811C74B410004CA811 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EE107F1C74B410004CA811 /* Main.storyboard */; };
 		14EE10831C74B410004CA811 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14EE10821C74B410004CA811 /* Assets.xcassets */; };
 		14EE10881C74B421004CA811 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE491C49488F00760D54 /* Structs.swift */; };
@@ -38,20 +51,28 @@
 
 /* Begin PBXFileReference section */
 		1447A9211CA18E2D0074332E /* GameCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCenter.swift; sourceTree = "<group>"; };
+		148AA26B1CB3DC6200E81CAB /* GameCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCenter.swift; sourceTree = "<group>"; };
+		14994BD41CB30D840009A545 /* Gravity OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity OSX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		14994BD61CB30D840009A545 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		14994BD81CB30D840009A545 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		14994BDA1CB30D840009A545 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		14994BDC1CB30D840009A545 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		14994BDF1CB30D840009A545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		14994BE11CB30D840009A545 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14EE10751C74B410004CA811 /* Gravity tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EE10801C74B410004CA811 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		14EE10821C74B410004CA811 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14EE10841C74B410004CA811 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14EE10921C74B4C3004CA811 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A108DE461C49488F00760D54 /* GameLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLayer.swift; sourceTree = "<group>"; };
-		A108DE471C49488F00760D54 /* MenuLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuLayer.swift; sourceTree = "<group>"; };
-		A108DE481C49488F00760D54 /* SKSceneExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSceneExtension.swift; sourceTree = "<group>"; };
-		A108DE491C49488F00760D54 /* Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
+		A108DE461C49488F00760D54 /* GameLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameLayer.swift; path = Gravity/GameLayer.swift; sourceTree = "<group>"; };
+		A108DE471C49488F00760D54 /* MenuLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuLayer.swift; path = Gravity/MenuLayer.swift; sourceTree = "<group>"; };
+		A108DE481C49488F00760D54 /* SKSceneExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SKSceneExtension.swift; path = Gravity/SKSceneExtension.swift; sourceTree = "<group>"; };
+		A108DE491C49488F00760D54 /* Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Structs.swift; path = Gravity/Structs.swift; sourceTree = "<group>"; };
 		A126FADE1C565DA5002D4A85 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		A127C0201C4E52AE0042258B /* HighscoreLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighscoreLayer.swift; sourceTree = "<group>"; };
+		A127C0201C4E52AE0042258B /* HighscoreLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HighscoreLayer.swift; path = Gravity/HighscoreLayer.swift; sourceTree = "<group>"; };
 		A19946581C46B8D500A0041B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A19EFE871C623D8F00868776 /* music.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = music.caf; sourceTree = "<group>"; };
-		A1D4598D1C46B62E0093B6CB /* Gravity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gravity.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1D4598D1C46B62E0093B6CB /* Gravity iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1D459901C46B62E0093B6CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1D459921C46B62E0093B6CB /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		A1D459941C46B62E0093B6CB /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -62,6 +83,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		14994BD11CB30D840009A545 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		14EE10721C74B410004CA811 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -80,7 +108,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		14CA552A1C49896D00E97C8F /* Layers */ = {
+		14994BD51CB30D840009A545 /* Gravity OSX */ = {
+			isa = PBXGroup;
+			children = (
+				14994BD61CB30D840009A545 /* AppDelegate.swift */,
+				14994BD81CB30D840009A545 /* GameScene.swift */,
+				14994BDA1CB30D840009A545 /* GameScene.sks */,
+				14994BDC1CB30D840009A545 /* Assets.xcassets */,
+				14994BDE1CB30D840009A545 /* MainMenu.xib */,
+				14994BE11CB30D840009A545 /* Info.plist */,
+				14994BED1CB30E680009A545 /* Extensions */,
+			);
+			path = "Gravity OSX";
+			sourceTree = "<group>";
+		};
+		14994BEA1CB30E310009A545 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				14994BEB1CB30E3B0009A545 /* Layers */,
+				14994BEC1CB30E490009A545 /* Extensions */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		14994BEB1CB30E3B0009A545 /* Layers */ = {
 			isa = PBXGroup;
 			children = (
 				A108DE471C49488F00760D54 /* MenuLayer.swift */,
@@ -90,11 +141,26 @@
 			name = Layers;
 			sourceTree = "<group>";
 		};
+		14994BEC1CB30E490009A545 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A108DE491C49488F00760D54 /* Structs.swift */,
+				A108DE481C49488F00760D54 /* SKSceneExtension.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		14994BED1CB30E680009A545 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				148AA26B1CB3DC6200E81CAB /* GameCenter.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		14CA552B1C49897B00E97C8F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				A108DE481C49488F00760D54 /* SKSceneExtension.swift */,
-				A108DE491C49488F00760D54 /* Structs.swift */,
 				1447A9211CA18E2D0074332E /* GameCenter.swift */,
 			);
 			name = Extensions;
@@ -122,7 +188,9 @@
 		A1D459841C46B62E0093B6CB = {
 			isa = PBXGroup;
 			children = (
-				A1D4598F1C46B62E0093B6CB /* Gravity */,
+				14994BEA1CB30E310009A545 /* Shared */,
+				A1D4598F1C46B62E0093B6CB /* Gravity iOS */,
+				14994BD51CB30D840009A545 /* Gravity OSX */,
 				14EE10761C74B410004CA811 /* Gravity tvOS */,
 				A1D4598E1C46B62E0093B6CB /* Products */,
 				8C4A506B52B050643EA03376 /* Frameworks */,
@@ -132,13 +200,14 @@
 		A1D4598E1C46B62E0093B6CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A1D4598D1C46B62E0093B6CB /* Gravity.app */,
+				A1D4598D1C46B62E0093B6CB /* Gravity iOS.app */,
 				14EE10751C74B410004CA811 /* Gravity tvOS.app */,
+				14994BD41CB30D840009A545 /* Gravity OSX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A1D4598F1C46B62E0093B6CB /* Gravity */ = {
+		A1D4598F1C46B62E0093B6CB /* Gravity iOS */ = {
 			isa = PBXGroup;
 			children = (
 				A1D459901C46B62E0093B6CB /* AppDelegate.swift */,
@@ -150,15 +219,32 @@
 				A126FADE1C565DA5002D4A85 /* Settings.bundle */,
 				A1D459A01C46B62E0093B6CB /* Info.plist */,
 				A19EFE871C623D8F00868776 /* music.caf */,
-				14CA552A1C49896D00E97C8F /* Layers */,
 				14CA552B1C49897B00E97C8F /* Extensions */,
 			);
+			name = "Gravity iOS";
 			path = Gravity;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		14994BD31CB30D840009A545 /* Gravity OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14994BE41CB30D840009A545 /* Build configuration list for PBXNativeTarget "Gravity OSX" */;
+			buildPhases = (
+				14994BD01CB30D840009A545 /* Sources */,
+				14994BD11CB30D840009A545 /* Frameworks */,
+				14994BD21CB30D840009A545 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Gravity OSX";
+			productName = "Gravity OSX";
+			productReference = 14994BD41CB30D840009A545 /* Gravity OSX.app */;
+			productType = "com.apple.product-type.application";
+		};
 		14EE10741C74B410004CA811 /* Gravity tvOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 14EE10871C74B410004CA811 /* Build configuration list for PBXNativeTarget "Gravity tvOS" */;
@@ -179,9 +265,9 @@
 			productReference = 14EE10751C74B410004CA811 /* Gravity tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A1D4598C1C46B62E0093B6CB /* Gravity */ = {
+		A1D4598C1C46B62E0093B6CB /* Gravity iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1D459A31C46B62E0093B6CB /* Build configuration list for PBXNativeTarget "Gravity" */;
+			buildConfigurationList = A1D459A31C46B62E0093B6CB /* Build configuration list for PBXNativeTarget "Gravity iOS" */;
 			buildPhases = (
 				A1D459891C46B62E0093B6CB /* Sources */,
 				A1D4598A1C46B62E0093B6CB /* Frameworks */,
@@ -191,9 +277,9 @@
 			);
 			dependencies = (
 			);
-			name = Gravity;
+			name = "Gravity iOS";
 			productName = Gravity;
-			productReference = A1D4598D1C46B62E0093B6CB /* Gravity.app */;
+			productReference = A1D4598D1C46B62E0093B6CB /* Gravity iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -202,13 +288,17 @@
 		A1D459851C46B62E0093B6CB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = YaLu;
 				TargetAttributes = {
+					14994BD31CB30D840009A545 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 9C545A2GHY;
+					};
 					14EE10741C74B410004CA811 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = ZA57B2W688;
+						DevelopmentTeam = 9C545A2GHY;
 					};
 					A1D4598C1C46B62E0093B6CB = {
 						CreatedOnToolsVersion = 7.2;
@@ -234,13 +324,25 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1D4598C1C46B62E0093B6CB /* Gravity */,
+				A1D4598C1C46B62E0093B6CB /* Gravity iOS */,
 				14EE10741C74B410004CA811 /* Gravity tvOS */,
+				14994BD31CB30D840009A545 /* Gravity OSX */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		14994BD21CB30D840009A545 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14994BDD1CB30D840009A545 /* Assets.xcassets in Resources */,
+				14994BDB1CB30D840009A545 /* GameScene.sks in Resources */,
+				14994BF21CB32D300009A545 /* music.caf in Resources */,
+				14994BE01CB30D840009A545 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		14EE10731C74B410004CA811 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -248,6 +350,7 @@
 				14EE10831C74B410004CA811 /* Assets.xcassets in Resources */,
 				14EE108D1C74B430004CA811 /* GameScene.sks in Resources */,
 				14EE10911C74B43F004CA811 /* Assets.xcassets in Resources */,
+				14994BF31CB32D300009A545 /* music.caf in Resources */,
 				14EE10811C74B410004CA811 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -315,6 +418,21 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		14994BD01CB30D840009A545 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14994BE81CB30DC10009A545 /* Structs.swift in Sources */,
+				14994BE71CB30DA70009A545 /* HighscoreLayer.swift in Sources */,
+				14994BF01CB310210009A545 /* SKSceneExtension.swift in Sources */,
+				14994BE51CB30DA20009A545 /* MenuLayer.swift in Sources */,
+				14994BE61CB30DA40009A545 /* GameLayer.swift in Sources */,
+				14994BD91CB30D840009A545 /* GameScene.swift in Sources */,
+				148AA26C1CB3DC6200E81CAB /* GameCenter.swift in Sources */,
+				14994BD71CB30D840009A545 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		14EE10711C74B410004CA811 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -349,6 +467,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		14994BDE1CB30D840009A545 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				14994BDF1CB30D840009A545 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 		14EE107F1C74B410004CA811 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -368,6 +494,38 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		14994BE21CB30D840009A545 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Gravity OSX/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yalu.Gravity-OSX";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		14994BE31CB30D840009A545 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Gravity OSX/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yalu.Gravity-OSX";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		14EE10851C74B410004CA811 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -497,7 +655,7 @@
 				INFOPLIST_FILE = Gravity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravitya;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -513,7 +671,7 @@
 				INFOPLIST_FILE = Gravity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravitya;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -522,6 +680,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		14994BE41CB30D840009A545 /* Build configuration list for PBXNativeTarget "Gravity OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14994BE21CB30D840009A545 /* Debug */,
+				14994BE31CB30D840009A545 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		14EE10871C74B410004CA811 /* Build configuration list for PBXNativeTarget "Gravity tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -540,7 +707,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1D459A31C46B62E0093B6CB /* Build configuration list for PBXNativeTarget "Gravity" */ = {
+		A1D459A31C46B62E0093B6CB /* Build configuration list for PBXNativeTarget "Gravity iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1D459A41C46B62E0093B6CB /* Debug */,
