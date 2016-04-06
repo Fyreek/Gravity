@@ -52,6 +52,7 @@ struct vars {
     static var gameModeBefore:Bool = false
     static var selectedMenuItem:Int = 0 //Which Item is Selected in the Main Menu(0=Play; 1=GC)
     static var normalTextFrameHeight:CGFloat = 0 //Normal Height for the highscoreLabelTexts
+    static var shouldOpenScoresList:Bool = false //If the games opens the own score list
 }
 
 struct colors {

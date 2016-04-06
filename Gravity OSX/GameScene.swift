@@ -461,10 +461,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                     lastNodeName = ""
                     menuLayer.GCNode.runAction(fadeOutColorAction, withKey: "fade")
                     if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
-                        //Missing Integration
-                        //viewController.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
-                        //GC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
-                        //viewController.showGameCenterLeaderboard(identifiers.OSXnormalLeaderboard)
                         viewController.showLeaderboard(identifiers.OSXnormalLeaderboard)
                     }
                 } else {
@@ -489,9 +485,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 if lastNodeName == highscoreLayer.shareNode.name {
                     lastNodeName = ""
                     highscoreLayer.shareNode.runAction(fadeOutColorAction, withKey: "fade")
-                    #if os(iOS)
-                        viewController.shareHighscore()
-                    #endif
+                    viewController.share()
                 } else {
                     removeNodeAction()
                 }
@@ -736,7 +730,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             gameLayer.tutorialNodeRight.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime))
         }
         
-        //Missing Integration
         if achievements.fiveSeconds == false {
             if seconds >= 5 {
                 achievements.fiveSeconds = true
@@ -974,18 +967,15 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         vars.highscore = vars.highscore.roundToPlaces(2)
         NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "highscore")
         NSUserDefaults.standardUserDefaults().synchronize()
-        //Missing Integration
         viewController.reportScoreLeaderboard(identifiers.OSXnormalLeaderboard, score: Int(vars.highscore * 100))
         achievementProgress()
         if vars.gameCenterLoggedIn == true {
-            //Missing Integration
             viewController.getScores()
         } else {
             openNewHighScore()
         }
     }
     
-    //Missing Integration
     func achievementProgress() {
         if achievements.fiveSeconds == false {
             viewController.reportAchievement(progress: (vars.highscore / 0.05), achievementIdentifier: "gravity.achievement_5seconds")
@@ -1102,7 +1092,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
         
         
-        if vars.gameCenterLoggedIn == true {
+        if vars.gameCenterLoggedIn == true && vars.shouldOpenScoresList == true{
             if vars.highscorePlayerNames.count >= 0 {
                 if vars.highscorePlayerNames.count >= 1 {
                     highscoreLayer.firstHighscoreText.text = "\(vars.highscorePlayerScore[0]) - \(vars.highscorePlayerNames[0])"
@@ -1159,7 +1149,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             self.highscoreLayer.shareNode.runAction(SKAction.moveToY(vars.screenSize.height - (vars.screenSize.height / 7) / 2, duration: 0.5))
         })
         gameLayer.player.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
-            if vars.gameCenterLoggedIn == true {
+            if vars.gameCenterLoggedIn == true && vars.shouldOpenScoresList == true {
                 self.highscoreLayer.highscoreText.text = self.menuLayer.highscoreNode.text
                 self.highscoreLayer.highscoreNode.alpha = 1
                 self.highscoreLayer.highscoreText.alpha = 1
@@ -1228,7 +1218,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         isAnimating = true
         NSUserDefaults.standardUserDefaults().setInteger(vars.gamesPlayed, forKey: "gamesPlayed")
         NSUserDefaults.standardUserDefaults().synchronize()
-        //Missing Integration
         viewController.reportScoreLeaderboard(identifiers.OSXtimesLeaderboard, score: vars.gamesPlayed)
         self.enumerateChildNodesWithName("objectPos") {
             node, stop in
@@ -1261,7 +1250,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             })
         }
         vars.currentGameState = .gameOver
-        
+
         if newHighscore == true {
             gameLayer.player.runAction(SKAction.sequence([
                 SKAction.scaleTo(0, duration: 0.3),
@@ -1307,7 +1296,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if achievements.pi == false {
             if score == 3.14 {
                 achievements.pi = true
-                //Missing Integration
                 viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_pi", showBannnerIfCompleted: true, addToExisting: false)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "pi")
                 NSUserDefaults.standardUserDefaults().synchronize()
@@ -1316,7 +1304,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if achievements.newton == false {
             if score == 9.81 {
                 achievements.newton = true
-                //Missing Integration
                 viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_newton", showBannnerIfCompleted: true, addToExisting: false)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "newton")
                 NSUserDefaults.standardUserDefaults().synchronize()

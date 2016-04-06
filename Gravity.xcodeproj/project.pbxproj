@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1447A9221CA18E2D0074332E /* GameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1447A9211CA18E2D0074332E /* GameCenter.swift */; };
-		148AA26C1CB3DC6200E81CAB /* GameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148AA26B1CB3DC6200E81CAB /* GameCenter.swift */; };
 		14994BD71CB30D840009A545 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14994BD61CB30D840009A545 /* AppDelegate.swift */; };
 		14994BD91CB30D840009A545 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14994BD81CB30D840009A545 /* GameScene.swift */; };
 		14994BDB1CB30D840009A545 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 14994BDA1CB30D840009A545 /* GameScene.sks */; };
@@ -51,7 +50,6 @@
 
 /* Begin PBXFileReference section */
 		1447A9211CA18E2D0074332E /* GameCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCenter.swift; sourceTree = "<group>"; };
-		148AA26B1CB3DC6200E81CAB /* GameCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCenter.swift; sourceTree = "<group>"; };
 		14994BD41CB30D840009A545 /* Gravity OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity OSX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14994BD61CB30D840009A545 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14994BD81CB30D840009A545 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -117,7 +115,6 @@
 				14994BDC1CB30D840009A545 /* Assets.xcassets */,
 				14994BDE1CB30D840009A545 /* MainMenu.xib */,
 				14994BE11CB30D840009A545 /* Info.plist */,
-				14994BED1CB30E680009A545 /* Extensions */,
 			);
 			path = "Gravity OSX";
 			sourceTree = "<group>";
@@ -146,14 +143,6 @@
 			children = (
 				A108DE491C49488F00760D54 /* Structs.swift */,
 				A108DE481C49488F00760D54 /* SKSceneExtension.swift */,
-			);
-			name = Extensions;
-			sourceTree = "<group>";
-		};
-		14994BED1CB30E680009A545 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				148AA26B1CB3DC6200E81CAB /* GameCenter.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -428,7 +417,6 @@
 				14994BE51CB30DA20009A545 /* MenuLayer.swift in Sources */,
 				14994BE61CB30DA40009A545 /* GameLayer.swift in Sources */,
 				14994BD91CB30D840009A545 /* GameScene.swift in Sources */,
-				148AA26C1CB3DC6200E81CAB /* GameCenter.swift in Sources */,
 				14994BD71CB30D840009A545 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

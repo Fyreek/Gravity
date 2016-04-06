@@ -125,12 +125,17 @@ class GameViewController: UIViewController, GCDelegate {
                 print("error retrieving scores")
             }
             if scores != nil {
-                for i in 0 ..< (scores?.count)! - 1 {
-                    let player = scores![i].player.alias!
-                    vars.highscorePlayerNames.append(String(player))
-                    let score:String = String(scores![i].formattedValue!)
-                    let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
-                    vars.highscorePlayerScore.append(newScore)
+                if scores?.count > 1 {
+                    for i in 0 ..< (scores?.count)! - 1 {
+                        let player = scores![i].player.alias!
+                        vars.highscorePlayerNames.append(String(player))
+                        let score:String = String(scores![i].formattedValue!)
+                        let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
+                        vars.highscorePlayerScore.append(newScore)
+                        vars.shouldOpenScoresList = false
+                    }
+                } else {
+                    vars.shouldOpenScoresList = false
                 }
                 vars.gameScene?.openNewHighScore()
             }
@@ -149,12 +154,17 @@ class GameViewController: UIViewController, GCDelegate {
                 print("error retrieving scores")
             }
             if scores != nil {
-                for i in 0 ..< (scores?.count)! - 1 {
-                    let player = scores![i].player.alias!
-                    vars.highscorePlayerNames.append(String(player))
-                    let score:String = String(scores![i].formattedValue!)
-                    let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
-                    vars.highscorePlayerScore.append(newScore)
+                if scores?.count > 1 {
+                    for i in 0 ..< (scores?.count)! - 1 {
+                        let player = scores![i].player.alias!
+                        vars.highscorePlayerNames.append(String(player))
+                        let score:String = String(scores![i].formattedValue!)
+                        let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
+                        vars.highscorePlayerScore.append(newScore)
+                        vars.shouldOpenScoresList = true
+                    }
+                } else {
+                    vars.shouldOpenScoresList = false
                 }
                 vars.gameScene?.openNewHighScore()
             }

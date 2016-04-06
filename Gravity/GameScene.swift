@@ -1030,7 +1030,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
             
         
-        if vars.gameCenterLoggedIn == true {
+        if vars.gameCenterLoggedIn == true && vars.shouldOpenScoresList = true{
             if vars.highscorePlayerNames.count >= 0 {
                 if vars.highscorePlayerNames.count >= 1 {
                     highscoreLayer.firstHighscoreText.text = "\(vars.highscorePlayerScore[0]) - \(vars.highscorePlayerNames[0])"
@@ -1087,7 +1087,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             self.highscoreLayer.shareNode.runAction(SKAction.moveToY(vars.screenSize.height - (vars.screenSize.height / 7) / 2, duration: 0.5))
         })
         gameLayer.player.runAction(SKAction.fadeOutWithDuration(0.5), completion: {
-            if vars.gameCenterLoggedIn == true {
+            if vars.gameCenterLoggedIn == true && vars.shouldOpenScoresList == true {
                 self.highscoreLayer.highscoreText.text = self.menuLayer.highscoreNode.text
                 self.highscoreLayer.highscoreNode.alpha = 1
                 self.highscoreLayer.highscoreText.alpha = 1

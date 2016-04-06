@@ -14,7 +14,7 @@ import GameKit
 import SystemConfiguration
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCenterControllerDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCenterControllerDelegate, NSSharingServicePickerDelegate {
     
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var skView: SKView!
@@ -40,10 +40,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     
     func setWindowStyleGame() {
         window.styleMask = NSClosableWindowMask | NSTitledWindowMask | NSMiniaturizableWindowMask
+        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.ZoomButton)!
+        zoomButton.hidden = true
     }
     
     func setWindowStyleMenu() {
         window.styleMask = NSClosableWindowMask | NSTitledWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
+        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.ZoomButton)!
+        zoomButton.hidden = false
     }
     
     func applicationWillResignActive(notification: NSNotification) {
@@ -67,14 +71,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         vars.gameScene!.rerangeInterface()
     }
     
-    //Missing Integration
     func updateSoundState() {
-        //let hint = AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint
-//        if hint == true {
-//            vars.musicState = false
-//        } else {
-//            vars.musicState =  true
-//        }
+        vars.musicState = true
         if vars.musicState == true {
             MusicOff()
         } else {
@@ -148,13 +146,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         }
     }
     
-    //Missing Integration
     func MusicOn() {
-//        let sess = AVAudioSession.sharedInstance()
-//        if sess.otherAudioPlaying {
-//            _ = try? sess.setCategory(AVAudioSessionCategoryAmbient)
-//            _ = try? sess.setActive(true, withOptions: [])
-//        }
         if vars.musicPlaying == true {
             vars.musicPlaying = false
             vars.backgroundMusicPlayer.stop()
@@ -162,11 +154,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     }
     
     func MusicOff() {
-//        let sess = AVAudioSession.sharedInstance()
-//        if sess.otherAudioPlaying {
-//            _ = try? sess.setCategory(AVAudioSessionCategoryAmbient)
-//            _ = try? sess.setActive(true, withOptions: [])
-//        }
         if vars.musicPlaying == false {
             vars.musicPlaying = true
             //playBackgroundMusic("music.caf")
@@ -230,12 +217,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
                 print("error retrieving scores")
             }
             if scores != nil {
-                for i in 0 ..< (scores?.count)! - 1 {
-                    let player = scores![i].player.alias!
-                    vars.highscorePlayerNames.append(String(player))
-                    let score:String = String(scores![i].formattedValue!)
-                    let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
-                    vars.highscorePlayerScore.append(newScore)
+                if scores?.count > 1 {
+                    for i in 0 ..< (scores?.count)! - 1 {
+                        let player = scores![i].player.alias!
+                        vars.highscorePlayerNames.append(String(player))
+                        let score:String = String(scores![i].formattedValue!)
+                        let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
+                        vars.highscorePlayerScore.append(newScore)
+                        vars.shouldOpenScoresList = true
+                    }
+                } else {
+                    vars.shouldOpenScoresList = false
                 }
                 vars.gameScene?.openNewHighScore()
             }
@@ -244,6 +236,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     
     func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
         return true
+    }
+    
+    func share() {
+        let urls = ["I've survived for " + ((NSString(format: "%.02f", vars.highscore)) as String) + " seconds in Gr4vity for OSX. Can you beat me?\nhttp://apple.co/1P2rkrT"]
+        let sharingServicePicker: NSSharingServicePicker = NSSharingServicePicker(items: urls)
+        sharingServicePicker.delegate = self
+        let position = vars.gameScene?.highscoreLayer.shareNode.frame.origin
+        sharingServicePicker.showRelativeToRect(CGRect(x: position!.x, y: position!.y - 100, width: 100, height: 100), ofView: skView, preferredEdge: NSRectEdge.MinY)
     }
     
     //GameCenter
@@ -370,40 +370,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
                 //self.showAuthenticationDialogWhenReasonable(viewController)
             }
             else if localPlayer.authenticated {
-                //authenticatedPlayer: is an example method name. Create your own method that is called after the local player is authenticated.
-                //self.authenticatedPlayer(localPlayer)
                 print("Logged in")
                 self.GCAuthentified(localPlayer.authenticated)
             }
             else {
-                //self.disableGameCenter()
                 print("Failed")
             }
-        }
-    }
-    func showGameCenterLeaderboard(leaderboardIdentifier: String) {
-        if isConnectedToNetwork && isPlayerIdentified {
-            let mainWindowWidth = skView.bounds.size.width
-            let mainWindowHeight = skView.bounds.size.height
-            let subWindowWidth = mainWindowWidth / 100 * 80
-            let subWindowHeight = mainWindowHeight / 100 * 80
-            let subWindowPosX:CGFloat = window.frame.origin.x + subWindowWidth / 8
-            let subWindowPosY:CGFloat = window.frame.origin.y + subWindowHeight / 8
-            
-            let gc = GKGameCenterViewController()
-            gc.leaderboardIdentifier = leaderboardIdentifier
-            gc.viewState = .Leaderboards
-            gc.leaderboardTimeScope = .AllTime
-            gc.view.frame.size = CGSize(width: subWindowWidth, height: subWindowHeight)
-            
-            //let gkViewController = GKDialogController.
-            
-            let gkWindow = NSWindow(contentRect: NSMakeRect(subWindowPosX, subWindowPosY, subWindowWidth, subWindowHeight), styleMask: NSTitledWindowMask | NSClosableWindowMask, backing: NSBackingStoreType.Buffered, defer: true)
-            
-            gkWindow.title = "GameCenter"
-            gkWindow.contentViewController = gc
-            
-            window.addChildWindow(gkWindow, ordered: .Above)
         }
     }
     
