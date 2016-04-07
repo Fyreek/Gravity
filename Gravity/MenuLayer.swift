@@ -17,6 +17,7 @@ class MenuLayer: SKNode {
     var GCNode = SKSpriteNode()
     var circleNode = SKShapeNode()
     var circleNode2 = SKShapeNode()
+    var musicNode = SKSpriteNode()
     
     override init() {
         super.init()
@@ -49,6 +50,13 @@ class MenuLayer: SKNode {
         GCNode.zPosition = 1
         GCNode.name = "GCNode"
         addChild(GCNode)
+        
+        musicNode = SKSpriteNode(imageNamed: "GameCenter")
+        musicNode.setScale(vars.screenSize.height / 1280)
+        musicNode.position = CGPoint(x: musicNode.frame.size.width / 2 + vars.screenSize.width / 66, y: (vars.screenSize.height / 7) / 2)
+        musicNode.zPosition = 1
+        musicNode.name = "musicNode"
+        addChild(musicNode)
     }
     
     required init?(coder aDecoder: NSCoder) {

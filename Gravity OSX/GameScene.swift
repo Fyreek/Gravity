@@ -224,6 +224,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         } else {
             achievements.newton = false
         }
+        if let _ = NSUserDefaults.standardUserDefaults().objectForKey("musicState") {
+            vars.musicState = NSUserDefaults.standardUserDefaults().boolForKey("musicState")
+        } else {
+            vars.musicState = true
+        }
     }
     
     func pulsingPlayButton() {
@@ -341,11 +346,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             moveRight = false
             interactionHappend = true
         } else if theEvent.keyCode == 126 { //Up
-            if vars.currentGameState == .gameActive {
+            if vars.currentGameState == .gameActive || vars.currentGameState == .gameOver {
                 goToMenu()
             }
         } else if theEvent.keyCode == 13 { //W
-            if vars.currentGameState == .gameActive {
+            if vars.currentGameState == .gameActive || vars.currentGameState == .gameOver {
                 goToMenu()
             }
         } else if theEvent.keyCode == 0 { //A
@@ -373,11 +378,13 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     func removeNodeAction() {
         menuLayer.playButton.removeActionForKey("fade")
         menuLayer.GCNode.removeActionForKey("fade")
+        menuLayer.musicNode.removeActionForKey("fade")
         highscoreLayer.shareNode.removeActionForKey("fade")
         highscoreLayer.highscoreNode.removeActionForKey("fade")
         gameLayer.menuNode.removeActionForKey("fade")
         menuLayer.playButton.runAction(fadeOutColorAction)
         menuLayer.GCNode.runAction(fadeOutColorAction)
+        menuLayer.musicNode.runAction(fadeOutColorAction)
         highscoreLayer.shareNode.runAction(fadeOutColorAction)
         highscoreLayer.highscoreNode.runAction(fadeOutColorAction)
         gameLayer.menuNode.runAction(fadeOutColorAction)
@@ -398,6 +405,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         } else if self.nodeAtPoint(location) == menuLayer.GCNode {
             lastNodeName = menuLayer.GCNode.name!
             menuLayer.GCNode.runAction(fadeColorAction, withKey: "fade")
+        } else if self.nodeAtPoint(location) == menuLayer.musicNode {
+            lastNodeName = menuLayer.musicNode.name!
+            menuLayer.musicNode.runAction(fadeColorAction, withKey: "fade")
         } else if self.nodeAtPoint(location) == highscoreLayer.highscoreNode || self.nodeAtPoint(location) == highscoreLayer.highscoreText {
             if gameRestarting == false {
                 lastNodeName = highscoreLayer.highscoreNode.name!
@@ -462,6 +472,23 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                     menuLayer.GCNode.runAction(fadeOutColorAction, withKey: "fade")
                     if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
                         viewController.showLeaderboard(identifiers.OSXnormalLeaderboard)
+                    }
+                } else {
+                    removeNodeAction()
+                }
+            }
+        } else if self.nodeAtPoint(location) == menuLayer.musicNode {
+            if isAnimating == false {
+                if lastNodeName == menuLayer.musicNode.name {
+                    lastNodeName = ""
+                    menuLayer.musicNode.runAction(fadeOutColorAction, withKey: "fade")
+                    if vars.currentGameState == .gameMenu {
+                        if vars.musicState == true {
+                            vars.musicState = false
+                        } else {
+                            vars.musicState = true
+                        }
+                        viewController.updateSoundState()
                     }
                 } else {
                     removeNodeAction()

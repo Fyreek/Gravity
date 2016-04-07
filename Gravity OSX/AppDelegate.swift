@@ -72,12 +72,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     }
     
     func updateSoundState() {
-        vars.musicState = true
         if vars.musicState == true {
             MusicOff()
         } else {
             MusicOn()
         }
+        NSUserDefaults.standardUserDefaults().setBool(vars.musicState, forKey: "musicState")
+        
     }
     
     func returnActive() {
@@ -156,7 +157,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     func MusicOff() {
         if vars.musicPlaying == false {
             vars.musicPlaying = true
-            //playBackgroundMusic("music.caf")
+            playBackgroundMusic("music.caf")
         } else {
             if vars.backgroundMusicPlayer != nil {
                 vars.backgroundMusicPlayer.play()
@@ -166,7 +167,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     
     func GCAuthentified(authentified:Bool) {
         if authentified {
-            print("Reading score")
             getHighScore(leaderboardIdentifier: identifiers.OSXnormalLeaderboard) {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
@@ -284,12 +284,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     
     func reportScoreLeaderboard(leaderboardIdentifier: String, score: Int) {
         if isConnectedToNetwork && isPlayerIdentified {
-            print("push")
             let gkScore = GKScore(leaderboardIdentifier: leaderboardIdentifier)
             gkScore.value = Int64(score)
             gkScore.shouldSetDefaultLeaderboard = true
             GKScore.reportScores([gkScore], withCompletionHandler: { (error: NSError?) in
-                print("succes")
+                print("pushed score to GC!")
             })
         } else {
             print("Not Connected!")
