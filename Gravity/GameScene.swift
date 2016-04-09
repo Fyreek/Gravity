@@ -300,25 +300,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func screenInteractionStarted(location: CGPoint) {
-        if self.nodeAtPoint(location) == menuLayer.playButton {
-            lastNodeName = menuLayer.playButton.name!
-            menuLayer.playButton.removeActionForKey("pulse")
-            menuLayer.playButton.runAction(fadeColorAction, withKey: "fade")
-        } else if self.nodeAtPoint(location) == menuLayer.GCNode {
-            lastNodeName = menuLayer.GCNode.name!
-            menuLayer.GCNode.runAction(fadeColorAction, withKey: "fade")
-        } else if self.nodeAtPoint(location) == highscoreLayer.highscoreNode || self.nodeAtPoint(location) == highscoreLayer.highscoreText {
-            if gameRestarting == false {
-                lastNodeName = highscoreLayer.highscoreNode.name!
-                highscoreLayer.highscoreNode.removeActionForKey("pulse")
-                highscoreLayer.highscoreNode.runAction(fadeColorAction, withKey: "fade")
-            }
-        } else if self.nodeAtPoint(location) == highscoreLayer.shareNode {
-            lastNodeName = highscoreLayer.shareNode.name!
-            highscoreLayer.shareNode.runAction(fadeColorAction, withKey: "fade")
-        } else if self.nodeAtPoint(location) == gameLayer.menuNode {
-            lastNodeName = gameLayer.menuNode.name!
-            gameLayer.menuNode.runAction(fadeColorAction, withKey: "fade")
+        
+        let node = self.nodeAtPoint(location)
+        if node.name != nil {
+            lastNodeName = node.name!
+            node.removeActionForKey("pulse")
+            node.runAction(fadeColorAction, withKey: "fade")
         } else {
             if vars.motionControl == false {
                 if location.x >= vars.screenSize.width / 2 {
@@ -370,63 +357,46 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
     }
     
+    func playButtonPressed() {
+        if gameStarted == false {
+            gameStarted = true
+            showGameLayer()
+        }
+    }
+    
+    func GCNodePressed() {
+        if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
+            GC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
+        }
+    }
+    
+    func highscoreNodeEndPressed() {
+        if gameRestarting == false {
+            gameRestarting = true
+            restartButton()
+        }
+    }
+    
+    func shareNodePressed() {
+        #if os(iOS)
+            viewController.shareHighscore()
+        #endif
+    }
+    
+    func menuNodePressed() {
+        goToMenu()
+    }
+    
     override func screenInteractionEnded(location: CGPoint) {
-        if self.nodeAtPoint(location) == menuLayer.playButton {
+        
+        let node = self.nodeAtPoint(location)
+        if node.name != nil {
             if isAnimating == false {
-                if gameStarted == false {
-                    gameStarted = true
-                    if lastNodeName == menuLayer.playButton.name {
-                        lastNodeName = ""
-                        menuLayer.playButton.runAction(fadeOutColorAction, withKey: "fade")
-                        showGameLayer()
-                    } else {
-                        removeNodeAction()
-                    }
-                }
-            }
-        } else if self.nodeAtPoint(location) == menuLayer.GCNode {
-            if isAnimating == false {
-                if lastNodeName == menuLayer.GCNode.name {
+                if lastNodeName == node.name! {
                     lastNodeName = ""
-                    menuLayer.GCNode.runAction(fadeOutColorAction, withKey: "fade")
-                    if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
-                        GC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
-                    }
-                } else {
-                    removeNodeAction()
-                }
-            }
-        } else if self.nodeAtPoint(location) == highscoreLayer.highscoreNode {
-            if isAnimating == false {
-                if gameRestarting == false {
-                    gameRestarting = true
-                    if lastNodeName == highscoreLayer.highscoreNode.name {
-                        lastNodeName = ""
-                        highscoreLayer.highscoreNode.runAction(fadeOutColorAction, withKey: "fade")
-                        restartButton()
-                    }
-                } else {
-                    removeNodeAction()
-                }
-            }
-        } else if self.nodeAtPoint(location) == highscoreLayer.shareNode {
-            if isAnimating == false {
-                if lastNodeName == highscoreLayer.shareNode.name {
-                    lastNodeName = ""
-                    highscoreLayer.shareNode.runAction(fadeOutColorAction, withKey: "fade")
-                    #if os(iOS)
-                    viewController.shareHighscore()
-                    #endif
-                } else {
-                    removeNodeAction()
-                }
-            }
-        } else if self.nodeAtPoint(location) == gameLayer.menuNode {
-            if isAnimating == false {
-                if lastNodeName == gameLayer.menuNode.name {
-                    lastNodeName = ""
-                    gameLayer.menuNode.runAction(fadeOutColorAction, withKey: "fade")
-                    goToMenu()
+                    node.runAction(fadeOutColorAction, withKey: "fade")
+                    let selector = NSSelectorFromString("\(node.name!)Pressed")
+                    self.performSelector(selector)
                 } else {
                     removeNodeAction()
                 }
@@ -1031,7 +1001,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
             
         
-        if vars.gameCenterLoggedIn == true && vars.shouldOpenScoresList = true{
+        if vars.gameCenterLoggedIn == true && vars.shouldOpenScoresList == true {
             if vars.highscorePlayerNames.count >= 0 {
                 if vars.highscorePlayerNames.count >= 1 {
                     highscoreLayer.firstHighscoreText.text = "\(vars.highscorePlayerScore[0]) - \(vars.highscorePlayerNames[0])"

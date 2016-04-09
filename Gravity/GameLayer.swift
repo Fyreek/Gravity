@@ -76,7 +76,6 @@ class GameLayer: SKNode {
         tutorialNodeLeft.position = CGPoint(x: tutorialNodeLeft.size.width / 1.5, y: bottomBar.frame.size.height + tutorialNodeLeft.size.height / 1.5)
         tutorialNodeLeft.zPosition = 3
         tutorialNodeLeft.alpha = 0
-        tutorialNodeLeft.name = "tutorialNodeLeft"
         addChild(tutorialNodeLeft)
         
         tutorialNodeRight = SKSpriteNode(imageNamed: "Tutorial-Touch")
@@ -85,7 +84,6 @@ class GameLayer: SKNode {
         tutorialNodeRight.zPosition = 3
         tutorialNodeRight.zRotation = CGFloat(M_PI)
         tutorialNodeRight.alpha = 0
-        tutorialNodeRight.name = "tutorialNodeRight"
         addChild(tutorialNodeRight)
         
     }
