@@ -184,6 +184,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
                         self.reportScoreLeaderboard(identifiers.OSXnormalLeaderboard, score: Int(vars.highscore * 100))
                     }
                     vars.gameCenterLoggedIn = true
+                    vars.gameScene?.achievementProgress()
                 }
             }
             getHighScore(leaderboardIdentifier: identifiers.OSXtimesLeaderboard) {
@@ -351,14 +352,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         }
     }
     
-    func reportAchievement( progress progress : Double, achievementIdentifier : String, showBannnerIfCompleted : Bool = true ,addToExisting: Bool = false) {
-        let achievementRequest: GKAchievement = GKAchievement()
-        achievementRequest.identifier = achievementIdentifier
-        achievementRequest.percentComplete = progress
-        achievementRequest.showsCompletionBanner = showBannnerIfCompleted
-        achievementRequest.reportAchievementWithCompletionHandler { (NSError) in
-            print("Reportet score for achievement: \(achievementIdentifier)")
-        }
+    func reportAchievement( progress progress : Double, achievementIdentifier : String, showBannnerIfCompleted : Bool = true) {
+        
+        let achievement = GKAchievement(identifier: achievementIdentifier)
+        achievement.percentComplete = progress
+        achievement.showsCompletionBanner = showBannnerIfCompleted
+        
+        GKAchievement.reportAchievements([achievement], withCompletionHandler:  {
+            (error:NSError?) -> Void in
+            if error != nil {
+                print("Error while pushing achievement: \(achievementIdentifier)")
+            } else {
+                print("Reported score for achievement: \(achievementIdentifier) with Progress of: \(achievement.percentComplete)")
+            }
+        })
     }
     
     func authenticateLocalPlayer() {

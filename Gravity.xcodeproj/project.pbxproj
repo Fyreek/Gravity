@@ -291,7 +291,7 @@
 					};
 					A1D4598C1C46B62E0093B6CB = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 9C545A2GHY;
+						DevelopmentTeam = ZA57B2W688;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 1;

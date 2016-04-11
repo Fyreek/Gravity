@@ -281,8 +281,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func setHighscore() {
         
-        achievementProgress()
-        
         var highscoreTime:Double = 0
         if vars.extremeMode == false {
             highscoreTime = vars.highscore.roundToPlaces(2)
@@ -721,7 +719,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if achievements.fiveSeconds == false {
             if seconds >= 5 {
                 achievements.fiveSeconds = true
-                viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_5seconds_osx", showBannnerIfCompleted: true, addToExisting: false)
+                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_5seconds_osx", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "fiveSeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
@@ -729,7 +727,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if achievements.fifthteenSeconds == false {
             if seconds >= 15 {
                 achievements.fifthteenSeconds = true
-               viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_15seconds", showBannnerIfCompleted: true, addToExisting: false)
+                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_15seconds_osx", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "fifthteenSeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
@@ -737,7 +735,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if achievements.thirtySeconds == false {
             if seconds >= 30 {
                 achievements.thirtySeconds = true
-                viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_30seconds", showBannnerIfCompleted: true, addToExisting: false)
+                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_30seconds_osx", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "thirtySeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
@@ -745,7 +743,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if achievements.sixtySeconds == false {
             if minutes >= 1 {
                 achievements.sixtySeconds = true
-                viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_60seconds", showBannnerIfCompleted: true, addToExisting: false)
+                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_60seconds_osx", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "sixtySeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
@@ -753,7 +751,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if achievements.onehundredtwentySeconds == false {
             if minutes >= 2 {
                 achievements.onehundredtwentySeconds = true
-                viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_120seconds", showBannnerIfCompleted: true, addToExisting: false)
+                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_120seconds_osx", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "onehundredtwentySeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
@@ -966,19 +964,54 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func achievementProgress() {
         if achievements.fiveSeconds == false {
-            viewController.reportAchievement(progress: (vars.highscore / 0.05), achievementIdentifier: "gravity.achievement_5seconds")
+            if vars.highscore / 0.05 >= 100 {
+                achievements.fiveSeconds = true
+                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_5seconds_osx", showBannnerIfCompleted: true)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "fiveSeconds")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            } else {
+                viewController.reportAchievement(progress: (vars.highscore / 0.05), achievementIdentifier: "gravity.achievement_5seconds_osx")
+            }
         }
         if achievements.fifthteenSeconds == false {
-            viewController.reportAchievement(progress: (vars.highscore / 0.15), achievementIdentifier: "gravity.achievement_15seconds")
+            if vars.highscore / 0.15 >= 100 {
+                achievements.fifthteenSeconds = true
+                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_15seconds_osx", showBannnerIfCompleted: true)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "fifthteenSeconds")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            } else {
+                viewController.reportAchievement(progress: (vars.highscore / 0.15), achievementIdentifier: "gravity.achievement_15seconds_osx")
+            }
         }
         if achievements.thirtySeconds == false {
-            viewController.reportAchievement(progress: (vars.highscore / 0.3), achievementIdentifier: "gravity.achievement_30seconds")
+            if vars.highscore / 0.3 >= 100 {
+                achievements.thirtySeconds = true
+                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_30seconds_osx", showBannnerIfCompleted: true)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "thirtySeconds")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            } else {
+                viewController.reportAchievement(progress: (vars.highscore / 0.3), achievementIdentifier: "gravity.achievement_30seconds_osx")
+            }
         }
         if achievements.sixtySeconds == false {
-            viewController.reportAchievement(progress: (vars.highscore / 0.6), achievementIdentifier: "gravity.achievement_60seconds")
+            if vars.highscore / 0.6 >= 100 {
+                achievements.sixtySeconds = true
+                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_60seconds_osx", showBannnerIfCompleted: true)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "sixtySeconds")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            } else {
+                viewController.reportAchievement(progress: (vars.highscore / 0.6), achievementIdentifier: "gravity.achievement_60seconds_osx")
+            }
         }
         if achievements.onehundredtwentySeconds == false {
-            viewController.reportAchievement(progress: (vars.highscore / 1.2), achievementIdentifier: "gravity.achievement_120seconds")
+            if vars.highscore / 1.2 >= 100 {
+                achievements.onehundredtwentySeconds = true
+                viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_120seconds_osx", showBannnerIfCompleted: true)
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey: "onehundredtwentySeconds")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            } else {
+                viewController.reportAchievement(progress: (vars.highscore / 1.2), achievementIdentifier: "gravity.achievement_120seconds_osx")
+            }
         }
         
     }
@@ -1284,7 +1317,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if achievements.pi == false {
             if score == 3.14 {
                 achievements.pi = true
-                viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_pi", showBannnerIfCompleted: true, addToExisting: false)
+                viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_pi_osx", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "pi")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
@@ -1292,7 +1325,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if achievements.newton == false {
             if score == 9.81 {
                 achievements.newton = true
-                viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_newton", showBannnerIfCompleted: true, addToExisting: false)
+                viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_newton_osx", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "newton")
                 NSUserDefaults.standardUserDefaults().synchronize()
             }
