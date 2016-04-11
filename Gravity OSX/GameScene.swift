@@ -397,6 +397,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     override func screenInteractionStarted(location: CGPoint) {
         
+        vars.activeTouches += 1
         let node = self.nodeAtPoint(location)
         if node.name != nil {
             lastNodeName = node.name!
@@ -421,12 +422,24 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if vars.currentGameState == .gameActive {
             if vars.motionControl == false {
                 if lastNodeName == "" {
-                    if location.x >= vars.screenSize.width / 2 {
-                        interactionHappend = true
-                        moveRight = true
-                    } else if location.x <= vars.screenSize.width / 2 {
-                        interactionHappend = true
-                        moveLeft = true
+                    if vars.activeTouches == 1 {
+                        if location.x >= vars.screenSize.width / 2 {
+                            interactionHappend = true
+                            moveRight = true
+                            moveLeft = false
+                        } else if location.x <= vars.screenSize.width / 2 {
+                            interactionHappend = true
+                            moveLeft = true
+                            moveRight = false
+                        }
+                    } else {
+                        if location.x >= vars.screenSize.width / 2 {
+                            interactionHappend = true
+                            moveRight = true
+                        } else if location.x <= vars.screenSize.width / 2 {
+                            interactionHappend = true
+                            moveLeft = true
+                        }
                     }
                 }
             }
@@ -474,6 +487,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     override func screenInteractionEnded(location: CGPoint) {
         
+        vars.activeTouches -= 1
         let node = self.nodeAtPoint(location)
         if node.name != nil {
             if isAnimating == false {

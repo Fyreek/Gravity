@@ -301,6 +301,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     override func screenInteractionStarted(location: CGPoint) {
         
+        vars.activeTouches += 1
         let node = self.nodeAtPoint(location)
         if node.name != nil {
             lastNodeName = node.name!
@@ -345,12 +346,24 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if vars.currentGameState == .gameActive {
             if vars.motionControl == false {
                 if lastNodeName == "" {
-                    if location.x >= vars.screenSize.width / 2 {
-                        interactionHappend = true
-                        moveRight = true
-                    } else if location.x <= vars.screenSize.width / 2 {
-                        interactionHappend = true
-                        moveLeft = true
+                    if vars.activeTouches == 1 {
+                        if location.x >= vars.screenSize.width / 2 {
+                            interactionHappend = true
+                            moveRight = true
+                            moveLeft = false
+                        } else if location.x <= vars.screenSize.width / 2 {
+                            interactionHappend = true
+                            moveLeft = true
+                            moveRight = false
+                        }
+                    } else {
+                        if location.x >= vars.screenSize.width / 2 {
+                            interactionHappend = true
+                            moveRight = true
+                        } else if location.x <= vars.screenSize.width / 2 {
+                            interactionHappend = true
+                            moveLeft = true
+                        }
                     }
                 }
             }
@@ -389,6 +402,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     override func screenInteractionEnded(location: CGPoint) {
         
+        vars.activeTouches -= 1
         let node = self.nodeAtPoint(location)
         if node.name != nil {
             if isAnimating == false {
@@ -889,51 +903,51 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if achievements.fiveSeconds == false {
             if vars.highscore / 0.05 >= 100 {
                 achievements.fiveSeconds = true
-                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_5seconds", showBannnerIfCompleted: true)
+                GC.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_5seconds", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "fiveSeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             } else {
-                viewController.reportAchievement(progress: (vars.highscore / 0.05), achievementIdentifier: "gravity.achievement_5seconds")
+                GC.reportAchievement(progress: (vars.highscore / 0.05), achievementIdentifier: "gravity.achievement_5seconds")
             }
         }
         if achievements.fifthteenSeconds == false {
             if vars.highscore / 0.15 >= 100 {
                 achievements.fifthteenSeconds = true
-                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_15seconds", showBannnerIfCompleted: true)
+                GC.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_15seconds", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "fifthteenSeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             } else {
-                viewController.reportAchievement(progress: (vars.highscore / 0.15), achievementIdentifier: "gravity.achievement_15seconds")
+                GC.reportAchievement(progress: (vars.highscore / 0.15), achievementIdentifier: "gravity.achievement_15seconds")
             }
         }
         if achievements.thirtySeconds == false {
             if vars.highscore / 0.3 >= 100 {
                 achievements.thirtySeconds = true
-                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_30seconds", showBannnerIfCompleted: true)
+                GC.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_30seconds", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "thirtySeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             } else {
-                viewController.reportAchievement(progress: (vars.highscore / 0.3), achievementIdentifier: "gravity.achievement_30seconds")
+                GC.reportAchievement(progress: (vars.highscore / 0.3), achievementIdentifier: "gravity.achievement_30seconds")
             }
         }
         if achievements.sixtySeconds == false {
             if vars.highscore / 0.6 >= 100 {
                 achievements.sixtySeconds = true
-                viewController.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_60seconds", showBannnerIfCompleted: true)
+                GC.reportAchievement(progress: 100, achievementIdentifier: "gravity.achievement_60seconds", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "sixtySeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             } else {
-                viewController.reportAchievement(progress: (vars.highscore / 0.6), achievementIdentifier: "gravity.achievement_60seconds")
+                GC.reportAchievement(progress: (vars.highscore / 0.6), achievementIdentifier: "gravity.achievement_60seconds")
             }
         }
         if achievements.onehundredtwentySeconds == false {
             if vars.highscore / 1.2 >= 100 {
                 achievements.onehundredtwentySeconds = true
-                viewController.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_120seconds", showBannnerIfCompleted: true)
+                GC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_120seconds", showBannnerIfCompleted: true)
                 NSUserDefaults.standardUserDefaults().setBool(true, forKey: "onehundredtwentySeconds")
                 NSUserDefaults.standardUserDefaults().synchronize()
             } else {
-                viewController.reportAchievement(progress: (vars.highscore / 1.2), achievementIdentifier: "gravity.achievement_120seconds")
+                GC.reportAchievement(progress: (vars.highscore / 1.2), achievementIdentifier: "gravity.achievement_120seconds")
             }
         }
     }
@@ -1428,6 +1442,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 if gameLayer.player.position.x <= 0 {
                     gameLayer.player.position.x = vars.screenSize.width
                 }
+            } else if moveLeft == true && moveRight == true {
+                gameLayer.player.position = gameLayer.player.position
             }
         }
         if gameCenterSync == false {
