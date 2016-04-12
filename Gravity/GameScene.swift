@@ -300,8 +300,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func screenInteractionStarted(location: CGPoint) {
-        
-        vars.activeTouches += 1
+        if vars.activeTouches < 2 {
+            vars.activeTouches += 1
+        }
         let node = self.nodeAtPoint(location)
         if node.name != nil {
             lastNodeName = node.name!

@@ -376,13 +376,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     func removeNodeAction() {
         menuLayer.playButton.removeActionForKey("fade")
         menuLayer.GCNode.removeActionForKey("fade")
-        menuLayer.musicNode.removeActionForKey("fade")
         highscoreLayer.shareNode.removeActionForKey("fade")
         highscoreLayer.highscoreNode.removeActionForKey("fade")
         gameLayer.menuNode.removeActionForKey("fade")
         menuLayer.playButton.runAction(fadeOutColorAction)
         menuLayer.GCNode.runAction(fadeOutColorAction)
-        menuLayer.musicNode.runAction(fadeOutColorAction)
         highscoreLayer.shareNode.runAction(fadeOutColorAction)
         highscoreLayer.highscoreNode.runAction(fadeOutColorAction)
         gameLayer.menuNode.runAction(fadeOutColorAction)
@@ -397,7 +395,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     override func screenInteractionStarted(location: CGPoint) {
         
-        vars.activeTouches += 1
+        if vars.activeTouches < 2 {
+            vars.activeTouches += 1
+        }
         let node = self.nodeAtPoint(location)
         if node.name != nil {
             lastNodeName = node.name!
@@ -456,17 +456,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     func GCNodePressed() {
         if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
             viewController.showLeaderboard(identifiers.OSXnormalLeaderboard)
-        }
-    }
-    
-    func musicNodePressed() {
-        if vars.currentGameState == .gameMenu {
-            if vars.musicState == true {
-                vars.musicState = false
-            } else {
-                vars.musicState = true
-            }
-            viewController.updateSoundState()
         }
     }
     
@@ -1395,48 +1384,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             gameLayer.bottomBar.fillColor = newColor
         }
     }
-    #if os(iOS)
-    func initMotionControl() {
-    if motionManager.accelerometerAvailable == true && vars.motionControl == true && vars.currentGameState == .gameActive {
-    motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler:{
-    data, error in
-    if vars.deviceOrientation == 3 {
-    if data!.acceleration.y < -0.075 {
-    self.interactionHappend = true
-    self.moveRight = true
-    self.moveLeft = false
-    } else if data!.acceleration.y > 0.075 {
-    self.interactionHappend = true
-    self.moveLeft = true
-    self.moveRight = false
-    } else {
-    self.moveLeft = false
-    self.moveRight = false
-    }
-    } else if vars.deviceOrientation == 4 {
-    if data!.acceleration.y > 0.075 {
-    self.interactionHappend = true
-    self.moveRight = true
-    self.moveLeft = false
-    } else if data!.acceleration.y < -0.075 {
-    self.interactionHappend = true
-    self.moveLeft = true
-    self.moveRight = false
-    } else {
-    self.moveLeft = false
-    self.moveRight = false
-    }
-    }
-    })
-    }
-    }
-    
-    func cancelMotionControl() {
-    if motionManager.accelerometerActive == true {
-    motionManager.stopAccelerometerUpdates()
-    }
-    }
-    #endif
     
     override func update(currentTime: CFTimeInterval) {
         self.enumerateChildNodesWithName("objectPos") {

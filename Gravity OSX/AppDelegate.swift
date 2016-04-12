@@ -50,6 +50,34 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         zoomButton.hidden = false
     }
     
+    func applicationDockMenu(sender: NSApplication) -> NSMenu? {
+        let musicSelector : Selector = #selector(self.musicUpdate)
+        let musicItem = NSMenuItem()
+        if vars.musicState == true {
+            musicItem.title = "Turn Sound Off"
+        } else {
+            musicItem.title = "Turn Sound On"
+        }
+        musicItem.action = musicSelector
+        musicItem.target = self
+        let musicMenu:NSMenu = NSMenu(title: "Func")
+        musicMenu.autoenablesItems = true
+        musicMenu.addItem(musicItem)
+        
+        return musicMenu
+    }
+    
+    func musicUpdate() {
+        if vars.currentGameState == .gameMenu {
+            if vars.musicState == true {
+                vars.musicState = false
+            } else {
+                vars.musicState = true
+            }
+            updateSoundState()
+        }
+    }
+    
     func applicationWillResignActive(notification: NSNotification) {
        leaveActive()
     }
