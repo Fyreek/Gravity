@@ -256,7 +256,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func interfaceSetup() {
         menuLayer = MenuLayer()
-        menuLayer.musicNode.hidden = true
         setColors()
         self.addChild(menuLayer)
         setHighscore()

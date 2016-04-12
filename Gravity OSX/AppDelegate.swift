@@ -247,7 +247,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
             }
             if scores != nil {
                 if scores?.count > 1 {
-                    for i in 0 ..< (scores?.count)! - 1 {
+                    for i in 0 ..< (scores?.count)! {
                         let player = scores![i].player.alias!
                         vars.highscorePlayerNames.append(String(player))
                         let score:String = String(scores![i].formattedValue!)
