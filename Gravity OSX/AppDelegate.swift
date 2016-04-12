@@ -77,6 +77,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     
     func applicationDockMenu(sender: NSApplication) -> NSMenu? {
         let musicSelector : Selector = #selector(self.musicUpdate)
+        let modeSelector: Selector = #selector(self.modeUpdate)
         let musicItem = NSMenuItem()
         if vars.musicState == true {
             musicItem.title = "Turn Sound Off"
@@ -85,11 +86,45 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         }
         musicItem.action = musicSelector
         musicItem.target = self
-        let musicMenu:NSMenu = NSMenu(title: "Func")
-        musicMenu.autoenablesItems = true
-        musicMenu.addItem(musicItem)
+        let modeItem = NSMenuItem()
+        if vars.extremeMode == true {
+            modeItem.title = "Normal Mode"
+        } else {
+            modeItem.title = "Extreme Mode"
+        }
+        modeItem.action = modeSelector
+        modeItem.target = self
+        let gameMenu:NSMenu = NSMenu(title: "Func")
+        gameMenu.autoenablesItems = true
+        gameMenu.addItem(musicItem)
+        gameMenu.addItem(modeItem)
         
-        return musicMenu
+        return gameMenu
+    }
+    
+    func modeUpdate() {
+        if vars.extremeMode == true {
+            vars.extremeMode = false
+            if vars.currentGameState == .gameActive || vars.currentGameState == .gameOver {
+                vars.gameScene?.goToMenu()
+            }
+            updateModeState()
+        } else {
+            vars.extremeMode = true
+            if vars.currentGameState == .gameActive || vars.currentGameState == .gameOver {
+                vars.gameScene?.goToMenu()
+            }
+            updateModeState()
+        }
+    }
+    
+    func updateModeState() {
+        if vars.extremeMode == true {
+            vars.gameScene?.initExtremeMode()
+        } else {
+            vars.gameScene?.initNormalMode()
+        }
+        NSUserDefaults.standardUserDefaults().setBool(vars.extremeMode, forKey: "extreme")
     }
     
     func musicUpdate() {
@@ -265,6 +300,36 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         leaderboardRequest.playerScope = .FriendsOnly
         leaderboardRequest.timeScope = .AllTime
         leaderboardRequest.identifier = identifiers.OSXnormalLeaderboard
+        leaderboardRequest.range = NSMakeRange(1, 5)
+        leaderboardRequest.loadScoresWithCompletionHandler({(scores: [GKScore]?, error: NSError?) -> Void in
+            if error != nil {
+                print("error retrieving scores")
+            }
+            if scores != nil {
+                if scores?.count > 1 {
+                    for i in 0 ..< (scores?.count)! {
+                        let player = scores![i].player.alias!
+                        vars.highscorePlayerNames.append(String(player))
+                        let score:String = String(scores![i].formattedValue!)
+                        let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
+                        vars.highscorePlayerScore.append(newScore)
+                        vars.shouldOpenScoresList = true
+                    }
+                } else {
+                    vars.shouldOpenScoresList = false
+                }
+                vars.gameScene?.openNewHighScore()
+            }
+        })
+    }
+    
+    func getExtScores() {
+        vars.highscorePlayerNames = []
+        vars.highscorePlayerScore = []
+        let leaderboardRequest: GKLeaderboard = GKLeaderboard()
+        leaderboardRequest.playerScope = .FriendsOnly
+        leaderboardRequest.timeScope = .AllTime
+        leaderboardRequest.identifier = identifiers.OSXextremeLeaderboard
         leaderboardRequest.range = NSMakeRange(1, 5)
         leaderboardRequest.loadScoresWithCompletionHandler({(scores: [GKScore]?, error: NSError?) -> Void in
             if error != nil {

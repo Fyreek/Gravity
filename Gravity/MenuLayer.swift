@@ -40,7 +40,6 @@ class MenuLayer: SKNode {
         highscoreNode.horizontalAlignmentMode = .Left
         highscoreNode.zPosition = 2
         highscoreNode.position = CGPoint(x: vars.screenSize.width - highscoreNode.frame.width - vars.screenSize.width / 60, y: vars.screenSize.height - highscoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2)
-        highscoreNode.name = "highscoreNode"
         addChild(highscoreNode)
         
         GCNode = SKSpriteNode(imageNamed: "GameCenter")

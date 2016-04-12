@@ -47,7 +47,6 @@ class HighscoreLayer: SKNode {
         highscoreNode.fillColor = SKColor.whiteColor()
         highscoreNode.zPosition = 3
         highscoreNode.alpha = 0
-        highscoreNode.name = "highscoreNodeEnd"
         addChild(highscoreNode)
     
         highscoreText = SKLabelNode(fontNamed: "Helvetia")
@@ -57,7 +56,6 @@ class HighscoreLayer: SKNode {
         highscoreText.fontColor = SKColor.whiteColor()
         highscoreText.zPosition = 4
         highscoreText.position = CGPoint(x: vars.screenSize.width * 1.5, y: vars.screenSize.height / 2 - highscoreText.frame.size.height / 2)
-        highscoreText.name = "highscoreTextEnd"
         addChild(highscoreText)
         
         firstHighscoreText = SKLabelNode(fontNamed: "Helvetia")
@@ -69,7 +67,6 @@ class HighscoreLayer: SKNode {
         firstHighscoreText.fontColor = SKColor.whiteColor()
         firstHighscoreText.zPosition = 4
         firstHighscoreText.position = CGPoint(x: -vars.screenSize.width / 2, y: vars.screenSize.height / 2)
-        firstHighscoreText.name = "firstHighscoreText"
         addChild(firstHighscoreText)
         
         secondHighscoreText = SKLabelNode(fontNamed: "Helvetia")
@@ -81,7 +78,6 @@ class HighscoreLayer: SKNode {
         secondHighscoreText.fontColor = SKColor.whiteColor()
         secondHighscoreText.zPosition = 4
         secondHighscoreText.position = CGPoint(x: -vars.screenSize.width / 2, y: vars.screenSize.height / 2)
-        secondHighscoreText.name = "secondHighscoreText"
         addChild(secondHighscoreText)
         
         thirdHighscoreText = SKLabelNode(fontNamed: "Helvetia")
@@ -93,7 +89,6 @@ class HighscoreLayer: SKNode {
         thirdHighscoreText.fontColor = SKColor.whiteColor()
         thirdHighscoreText.zPosition = 4
         thirdHighscoreText.position = CGPoint(x: -vars.screenSize.width / 2, y: vars.screenSize.height / 2)
-        thirdHighscoreText.name = "thirdHighscoreText"
         addChild(thirdHighscoreText)
         
         fourthHighscoreText = SKLabelNode(fontNamed: "Helvetia")
@@ -105,7 +100,6 @@ class HighscoreLayer: SKNode {
         fourthHighscoreText.fontColor = SKColor.whiteColor()
         fourthHighscoreText.zPosition = 4
         fourthHighscoreText.position = CGPoint(x: -vars.screenSize.width / 2, y: vars.screenSize.height / 2)
-        fourthHighscoreText.name = "fourthHighscoreText"
         addChild(fourthHighscoreText)
         
         fifthHighscoreText = SKLabelNode(fontNamed: "Helvetia")
@@ -117,7 +111,6 @@ class HighscoreLayer: SKNode {
         fifthHighscoreText.fontColor = SKColor.whiteColor()
         fifthHighscoreText.zPosition = 4
         fifthHighscoreText.position = CGPoint(x: -vars.screenSize.width / 2, y: vars.screenSize.height / 2)
-        fifthHighscoreText.name = "fifthHighscoreText"
         addChild(fifthHighscoreText)
         
         vars.normalTextFrameHeight = firstHighscoreText.frame.size.height
@@ -130,7 +123,6 @@ class HighscoreLayer: SKNode {
         firstHighscoreBG.zPosition = 3
         firstHighscoreBG.lineWidth = 0
         firstHighscoreBG.alpha = 0
-        firstHighscoreBG.name = "firstHighscoreBG"
         addChild(firstHighscoreBG)
         
         secondHighscoreBG = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width / 3, height: highscoreBGHeight), cornerRadius: cnRnd)
@@ -139,7 +131,6 @@ class HighscoreLayer: SKNode {
         secondHighscoreBG.zPosition = 3
         secondHighscoreBG.lineWidth = 0
         secondHighscoreBG.alpha = 0
-        secondHighscoreBG.name = "secondHighscoreBG"
         addChild(secondHighscoreBG)
         
         thirdHighscoreBG = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width / 3, height: highscoreBGHeight), cornerRadius: cnRnd)
@@ -148,7 +139,6 @@ class HighscoreLayer: SKNode {
         thirdHighscoreBG.zPosition = 3
         thirdHighscoreBG.lineWidth = 0
         thirdHighscoreBG.alpha = 0
-        thirdHighscoreBG.name = "thirdHighscoreBG"
         addChild(thirdHighscoreBG)
         
         fourthHighscoreBG = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width / 3, height: highscoreBGHeight), cornerRadius: cnRnd)
@@ -157,7 +147,6 @@ class HighscoreLayer: SKNode {
         fourthHighscoreBG.zPosition = 3
         fourthHighscoreBG.lineWidth = 0
         fourthHighscoreBG.alpha = 0
-        fourthHighscoreBG.name = "fourthHighscoreBG"
         addChild(fourthHighscoreBG)
         
         fifthHighscoreBG = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width / 3, height: highscoreBGHeight), cornerRadius: cnRnd)
@@ -166,7 +155,6 @@ class HighscoreLayer: SKNode {
         fifthHighscoreBG.zPosition = 3
         fifthHighscoreBG.lineWidth = 0
         fifthHighscoreBG.alpha = 0
-        fifthHighscoreBG.name = "fifthHighscoreBG"
         addChild(fifthHighscoreBG)
     }
     
