@@ -53,6 +53,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var timesPlayedWithoutInteraction:Int = 0
     var interactionHappend:Bool = false
     var isAnimating:Bool = false
+    var preCursorPos:NSPoint = NSPoint(x: 0, y: 0)
     
     //Actions
     var colorizeBGNodes = SKAction()
@@ -1386,6 +1387,20 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func update(currentTime: CFTimeInterval) {
+        
+        let nowCursor = NSCursor.currentCursor()
+        if vars.cursorTime >= 150 {
+            NSCursor.setHiddenUntilMouseMoves(true)
+            vars.cursorTime = 0
+        } else {
+            if nowCursor.hotSpot != preCursorPos {
+                vars.cursorTime = 0
+                preCursorPos = nowCursor.hotSpot
+            } else {
+                vars.cursorTime += 1
+            }
+        }
+        
         self.enumerateChildNodesWithName("objectPos") {
             node, stop in
             (node as! SKShapeNode).fillColor = self.menuLayer.backgroundNode.fillColor
