@@ -612,7 +612,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.gameStarted = false
                 vars.currentGameState = .gameMenu
                 self.isAnimating = false
-                self.viewController.setWindowStyleMenu()
+                if vars.windowIsFullscreen == false {
+                    self.viewController.setWindowStyleMenu()
+                } else {
+                    self.viewController.setWindowStyleFullMenu()
+                }
             })
         } else if vars.currentGameState == .gameOver {
             highscoreLayer.highscoreNode.runAction(SKAction.moveToX(vars.screenSize.width + highscoreLayer.highscoreNode.frame.size.width / 2, duration: vars.gameLayerFadeTime))
@@ -642,7 +646,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 vars.currentGameState = .gameMenu
                 self.isAnimating = false
                 self.menuLayer.GCNode.zPosition = 1
-                self.viewController.setWindowStyleMenu()
+                if vars.windowIsFullscreen == false {
+                    self.viewController.setWindowStyleMenu()
+                } else {
+                    self.viewController.setWindowStyleFullMenu()
+                }
             })
         }
     }
@@ -768,7 +776,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func showGameLayer() {
-        viewController.setWindowStyleGame()
+        if vars.windowIsFullscreen == false {
+            viewController.setWindowStyleGame()
+        } else {
+            viewController.setWindowStyleFullGame()
+        }
         if vars.firstTimePlaying == false {
             vars.showTutorial = true
         }

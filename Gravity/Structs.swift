@@ -55,6 +55,7 @@ struct vars {
     static var shouldOpenScoresList:Bool = false //If the games opens the own score list
     static var activeTouches:Int = 0 //Count of active touches
     static var cursorTime:Int = 0 //seconds / 60 since last mouse movement
+    static var windowIsFullscreen:Bool = false //If the window is in fullscreen mode
 }
 
 struct colors {

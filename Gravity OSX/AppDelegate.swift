@@ -50,6 +50,31 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         zoomButton.hidden = false
     }
     
+    func setWindowStyleFullGame() {
+        window.styleMask = NSFullScreenWindowMask | NSClosableWindowMask
+        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.ZoomButton)!
+        zoomButton.hidden = true
+    }
+    
+    func setWindowStyleFullMenu() {
+        window.styleMask = NSFullScreenWindowMask | NSClosableWindowMask
+        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.ZoomButton)!
+        zoomButton.hidden = false
+    }
+    
+    func windowWillEnterFullScreen(notification: NSNotification) {
+        vars.windowIsFullscreen = true
+    }
+    
+    func windowWillExitFullScreen(notification: NSNotification) {
+        vars.windowIsFullscreen = false
+        if vars.currentGameState == .gameMenu {
+            setWindowStyleMenu()
+        } else {
+            setWindowStyleGame()
+        }
+    }
+    
     func applicationDockMenu(sender: NSApplication) -> NSMenu? {
         let musicSelector : Selector = #selector(self.musicUpdate)
         let musicItem = NSMenuItem()
