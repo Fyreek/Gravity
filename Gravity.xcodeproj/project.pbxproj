@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14188E291CBD337200ED16DF /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14188E281CBD337200ED16DF /* GameKit.framework */; };
 		1447A9221CA18E2D0074332E /* GameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1447A9211CA18E2D0074332E /* GameCenter.swift */; };
 		14994BD71CB30D840009A545 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14994BD61CB30D840009A545 /* AppDelegate.swift */; };
 		14994BD91CB30D840009A545 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14994BD81CB30D840009A545 /* GameScene.swift */; };
@@ -49,6 +50,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		14188E271CBD2AE900ED16DF /* Gravity OSX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Gravity OSX.entitlements"; sourceTree = "<group>"; };
+		14188E281CBD337200ED16DF /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/GameKit.framework; sourceTree = DEVELOPER_DIR; };
 		1447A9211CA18E2D0074332E /* GameCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCenter.swift; sourceTree = "<group>"; };
 		14994BD41CB30D840009A545 /* Gravity OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity OSX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14994BD61CB30D840009A545 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14188E291CBD337200ED16DF /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +113,7 @@
 		14994BD51CB30D840009A545 /* Gravity OSX */ = {
 			isa = PBXGroup;
 			children = (
+				14188E271CBD2AE900ED16DF /* Gravity OSX.entitlements */,
 				14994BD61CB30D840009A545 /* AppDelegate.swift */,
 				14994BD81CB30D840009A545 /* GameScene.swift */,
 				14994BDA1CB30D840009A545 /* GameScene.sks */,
@@ -169,6 +174,7 @@
 		8C4A506B52B050643EA03376 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				14188E281CBD337200ED16DF /* GameKit.framework */,
 				A19946581C46B8D500A0041B /* GameKit.framework */,
 			);
 			name = Frameworks;
@@ -284,6 +290,14 @@
 					14994BD31CB30D840009A545 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = ZA57B2W688;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 					14EE10741C74B410004CA811 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -487,6 +501,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_ENTITLEMENTS = "Gravity OSX/Gravity OSX.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Gravity OSX/Info.plist";
@@ -503,6 +518,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_ENTITLEMENTS = "Gravity OSX/Gravity OSX.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Gravity OSX/Info.plist";
