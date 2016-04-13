@@ -261,7 +261,21 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         setHighscore()
         isColorizing = true
         changeColor()
+        #if os(iOS)
+            menuLayer.highscoreNode.hidden = false
+            menuLayer.highscoreNode.runAction(SKAction.fadeInWithDuration(vars.gameLayerFadeTime * 1.5))
+            menuLayer.GCNode.hidden = false
+            menuLayer.GCNode.runAction(SKAction.fadeInWithDuration(vars.gameLayerFadeTime * 1.5))
+            menuLayer.splashNode.runAction(SKAction.scaleTo(menuLayer.playButton.size.height / (vars.screenSize.height / 100 * 60), duration: vars.gameLayerFadeTime), completion: {
+                self.menuLayer.splashNode.runAction(SKAction.fadeOutWithDuration(vars.gameLayerFadeTime), completion: {
+                    self.menuLayer.splashNode.hidden = true
+                    self.pulsingPlayButton()
+                })
+            })
+        #endif
+        #if os(OSX)
         pulsingPlayButton()
+        #endif
     }
     
     func setHighscore() {
@@ -372,7 +386,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func playButtonPressed() {
-        if gameStarted == false {
+        if gameStarted == false && isAnimating == false {
             gameStarted = true
             showGameLayer()
         }
@@ -509,6 +523,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         spawnTimerRunning = false
         gravityDirection = "up"
         switchGravity()
+        viewController.deactivateMultiTouch()
+        
         self.enumerateChildNodesWithName("objectPos") {
             node, stop in
             node.removeAllActions()
@@ -538,10 +554,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.menuLayer.playButton.hidden = false
                 self.menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 1280, duration: vars.gameLayerFadeTime), completion: {
                     self.pulsingPlayButton()
+                    self.gameStarted = false
+                    vars.currentGameState = .gameMenu
+                    self.isAnimating = false
                 })
-                self.gameStarted = false
-                vars.currentGameState = .gameMenu
-                self.isAnimating = false
             })
         } else if vars.currentGameState == .gameOver {
             highscoreLayer.highscoreNode.runAction(SKAction.moveToX(vars.screenSize.width + highscoreLayer.highscoreNode.frame.size.width / 2, duration: vars.gameLayerFadeTime))
@@ -565,12 +581,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.menuLayer.playButton.hidden = false
                 self.menuLayer.playButton.runAction(SKAction.scaleTo(vars.screenSize.height / 1280, duration: vars.gameLayerFadeTime), completion: {
                     self.pulsingPlayButton()
+                    self.gameStarted = false
+                    vars.currentGameState = .gameMenu
+                    self.isAnimating = false
+                    self.menuLayer.GCNode.zPosition = 1
                 })
                 self.menuLayer.highscoreNode.runAction(SKAction.moveToY(vars.screenSize.height - self.menuLayer.highscoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: vars.gameLayerFadeTime))
-                self.gameStarted = false
-                vars.currentGameState = .gameMenu
-                self.isAnimating = false
-                self.menuLayer.GCNode.zPosition = 1
             })
         }
     }
@@ -706,6 +722,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         addChild(gameLayer)
         barsFadedIn = false
         interactionHappend = false
+        viewController.activeMultiTouch()
         
         gameLayer.topBar.runAction(gameLayer.topBarInAction)
         gameLayer.bottomBar.runAction(gameLayer.bottomBarInAction)
@@ -1022,6 +1039,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     func openNewHighScore() {
         isAnimating = true
         timesPlayedWithoutInteraction = 0
+        viewController.deactivateMultiTouch()
          
         highscoreLayer = HighscoreLayer()
         self.addChild(highscoreLayer)

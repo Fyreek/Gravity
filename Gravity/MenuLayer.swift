@@ -17,6 +17,7 @@ class MenuLayer: SKNode {
     var GCNode = SKSpriteNode()
     var circleNode = SKShapeNode()
     var circleNode2 = SKShapeNode()
+    var splashNode = SKShapeNode()
     
     override init() {
         super.init()
@@ -48,6 +49,22 @@ class MenuLayer: SKNode {
         GCNode.zPosition = 1
         GCNode.name = "GCNode"
         addChild(GCNode)
+        
+        #if os(iOS)
+            
+            GCNode.alpha = 0
+            GCNode.hidden = true
+            highscoreNode.alpha = 0
+            highscoreNode.hidden = true
+            
+            splashNode = SKShapeNode(circleOfRadius: vars.screenSize.height / 200 * 60)
+            splashNode.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
+            splashNode.zPosition = 2.5
+            splashNode.fillColor = SKColor.whiteColor()
+            splashNode.strokeColor = SKColor.whiteColor()
+            addChild(splashNode)
+            
+        #endif
         
     }
     
