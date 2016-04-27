@@ -65,6 +65,7 @@
 		14EE10821C74B410004CA811 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14EE10841C74B410004CA811 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14EE10921C74B4C3004CA811 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		14FD4E4E1CBEDAF9005F58C8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A108DE461C49488F00760D54 /* GameLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameLayer.swift; path = Gravity/GameLayer.swift; sourceTree = "<group>"; };
 		A108DE471C49488F00760D54 /* MenuLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuLayer.swift; path = Gravity/MenuLayer.swift; sourceTree = "<group>"; };
 		A108DE481C49488F00760D54 /* SKSceneExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SKSceneExtension.swift; path = Gravity/SKSceneExtension.swift; sourceTree = "<group>"; };
@@ -174,6 +175,7 @@
 		8C4A506B52B050643EA03376 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				14FD4E4E1CBEDAF9005F58C8 /* AVFoundation.framework */,
 				14188E281CBD337200ED16DF /* GameKit.framework */,
 				A19946581C46B8D500A0041B /* GameKit.framework */,
 			);
