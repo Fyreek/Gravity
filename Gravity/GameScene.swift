@@ -320,7 +320,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             } else {
                 vars.usedTouches = count
             }
-            print(vars.usedTouches)
             for touch in touches {
                 let location = touch.locationInNode(self)
                 
@@ -328,8 +327,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 if node.name != "objectPos" {
                     if node.name != "objectNeg" {
                         if node.name != nil {
-                            print("Pressed")
-                            print(node.name!)
                             lastNodeName = node.name!
                             node.removeActionForKey("pulse")
                             node.runAction(fadeColorAction, withKey: "fade")
@@ -392,8 +389,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             if node.name != "objectPos" {
                 if node.name != "objectNeg" {
                     if node.name != nil {
-                        print("Released")
-                        print(node.name!)
                         if isAnimating == false {
                             if lastNodeName == node.name! {
                                 lastNodeName = ""
@@ -886,20 +881,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         
         switch contactMask {
-            
-        case ColliderType.Player.rawValue | ColliderType.Objects.rawValue:
-            contact.bodyA.dynamic = false
-            contact.bodyB.dynamic = false
-            contact.bodyA.node?.removeAllActions()
-            contact.bodyA.node?.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-            contact.bodyB.node?.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-            contact.bodyB.node?.removeAllActions()
-            if contact.bodyA.node?.name == "objectPos" || contact.bodyA.node?.name == "objectNeg" {
-                contact.bodyB.node?.position = contact.contactPoint
-            } else if contact.bodyB.node?.name == "objectNeg" || contact.bodyB.node?.name == "objectNeg" {
-                contact.bodyA.node?.position = contact.contactPoint
-            }
-            gameOver()
             
         case ColliderType.Player.rawValue | ColliderType.Ground.rawValue:
             switchGravity()
@@ -1485,6 +1466,33 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             highscoreLayer.fifthHighscoreText.fontColor = gameLayer.topBar.strokeColor
         }
         if vars.currentGameState == .gameActive {
+            
+            if gameLayer.player.physicsBody?.allContactedBodies().count > 0 {
+                if let contact = gameLayer.player.physicsBody?.allContactedBodies()[0] {
+                    let objectNode = contact.node
+                    let player = gameLayer.player
+                    let nodeName = objectNode!.name
+                    if nodeName == "objectPos" || nodeName == "objectNeg" {
+                        player.physicsBody?.dynamic = false
+                        objectNode?.physicsBody?.dynamic = false
+                        player.removeAllActions()
+                        objectNode?.removeAllActions()
+                        player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                        objectNode?.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                        objectsCanRotate = false
+                        self.enumerateChildNodesWithName("objectPos") {
+                            node, stop in
+                            node.removeAllActions()
+                        }
+                        self.enumerateChildNodesWithName("objectNeg") {
+                            node, stop in
+                            node.removeAllActions()
+                        }
+                        gameOver()
+                    }
+                }
+            }
+            
             if vars.usedTouches == 0 {
                 moveRight = false
                 moveLeft = false

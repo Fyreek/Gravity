@@ -53,8 +53,7 @@ struct vars {
     static var selectedMenuItem:Int = 0 //Which Item is Selected in the Main Menu(0=Play; 1=GC)
     static var normalTextFrameHeight:CGFloat = 0 //Normal Height for the highscoreLabelTexts
     static var shouldOpenScoresList:Bool = false //If the games opens the own score list
-    static var usedTouches:Int = 0 //Count of used touches
-    static var activeTouches:Int = 0 //Count of active touches
+    static var usedTouches:Int = 0 //Count of touches
     static var cursorTime:Int = 0 //seconds / 60 since last mouse movement
     static var windowIsFullscreen:Bool = false //If the window is in fullscreen mode
 }
