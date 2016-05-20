@@ -60,6 +60,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var interactionHappend:Bool = false
     var isAnimating:Bool = false
     
+    var isTouchedR:Bool = false
+    var isTouchedL:Bool = false
+    
     //Actions
     var colorizeBGNodes = SKAction()
     var colorizeObjectNodes = SKAction()
@@ -313,106 +316,116 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if vars.usedTouches < 2 {
-            let count = touches.count
-            if count > 2 {
-                vars.usedTouches = 2
+        for touch in touches {
+            let location = touch.locationInNode(self)
+            
+            let node = self.nodeAtPoint(location)
+            if node.name == "objectPos" {
+                movementStart(location.x)
+            } else if node.name == "objectNeg" {
+                movementStart(location.x)
+            } else if node.name != nil {
+                lastNodeName = node.name!
+                node.removeActionForKey("pulse")
+                node.runAction(fadeColorAction, withKey: "fade")
             } else {
-                vars.usedTouches = count
+                movementStart(location.x)
             }
-            for touch in touches {
-                let location = touch.locationInNode(self)
-                
-                let node = self.nodeAtPoint(location)
-                if node.name != "objectPos" {
-                    if node.name != "objectNeg" {
-                        if node.name != nil {
-                            lastNodeName = node.name!
-                            node.removeActionForKey("pulse")
-                            node.runAction(fadeColorAction, withKey: "fade")
-                        } else {
-                            if location.x >= vars.screenSize.width / 2 {
-                                interactionHappend = true
-                                moveRight = true
-                            } else if location.x <= vars.screenSize.width / 2 {
-                                interactionHappend = true
-                                moveLeft = true
-                            }
-                        }
-                    }
-                }
-            }
+            
+        }
+    }
+    
+    func movementStart(locationX: CGFloat) {
+        if locationX >= vars.screenSize.width / 2 {
+            interactionHappend = true
+            isTouchedR = true
+            moveRight = true
+        } else {
+            interactionHappend = true
+            isTouchedL = true
+            moveLeft = true
         }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let count = touches.count
-        vars.usedTouches = count
         for touch in touches {
             let location = touch.locationInNode(self)
+            let preLoc = touch.previousLocationInNode(self)
             
-            if vars.currentGameState == .gameActive {
-                if vars.motionControl == false {
-                    if lastNodeName == "" {
-                        if vars.usedTouches == 1 {
-                            if location.x >= vars.screenSize.width / 2 {
-                                interactionHappend = true
-                                moveRight = true
-                                moveLeft = false
-                            } else if location.x <= vars.screenSize.width / 2 {
-                                interactionHappend = true
-                                moveLeft = true
-                                moveRight = false
-                            }
-                        } else {
-                            if location.x >= vars.screenSize.width / 2 {
-                                interactionHappend = true
-                                moveRight = true
-                            } else if location.x <= vars.screenSize.width / 2 {
-                                interactionHappend = true
-                                moveLeft = true
-                            }
-                        }
-                    }
-                }
+            let node = self.nodeAtPoint(location)
+            if node.name == "objectPos" {
+                movementMove(location.x, preLocX: preLoc.x)
+            } else if node.name == "objectNeg" {
+                movementMove(location.x, preLocX: preLoc.x)
+            } else if node.name == nil {
+                movementMove(location.x, preLocX: preLoc.x)
+            }
+        }
+    }
+    
+    func movementMove(locationX: CGFloat, preLocX: CGFloat) {
+        
+        if locationX >= vars.screenSize.width / 2 {
+            if preLocX < vars.screenSize.width / 2 {
+                moveRight = true
+                moveLeft = false
+                isTouchedR = true
+                isTouchedL = false
+            } else {
+                interactionHappend = true
+                moveRight = true
+            }
+        } else {
+            if preLocX > vars.screenSize.width / 2 {
+                moveLeft = true
+                moveRight = false
+                isTouchedL = true
+                isTouchedR = false
+            } else {
+                interactionHappend = true
+                moveLeft = true
             }
         }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let count = touches.count
-        vars.usedTouches = count
         for touch in touches {
             let location = touch.locationInNode(self)
             
             let node = self.nodeAtPoint(location)
-            if node.name != "objectPos" {
-                if node.name != "objectNeg" {
-                    if node.name != nil {
-                        if isAnimating == false {
-                            if lastNodeName == node.name! {
-                                lastNodeName = ""
-                                node.runAction(fadeOutColorAction, withKey: "fade")
-                                let selector = NSSelectorFromString("\(node.name!)Pressed")
-                                self.performSelector(selector)
-                            } else {
-                                removeNodeAction()
-                            }
-                        }
+            if node.name == "objectPos" {
+                movementEnd(location.x)
+                removeNodeAction()
+            } else if node.name == "objectNeg" {
+                movementEnd(location.x)
+                removeNodeAction()
+            } else if node.name != nil {
+                if isAnimating == false {
+                    if lastNodeName == node.name! {
+                        lastNodeName = ""
+                        node.runAction(fadeOutColorAction, withKey: "fade")
+                        let selector = NSSelectorFromString("\(node.name!)Pressed")
+                        self.performSelector(selector)
                     } else {
-                        if vars.motionControl == false {
-                            if location.x >= vars.screenSize.width / 2 {
-                                interactionHappend = true
-                                moveRight = false
-                            } else if location.x <= vars.screenSize.width / 2 {
-                                interactionHappend = true
-                                moveLeft = false
-                            }
-                        }
                         removeNodeAction()
                     }
                 }
+            } else {
+                movementEnd(location.x)
+                removeNodeAction()
             }
+        }
+    }
+    
+    func movementEnd(locationX: CGFloat) {
+        if locationX >= vars.screenSize.width / 2 {
+            interactionHappend = true
+            isTouchedR = false
+            moveRight = false
+        } else {
+            interactionHappend = true
+            isTouchedL = false
+            moveLeft = false
         }
     }
     
@@ -767,7 +780,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func updateSpawnTimer() {
-        getSpawnPositions()
+        if vars.spawnObjects == true {
+            getSpawnPositions()
+        }
     }
     
     func setupPhysics() {
@@ -1493,10 +1508,18 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 }
             }
             
-            if vars.usedTouches == 0 {
+            print("touches: " + String(vars.usedTouches))
+            print("left: " + String(moveLeft))
+            print("right: " + String(moveRight))
+            print("lTouch: " + String(isTouchedL))
+            print("rTouch: " + String(isTouchedR))
+            print("-----------")
+            
+            if isTouchedR == false && isTouchedL == false {
                 moveRight = false
                 moveLeft = false
             }
+            
             if moveRight == true && moveLeft == false {
                 gameLayer.player.position.x += vars.playerSideSpeed
                 if gameLayer.player.position.x >= vars.screenSize.width {

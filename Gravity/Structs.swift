@@ -54,8 +54,10 @@ struct vars {
     static var normalTextFrameHeight:CGFloat = 0 //Normal Height for the highscoreLabelTexts
     static var shouldOpenScoresList:Bool = false //If the games opens the own score list
     static var usedTouches:Int = 0 //Count of touches
+    static var activeTouches:Int = 0
     static var cursorTime:Int = 0 //seconds / 60 since last mouse movement
     static var windowIsFullscreen:Bool = false //If the window is in fullscreen mode
+    static var spawnObjects:Bool = true //If Objects are allowed to spawn
 }
 
 struct colors {

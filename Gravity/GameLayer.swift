@@ -33,12 +33,12 @@ class GameLayer: SKNode {
         
         bottomBarInAction = SKAction.moveToY(vars.barHeight / 2, duration: vars.gameLayerFadeTime)
         
-        topBar = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width, height: vars.barHeight))
+        topBar = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width + 20, height: vars.barHeight))
         topBar.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height + vars.barHeight / 2)
         topBar.zPosition = 2
         addChild(topBar)
         
-        bottomBar = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width, height: vars.barHeight))
+        bottomBar = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width + 20, height: vars.barHeight))
         bottomBar.position = CGPoint(x: vars.screenSize.width / 2, y: -(vars.barHeight / 2))
         bottomBar.zPosition = 2
         addChild(bottomBar)

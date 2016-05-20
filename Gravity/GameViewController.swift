@@ -16,7 +16,7 @@ class GameViewController: UIViewController, GCDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         GC.sharedInstance(self)
-        self.view.multipleTouchEnabled = false
+        self.view.multipleTouchEnabled = true
         vars.gameScene = GameScene()
         // Configure the view.
         let skView = self.view as! SKView

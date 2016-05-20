@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if vars.motionControl == true && vars.currentGameState == .gameActive {
             vars.gameScene?.initMotionControl()
-        } else {
+        } else if vars.currentGameState == .gameActive {
             vars.gameScene?.cancelMotionControl()
         }
         if vars.extremeMode == true {
