@@ -331,7 +331,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             } else {
                 movementStart(location.x)
             }
-            
         }
     }
     
@@ -389,6 +388,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        touchesEnd(touches)
+    }
+    
+    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+        touchesEnd(touches!)
+    }
+    
+    func touchesEnd(touches: Set<UITouch>) {
         for touch in touches {
             let location = touch.locationInNode(self)
             
@@ -1507,13 +1514,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                     }
                 }
             }
-            
-            print("touches: " + String(vars.usedTouches))
-            print("left: " + String(moveLeft))
-            print("right: " + String(moveRight))
-            print("lTouch: " + String(isTouchedL))
-            print("rTouch: " + String(isTouchedR))
-            print("-----------")
             
             if isTouchedR == false && isTouchedL == false {
                 moveRight = false
