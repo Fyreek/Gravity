@@ -21,16 +21,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         window.delegate = self
-        /* Pick a size for the scene */
+        
         vars.gameScene = GameScene()
         skView.showsFPS = false
         skView.showsNodeCount = false
         skView.showsPhysics = false
-        
-        /* Sprite Kit applies additional optimizations to improve rendering performance */
         skView.ignoresSiblingOrder = true
         
-        /* Set the scale mode to scale to fit the window */
         vars.gameScene!.scaleMode = .AspectFill
         vars.gameScene!.size = skView.bounds.size
         
@@ -437,19 +434,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     func  getGKScoreLeaderboard(leaderboardIdentifier leaderboardIdentifier:String, completion:((resultGKScore:GKScore?) -> Void)) {
 
         guard leaderboardIdentifier != "" else {
-            //GCError.Empty.errorCall()
             completion(resultGKScore:nil)
             return
         }
 
         guard isConnectedToNetwork else {
-            //GCError.NoConnection.errorCall()
             completion(resultGKScore: nil)
             return
         }
 
         guard isPlayerIdentified else {
-            //GCError.NotLogin.errorCall()
             completion(resultGKScore: nil)
             return
         }
@@ -490,10 +484,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         let localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer()
         localPlayer.authenticateHandler = {(viewController: NSViewController?, error: NSError?) -> Void in
             if viewController != nil {
-                //showAuthenticationDialogWhenReasonable: is an example method name. Create your own method that displays an authentication view when appropriate for your app.
-                //self.showAuthenticationDialogWhenReasonable(viewController)
-            }
-            else if localPlayer.authenticated {
+            } else if localPlayer.authenticated {
                 print("Logged in")
                 self.GCAuthentified(localPlayer.authenticated)
             }

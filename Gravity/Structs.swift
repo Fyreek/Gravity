@@ -28,7 +28,6 @@ struct vars {
     static var objectWait:NSTimeInterval = 0.5 //How long a object waits before it moves - normal: 0.7
     static var timerWait:NSTimeInterval = 1 //How often an object spawns - normal: 0.7
     static var objectMoveTime:NSTimeInterval = 4 //How long it takes an object to reach the other side - normal: 3
-    static var objectBorderWidth:CGFloat = 4 //How wide the border of an object is - normal: 4
     static var gameCenterLoggedIn:Bool = false //If the game is connected to GameCenter
     static var highscore:Double = 0 //Time Highscore
     static var extHighscore:Double = 0 //Extreme Time Highscore
@@ -41,7 +40,6 @@ struct vars {
     static var highscorePlayerNames:[String] = [] //Stores Friends Gamecenter names
     static var highscorePlayerScore:[String] = [] //Stores Friends Gamecenter scores
     static var localPlayerName:String = "" //Stores players Gamecenter name
-    static var motionOrientation:String = "left"
     static var extremeMode:Bool = false //DIZ IS DE EXTREME MODE!!!!!
     static var showTutorial:Bool = false //If the Tutorial is shown. Do not change
     static var tutorialArrowAlpha:CGFloat = 1 //Alpha of the Tutorial arrows
@@ -53,8 +51,6 @@ struct vars {
     static var selectedMenuItem:Int = 0 //Which Item is Selected in the Main Menu(0=Play; 1=GC)
     static var normalTextFrameHeight:CGFloat = 0 //Normal Height for the highscoreLabelTexts
     static var shouldOpenScoresList:Bool = false //If the games opens the own score list
-    static var usedTouches:Int = 0 //Count of touches
-    static var activeTouches:Int = 0
     static var cursorTime:Int = 0 //seconds / 60 since last mouse movement
     static var windowIsFullscreen:Bool = false //If the window is in fullscreen mode
     static var spawnObjects:Bool = true //If Objects are allowed to spawn

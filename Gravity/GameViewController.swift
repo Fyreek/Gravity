@@ -34,25 +34,7 @@ class GameViewController: UIViewController, GCDelegate {
         skView.presentScene(vars.gameScene)
         
         vars.gameScene!.viewController = self
-        #if os(tvOS)
-        loadGestureRecognizers()
-        #endif
     }
-    
-    //only important for tvOS
-//    func loadGestureRecognizers() {
-//        
-//        //let aSelector : Selector = #selector(GameScene.updateTime)
-//        
-//        //let swipeRecognizerRight = UISwipeGestureRecognizer(target: self, action:Selector("swipedRight:"))
-//        let swipeRecognizerRight = UISwipeGestureRecognizer(target: self, action: #selector("swipedRight:"))
-//        swipeRecognizerRight.direction = .Right
-//        self.view.addGestureRecognizer(swipeRecognizerRight)
-//        
-//        let swipeRecognizerLeft = UISwipeGestureRecognizer(target: self, action:Selector("swipedLeft:"))
-//        swipeRecognizerLeft.direction = .Left
-//        self.view.addGestureRecognizer(swipeRecognizerLeft)
-//    }
     
     func GCAuthentified(authentified:Bool) {
         if authentified {
@@ -293,7 +275,6 @@ class GameViewController: UIViewController, GCDelegate {
     #endif
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
     }
     #if os(iOS)
     override func prefersStatusBarHidden() -> Bool {

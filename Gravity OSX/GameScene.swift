@@ -56,8 +56,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var preCursorPos:NSPoint = NSPoint(x: 0, y: 0)
     
     //Actions
-    var colorizeBGNodes = SKAction()
-    var colorizeObjectNodes = SKAction()
     let fadeColorAction = SKAction.customActionWithDuration(0.5, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
         if node is SKSpriteNode  {
             (node as! SKSpriteNode).alpha = 0.8
@@ -82,10 +80,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     //Functions
     override func didMoveToView(view: SKView) {
         viewController.setWindowStyleMenu()
-        //Clear Data
-        //let appDomain: String = NSBundle.mainBundle().bundleIdentifier!
-        //NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain)
-        
         reloadGame()
     }
     
@@ -553,8 +547,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func goToMenu() {
         isAnimating = true
-        //Remove?
-        //UIApplication.sharedApplication().idleTimerDisabled = false
         timesPlayedWithoutInteraction = 0
         spawnTimer.invalidate()
         gameLayer.player.physicsBody?.affectedByGravity = false
@@ -771,8 +763,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             vars.showTutorial = true
         }
         isAnimating = true
-        //Remove?
-        //UIApplication.sharedApplication().idleTimerDisabled = true
         gameLayer = GameLayer()
         setColors()
         addChild(gameLayer)
@@ -791,11 +781,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             self.menuLayer.playButton.hidden = true
             self.setupPhysics()
             vars.currentGameState = .gameActive
-            #if os(iOS)
-                if vars.motionControl == true && self.motionManager.accelerometerActive == false {
-                    self.initMotionControl()
-                }
-            #endif
             self.setupSpawnTimer()
             self.barsFadedIn = false
             self.objectsCanRotate = true
@@ -1364,7 +1349,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func restartGame() {
         vars.currentGameState = .gameActive
-        //UIApplication.sharedApplication().idleTimerDisabled = true
         objectsCanRotate = true
         objectRotationPos = 0
         objectRotationNeg = 360

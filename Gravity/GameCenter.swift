@@ -101,9 +101,6 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
                 return
             }
             Static.delegate = GC.delegate
-            
-            //Log commented, because of error!
-            //EGC.printLogEGC("New delegate UIViewController is \(_stdlib_getDemangledTypeName(newValue))\n")
         }
     }
 
@@ -479,8 +476,6 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
             if GC.isConnectedToNetwork {
                 achievement.showsCompletionBanner = true
             } else {
-                //oneAchievement.showsCompletionBanner = true << Bug For not show two banner
-                // Force show Banner when player not have network
                 GC.getTupleGKAchievementAndDescription(achievementIdentifier: achievementIdentifier, completion: {
                     (tupleGKAchievementAndDescription) -> Void in
                     
@@ -580,7 +575,6 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
                     return
                 }
                 
-                //oneAchievement.showsCompletionBanner = true
                 let title = tupleOK.gkAchievementDescription.title
                 let description = tupleOK.gkAchievementDescription.achievedDescription
                 

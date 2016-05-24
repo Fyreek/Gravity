@@ -64,8 +64,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var isTouchedL:Bool = false
     
     //Actions
-    var colorizeBGNodes = SKAction()
-    var colorizeObjectNodes = SKAction()
     let fadeColorAction = SKAction.customActionWithDuration(0.5, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
         if node is SKSpriteNode  {
             (node as! SKSpriteNode).alpha = 0.8
@@ -1222,7 +1220,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func gameOverAfter() {
         isAnimating = true
-        vars.usedTouches = 0
         moveLeft = false
         moveRight = false
         NSUserDefaults.standardUserDefaults().setInteger(vars.gamesPlayed, forKey: "gamesPlayed")
