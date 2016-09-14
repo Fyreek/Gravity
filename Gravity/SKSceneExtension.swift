@@ -11,26 +11,26 @@ import SpriteKit
 class SKSceneExtension: SKScene {
     
     #if os(iOS)
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         for touch: AnyObject in  touches {
-            let location = touch.locationInNode(self)
+            let location = touch.location(in: self)
             screenInteractionStarted(location)
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         for touch: AnyObject in  touches {
-            let location = touch.locationInNode(self)
+            let location = touch.location(in: self)
             screenInteractionMoved(location)
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         for touch: AnyObject in  touches {
-            let location = touch.locationInNode(self)
+            let location = touch.location(in: self)
             screenInteractionEnded(location)
         }
     }
@@ -51,13 +51,13 @@ class SKSceneExtension: SKScene {
     }
     #endif
     
-    func screenInteractionStarted(location: CGPoint) {
+    func screenInteractionStarted(_ location: CGPoint) {
     }
     
-    func screenInteractionMoved(location: CGPoint) {
+    func screenInteractionMoved(_ location: CGPoint) {
     }
     
-    func screenInteractionEnded(location: CGPoint) {
+    func screenInteractionEnded(_ location: CGPoint) {
     }
     
 }

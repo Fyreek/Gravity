@@ -24,14 +24,14 @@ struct vars {
     static var screenOutRight:CGFloat = 0
     static var gravity:CGFloat = 0
     static var playerSideSpeed:CGFloat = 0
-    static var gameLayerFadeTime:NSTimeInterval = 0.5 //AnimationTime - normal: 0.5
-    static var objectWait:NSTimeInterval = 0.5 //How long a object waits before it moves - normal: 0.7
-    static var timerWait:NSTimeInterval = 1 //How often an object spawns - normal: 0.7
-    static var objectMoveTime:NSTimeInterval = 4 //How long it takes an object to reach the other side - normal: 3
+    static var gameLayerFadeTime:TimeInterval = 0.5 //AnimationTime - normal: 0.5
+    static var objectWait:TimeInterval = 0.5 //How long a object waits before it moves - normal: 0.7
+    static var timerWait:TimeInterval = 1 //How often an object spawns - normal: 0.7
+    static var objectMoveTime:TimeInterval = 4 //How long it takes an object to reach the other side - normal: 3
     static var gameCenterLoggedIn:Bool = false //If the game is connected to GameCenter
     static var highscore:Double = 0 //Time Highscore
     static var extHighscore:Double = 0 //Extreme Time Highscore
-    static var colorChangeTime:NSTimeInterval = 5 //How long it takes the game to switch between 2 colors - normal: 1
+    static var colorChangeTime:TimeInterval = 5 //How long it takes the game to switch between 2 colors - normal: 1
     static var currentGameState:gameState = .gameMenu //What state the game is in
     static var gamesPlayed:Int = 0 //Times played Highscore
     static var motionControl:Bool = false //If the game is controlled by motion control
@@ -57,7 +57,7 @@ struct vars {
 }
 
 struct colors {
-    static var playerColor:SKColor = SKColor.whiteColor()
+    static var playerColor:SKColor = SKColor.white
     static var blueBGColor:SKColor = SKColor(red: 96 / 255, green: 201 / 255, blue: 248 / 255, alpha: 1)
     static var blueObjectColor:SKColor = SKColor(red: 66 / 255, green: 171 / 255, blue: 218 / 255, alpha: 1)
     static var yellowBGColor:SKColor = SKColor(red: 254 / 255, green: 203 / 255, blue: 47 / 255, alpha: 1)

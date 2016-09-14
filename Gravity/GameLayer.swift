@@ -29,16 +29,16 @@ class GameLayer: SKNode {
     override init() {
         super.init()
         
-        topBarInAction = SKAction.moveToY(vars.screenSize.height - vars.barHeight / 2, duration: vars.gameLayerFadeTime)
+        topBarInAction = SKAction.moveTo(y: vars.screenSize.height - vars.barHeight / 2, duration: vars.gameLayerFadeTime)
         
-        bottomBarInAction = SKAction.moveToY(vars.barHeight / 2, duration: vars.gameLayerFadeTime)
+        bottomBarInAction = SKAction.moveTo(y: vars.barHeight / 2, duration: vars.gameLayerFadeTime)
         
-        topBar = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width + 20, height: vars.barHeight))
+        topBar = SKShapeNode(rectOf: CGSize(width: vars.screenSize.width + 20, height: vars.barHeight))
         topBar.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height + vars.barHeight / 2)
         topBar.zPosition = 2
         addChild(topBar)
         
-        bottomBar = SKShapeNode(rectOfSize: CGSize(width: vars.screenSize.width + 20, height: vars.barHeight))
+        bottomBar = SKShapeNode(rectOf: CGSize(width: vars.screenSize.width + 20, height: vars.barHeight))
         bottomBar.position = CGPoint(x: vars.screenSize.width / 2, y: -(vars.barHeight / 2))
         bottomBar.zPosition = 2
         addChild(bottomBar)
@@ -53,14 +53,14 @@ class GameLayer: SKNode {
         scoreNode = SKLabelNode(fontNamed: "Helvetia")
         scoreNode.text = "00:00.00"
         scoreNode.fontSize = vars.screenSize.height / 13
-        scoreNode.fontColor = SKColor.whiteColor()
-        scoreNode.horizontalAlignmentMode = .Left
+        scoreNode.fontColor = SKColor.white
+        scoreNode.horizontalAlignmentMode = .left
         scoreNode.zPosition = 2
         scoreNode.position = CGPoint(x: vars.screenSize.width / 60, y: vars.screenSize.height + scoreNode.frame.height + vars.screenSize.height / 40)
         scoreNode.name = "scoreNode"
         addChild(scoreNode)
         
-        scoreNodeInAction = SKAction.moveToY(vars.screenSize.height - scoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: vars.gameLayerFadeTime)
+        scoreNodeInAction = SKAction.moveTo(y: vars.screenSize.height - scoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: vars.gameLayerFadeTime)
         
         menuNode = SKSpriteNode(imageNamed: "Back")
         menuNode.setScale(vars.screenSize.height / 1280)
@@ -69,7 +69,7 @@ class GameLayer: SKNode {
         menuNode.name = "menuNode"
         addChild(menuNode)
         
-        menuNodeInAction = SKAction.moveToY(vars.screenSize.height - ((vars.screenSize.height / 7) / 2), duration: vars.gameLayerFadeTime)
+        menuNodeInAction = SKAction.moveTo(y: vars.screenSize.height - ((vars.screenSize.height / 7) / 2), duration: vars.gameLayerFadeTime)
         
         tutorialNodeLeft = SKSpriteNode(imageNamed: "Tutorial-Touch")
         tutorialNodeLeft.setScale(vars.screenSize.height / 1280)

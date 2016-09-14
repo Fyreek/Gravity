@@ -12,17 +12,17 @@ import SystemConfiguration
 
 @objc public protocol GCDelegate:NSObjectProtocol {
 
-    optional func GCAuthentified(authentified:Bool)
+    @objc optional func GCAuthentified(_ authentified:Bool)
 
-    optional func GCInCache()
+    @objc optional func GCInCache()
 
-    optional func GCMatchStarted()
+    @objc optional func GCMatchStarted()
 
-    optional func GCMatchRecept(match: GKMatch, didReceiveData: NSData, fromPlayer: String)
+    @objc optional func GCMatchRecept(_ match: GKMatch, didReceiveData: Data, fromPlayer: String)
 
-    optional func GCMatchEnded()
+    @objc optional func GCMatchEnded()
 
-    optional func GCMatchCancel()
+    @objc optional func GCMatchCancel()
 }
 
 extension GC {
@@ -30,11 +30,13 @@ extension GC {
     static var isConnectedToNetwork: Bool {
         
         var zeroAddress = sockaddr_in()
-        zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
         
-        guard let defaultRouteReachability = withUnsafePointer(&zeroAddress, {
-            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+        guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                zeroSockAddress in SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
         }) else {
             return false
         }
@@ -44,43 +46,45 @@ extension GC {
             return false
         }
         
-        let isReachable = flags.contains(.Reachable)
-        let needsConnection = flags.contains(.ConnectionRequired)
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
         return (isReachable && !needsConnection)
     }
 }
 
-public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewControllerDelegate, GKMatchDelegate, GKLocalPlayerListener {
+open class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewControllerDelegate, GKMatchDelegate, GKLocalPlayerListener {
 
-    private var achievementsCache:[String:GKAchievement] = [String:GKAchievement]()
-    private var achievementsDescriptionCache = [String:GKAchievementDescription]()
-    private var achievementsCacheShowAfter = [String:String]()
-    private var timerNetAndPlayer:NSTimer?
-    private var debugModeGetSet:Bool = false
+    private static var __once: () = {
+                Static.instance = GC()
+                Static.delegate = delegate
+                Static.instance!.loginPlayerToGameCenter()
+            }()
+
+    fileprivate var achievementsCache:[String:GKAchievement] = [String:GKAchievement]()
+    fileprivate var achievementsDescriptionCache = [String:GKAchievementDescription]()
+    fileprivate var achievementsCacheShowAfter = [String:String]()
+    fileprivate var timerNetAndPlayer:Timer?
+    fileprivate var debugModeGetSet:Bool = false
     static var showLoginPage:Bool = true
-    private var match: GKMatch?
-    private var playersInMatch = Set<GKPlayer>()
-    public var invitedPlayer: GKPlayer?
-    public var invite: GKInvite?
+    fileprivate var match: GKMatch?
+    fileprivate var playersInMatch = Set<GKPlayer>()
+    open var invitedPlayer: GKPlayer?
+    open var invite: GKInvite?
     
     override init() {
         super.init()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GC.authenticationChanged), name: GKPlayerAuthenticationDidChangeNotificationName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GC.authenticationChanged), name: NSNotification.Name(rawValue: GKPlayerAuthenticationDidChangeNotificationName), object: nil)
     }
 
     struct Static {
-        static var onceToken: dispatch_once_t = 0
+        static var onceToken: Int = 0
         static var instance: GC? = nil
         static weak var delegate: UIViewController? = nil
     }
     
-    public class func sharedInstance(delegate:UIViewController)-> GC {
+    open class func sharedInstance(_ delegate:UIViewController)-> GC {
         if Static.instance == nil {
-            dispatch_once(&Static.onceToken) {
-                Static.instance = GC()
-                Static.delegate = delegate
-                Static.instance!.loginPlayerToGameCenter()
-            }
+            _ = GC.__once
         }
         return Static.instance!
     }
@@ -91,8 +95,8 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
                 let delegateInstance = try GC.sharedInstance.getDelegate()
                 return delegateInstance
             } catch  {
-                GCError.NoDelegate.errorCall()
-                fatalError("Dont work\(error)")
+                GCError.noDelegate.errorCall()
+                fatalError(error as! String)
             }
         }
         
@@ -104,7 +108,7 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         }
     }
 
-    public class var debugMode:Bool {
+    open class var debugMode:Bool {
         get {
             return GC.sharedInstance.debugModeGetSet
         }
@@ -113,9 +117,9 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         }
     }
 
-    public static var isPlayerIdentified: Bool {
+    open static var isPlayerIdentified: Bool {
         get {
-            return GKLocalPlayer.localPlayer().authenticated
+            return GKLocalPlayer.localPlayer().isAuthenticated
         }
     }
     
@@ -125,21 +129,21 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         }
     }
     
-    class func getlocalPlayerInformation(completion completionTuple: (playerInformationTuple:(playerID:String,alias:String,profilPhoto:UIImage?)?) -> ()) {
+    class func getlocalPlayerInformation(completion completionTuple: @escaping (_ playerInformationTuple:(playerID:String,alias:String,profilPhoto:UIImage?)?) -> ()) {
         
         guard GC.isConnectedToNetwork else {
-            completionTuple(playerInformationTuple: nil)
-            GCError.NoConnection.errorCall()
+            completionTuple(nil)
+            GCError.noConnection.errorCall()
             return
         }
         
         guard GC.isPlayerIdentified else {
-            completionTuple(playerInformationTuple: nil)
-            GCError.NotLogin.errorCall()
+            completionTuple(nil)
+            GCError.notLogin.errorCall()
             return
         }
         
-        GC.localPayer.loadPhotoForSize(GKPhotoSizeNormal, withCompletionHandler: {
+        GC.localPayer.loadPhoto(forSize: GKPhotoSizeNormal, withCompletionHandler: {
             (image, error) in
             
             var playerInformationTuple:(playerID:String,alias:String,profilPhoto:UIImage?)
@@ -148,21 +152,21 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
             playerInformationTuple.playerID = GC.localPayer.playerID!
             playerInformationTuple.alias = GC.localPayer.alias!
             if error == nil { playerInformationTuple.profilPhoto = image }
-            completionTuple(playerInformationTuple: playerInformationTuple)
+            completionTuple(playerInformationTuple)
         })
     }
     
-    public class func showGameCenter(completion: ((isShow:Bool) -> Void)? = nil) {
+    open class func showGameCenter(_ completion: ((_ isShow:Bool) -> Void)? = nil) {
         
         guard GC.isConnectedToNetwork else {
-            if completion != nil { completion!(isShow:false) }
-            GCError.NoConnection.errorCall()
+            if completion != nil { completion!(false) }
+            GCError.noConnection.errorCall()
             return
         }
         
         guard GC.isPlayerIdentified else {
-            if completion != nil { completion!(isShow:false) }
-            GCError.NotLogin.errorCall()
+            if completion != nil { completion!(false) }
+            GCError.notLogin.errorCall()
             return
         }
         
@@ -173,65 +177,65 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         gc.gameCenterDelegate = Static.instance
         
         #if !os(tvOS)
-            gc.viewState          = GKGameCenterViewControllerState.Default
+            gc.viewState          = GKGameCenterViewControllerState.default
         #endif
         
-        var delegeteParent:UIViewController? = GC.delegate.parentViewController
+        var delegeteParent:UIViewController? = GC.delegate.parent
         if delegeteParent == nil {
             delegeteParent = GC.delegate
         }
-        delegeteParent!.presentViewController(gc, animated: true, completion: {
-            if completion != nil { completion!(isShow:true) }
+        delegeteParent!.present(gc, animated: true, completion: {
+            if completion != nil { completion!(true) }
         })
         
     }
     
-    public class func showGameCenterAchievements(completion: ((isShow:Bool) -> Void)? = nil) {
+    open class func showGameCenterAchievements(_ completion: ((_ isShow:Bool) -> Void)? = nil) {
         
         guard GC.isConnectedToNetwork else {
-            if completion != nil { completion!(isShow:false) }
-            GCError.NoConnection.errorCall()
+            if completion != nil { completion!(false) }
+            GCError.noConnection.errorCall()
             return
         }
         
         guard GC.isPlayerIdentified else {
-            if completion != nil { completion!(isShow:false) }
-            GCError.NotLogin.errorCall()
+            if completion != nil { completion!(false) }
+            GCError.notLogin.errorCall()
             return
         }
         
         let gc = GKGameCenterViewController()
         gc.gameCenterDelegate = Static.instance
         #if !os(tvOS)
-            gc.viewState = GKGameCenterViewControllerState.Achievements
+            gc.viewState = GKGameCenterViewControllerState.achievements
         #endif
         
-        var delegeteParent:UIViewController? = GC.delegate.parentViewController
+        var delegeteParent:UIViewController? = GC.delegate.parent
         if delegeteParent == nil {
             delegeteParent = GC.delegate
         }
-        delegeteParent!.presentViewController(gc, animated: true, completion: {
-            if completion != nil { completion!(isShow:true) }
+        delegeteParent!.present(gc, animated: true, completion: {
+            if completion != nil { completion!(true) }
         })
     }
     
-    public class func showGameCenterLeaderboard(leaderboardIdentifier leaderboardIdentifier :String, completion: ((isShow:Bool) -> Void)? = nil) {
+    open class func showGameCenterLeaderboard(leaderboardIdentifier :String, completion: ((_ isShow:Bool) -> Void)? = nil) {
         
         guard leaderboardIdentifier != "" else {
-            GCError.Empty.errorCall()
-            if completion != nil { completion!(isShow:false) }
+            GCError.empty.errorCall()
+            if completion != nil { completion!(false) }
             return
         }
         
         guard GC.isConnectedToNetwork else {
-            GCError.NoConnection.errorCall()
-            if completion != nil { completion!(isShow:false) }
+            GCError.noConnection.errorCall()
+            if completion != nil { completion!(false) }
             return
         }
         
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
-            if completion != nil { completion!(isShow:false) }
+            GCError.notLogin.errorCall()
+            if completion != nil { completion!(false) }
             return
         }
         
@@ -239,120 +243,120 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         gc.gameCenterDelegate = Static.instance
         #if !os(tvOS)
             gc.leaderboardIdentifier = leaderboardIdentifier
-            gc.viewState = GKGameCenterViewControllerState.Leaderboards
+            gc.viewState = GKGameCenterViewControllerState.leaderboards
         #endif
         
-        var delegeteParent:UIViewController? = GC.delegate.parentViewController
+        var delegeteParent:UIViewController? = GC.delegate.parent
         if delegeteParent == nil {
             delegeteParent = GC.delegate
         }
-        delegeteParent!.presentViewController(gc, animated: true, completion: {
-            if completion != nil { completion!(isShow:true) }
+        delegeteParent!.present(gc, animated: true, completion: {
+            if completion != nil { completion!(true) }
         })
         
     }
 
-    public class func showGameCenterChallenges(completion: ((isShow:Bool) -> Void)? = nil) {
+    open class func showGameCenterChallenges(_ completion: ((_ isShow:Bool) -> Void)? = nil) {
         
         guard GC.isConnectedToNetwork else {
-            if completion != nil { completion!(isShow:false) }
-            GCError.NoConnection.errorCall()
+            if completion != nil { completion!(false) }
+            GCError.noConnection.errorCall()
             return
         }
         
         guard GC.isPlayerIdentified else {
-            if completion != nil { completion!(isShow:false) }
-            GCError.NotLogin.errorCall()
+            if completion != nil { completion!(false) }
+            GCError.notLogin.errorCall()
             return
         }
         
         let gc = GKGameCenterViewController()
         gc.gameCenterDelegate =  Static.instance
         #if !os(tvOS)
-            gc.viewState = GKGameCenterViewControllerState.Challenges
+            gc.viewState = GKGameCenterViewControllerState.challenges
         #endif
         
-        var delegeteParent:UIViewController? =  GC.delegate.parentViewController
+        var delegeteParent:UIViewController? =  GC.delegate.parent
         if delegeteParent == nil {
             delegeteParent =  GC.delegate
         }
-        delegeteParent!.presentViewController(gc, animated: true, completion: {
+        delegeteParent!.present(gc, animated: true, completion: {
             () -> Void in
             
-            if completion != nil { completion!(isShow:true) }
+            if completion != nil { completion!(true) }
         })
         
     }
     
-    public class func showCustomBanner(title title:String, description:String,completion: (() -> Void)? = nil) {
+    open class func showCustomBanner(title:String, description:String,completion: (() -> Void)? = nil) {
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return
         }
         
-        GKNotificationBanner.showBannerWithTitle(title, message: description, completionHandler: completion)
+        GKNotificationBanner.show(withTitle: title, message: description, completionHandler: completion)
     }
     
-    public class func showGameCenterAuthentication(completion: ((result:Bool) -> Void)? = nil) {
+    open class func showGameCenterAuthentication(_ completion: ((_ result:Bool) -> Void)? = nil) {
         if completion != nil {
-            completion!(result: UIApplication.sharedApplication().openURL(NSURL(string: "gamecenter:")!))
+            completion!(UIApplication.shared.openURL(URL(string: "gamecenter:")!))
         }
     }
     
-    public class func getGKLeaderboard(completion completion: ((resultArrayGKLeaderboard:Set<GKLeaderboard>?) -> Void)) {
+    open class func getGKLeaderboard(completion: @escaping ((_ resultArrayGKLeaderboard:Set<GKLeaderboard>?) -> Void)) {
         
         guard GC.isConnectedToNetwork else {
-            completion(resultArrayGKLeaderboard: nil)
-            GCError.NoConnection.errorCall()
+            completion(nil)
+            GCError.noConnection.errorCall()
             return
         }
         
         guard GC.isPlayerIdentified else {
-            completion(resultArrayGKLeaderboard: nil)
-            GCError.NotLogin.errorCall()
+            completion(nil)
+            GCError.notLogin.errorCall()
             return
         }
         
-        GKLeaderboard.loadLeaderboardsWithCompletionHandler {
+        GKLeaderboard.loadLeaderboards {
             (leaderboards, error) in
             
             guard GC.isPlayerIdentified else {
-                completion(resultArrayGKLeaderboard: nil)
-                GCError.NotLogin.errorCall()
+                completion(nil)
+                GCError.notLogin.errorCall()
                 return
             }
             
             guard let leaderboardsIsArrayGKLeaderboard = leaderboards as [GKLeaderboard]? else {
-                completion(resultArrayGKLeaderboard: nil)
-                GCError.Error(error?.localizedDescription).errorCall()
+                completion(nil)
+                GCError.error(error?.localizedDescription).errorCall()
                 return
             }
             
-            completion(resultArrayGKLeaderboard: Set(leaderboardsIsArrayGKLeaderboard))
+            completion(Set(leaderboardsIsArrayGKLeaderboard))
             
         }
     }
     
-    public class func reportScoreLeaderboard(leaderboardIdentifier leaderboardIdentifier:String, score: Int) {
+    open class func reportScoreLeaderboard(leaderboardIdentifier:String, score: Int) {
         guard GC.isConnectedToNetwork else {
-            GCError.NoConnection.errorCall()
+            GCError.noConnection.errorCall()
             return
         }
         
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return
         }
         
         let gkScore = GKScore(leaderboardIdentifier: leaderboardIdentifier)
         gkScore.value = Int64(score)
         gkScore.shouldSetDefaultLeaderboard = true
-        GKScore.reportScores([gkScore], withCompletionHandler: nil)
+        GKScore.report([gkScore], withCompletionHandler: nil)
     }
     
-    public class func getHighScore(
-        leaderboardIdentifier leaderboardIdentifier:String,
-                              completion:((playerName:String, score:Int,rank:Int)? -> Void)
+    open class func getHighScore(
+        leaderboardIdentifier:String,
+                              completion:@escaping (((playerName:String, score:Int,rank:Int)?) -> Void)
         ) {
         GC.getGKScoreLeaderboard(leaderboardIdentifier: leaderboardIdentifier, completion: {
             (resultGKScore) in
@@ -370,47 +374,47 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         })
     }
     
-    public class func  getGKScoreLeaderboard(leaderboardIdentifier leaderboardIdentifier:String, completion:((resultGKScore:GKScore?) -> Void)) {
+    open class func  getGKScoreLeaderboard(leaderboardIdentifier:String, completion:@escaping ((_ resultGKScore:GKScore?) -> Void)) {
         
         guard leaderboardIdentifier != "" else {
-            GCError.Empty.errorCall()
-            completion(resultGKScore:nil)
+            GCError.empty.errorCall()
+            completion(nil)
             return
         }
         
         guard GC.isConnectedToNetwork else {
-            GCError.NoConnection.errorCall()
-            completion(resultGKScore: nil)
+            GCError.noConnection.errorCall()
+            completion(nil)
             return
         }
         
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
-            completion(resultGKScore: nil)
+            GCError.notLogin.errorCall()
+            completion(nil)
             return
         }
         
         let leaderBoardRequest = GKLeaderboard()
         leaderBoardRequest.identifier = leaderboardIdentifier
         
-        leaderBoardRequest.loadScoresWithCompletionHandler {
+        leaderBoardRequest.loadScores {
             (resultGKScore, error) in
             
             guard error == nil && resultGKScore != nil else {
-                completion(resultGKScore: nil)
+                completion(nil)
                 return
             }
             
-            completion(resultGKScore: leaderBoardRequest.localPlayerScore)
+            completion(leaderBoardRequest.localPlayerScore)
             
         }
     }
 
-    public class func getTupleGKAchievementAndDescription(achievementIdentifier achievementIdentifier:String,completion completionTuple: ((tupleGKAchievementAndDescription:(gkAchievement:GKAchievement,gkAchievementDescription:GKAchievementDescription)?) -> Void)) {
+    open class func getTupleGKAchievementAndDescription(achievementIdentifier:String,completion completionTuple: ((_ tupleGKAchievementAndDescription:(gkAchievement:GKAchievement,gkAchievementDescription:GKAchievementDescription)?) -> Void)) {
         
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
-            completionTuple(tupleGKAchievementAndDescription: nil)
+            GCError.notLogin.errorCall()
+            completionTuple(nil)
             return
         }
         
@@ -418,23 +422,23 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         let achievementGKDes =  GC.sharedInstance.achievementsDescriptionCache[achievementIdentifier]
         
         guard let aGKS = achievementGKScore, let aGKD = achievementGKDes else {
-            completionTuple(tupleGKAchievementAndDescription: nil)
+            completionTuple(nil)
             return
         }
         
-        completionTuple(tupleGKAchievementAndDescription: (aGKS,aGKD))
+        completionTuple((aGKS,aGKD))
         
     }
     
-    public class func getAchievementForIndentifier(identifierAchievement identifierAchievement : NSString) -> GKAchievement? {
+    open class func getAchievementForIndentifier(identifierAchievement : NSString) -> GKAchievement? {
         
         guard identifierAchievement != "" else {
-            GCError.Empty.errorCall()
+            GCError.empty.errorCall()
             return nil
         }
         
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return nil
         }
         
@@ -444,14 +448,14 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         return achievementFind
     }
     
-    public class func reportAchievement( progress progress : Double, achievementIdentifier : String, showBannnerIfCompleted : Bool = true ,addToExisting: Bool = false) {
+    open class func reportAchievement( progress : Double, achievementIdentifier : String, showBannnerIfCompleted : Bool = true ,addToExisting: Bool = false) {
         
         guard achievementIdentifier != "" else {
-            GCError.Empty.errorCall()
+            GCError.empty.errorCall()
             return
         }
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return
         }
         guard !GC.isAchievementCompleted(achievementIdentifier: achievementIdentifier) else {
@@ -459,7 +463,7 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
             return
         }
         
-        guard let achievement = GC.getAchievementForIndentifier(identifierAchievement: achievementIdentifier) else {
+        guard let achievement = GC.getAchievementForIndentifier(identifierAchievement: achievementIdentifier as NSString) else {
             GC.printLogGC("No Achievement for identifier")
             return
         }
@@ -470,7 +474,7 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         achievement.percentComplete = newProgress
         
         /* show banner only if achievement is fully granted (progress is 100%) */
-        if achievement.completed && showBannnerIfCompleted {
+        if achievement.isCompleted && showBannnerIfCompleted {
             GC.printLogGC("Achievement \(achievementIdentifier) completed")
             
             if GC.isConnectedToNetwork {
@@ -488,22 +492,22 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
                 })
             }
         }
-        if  achievement.completed && !showBannnerIfCompleted {
+        if  achievement.isCompleted && !showBannnerIfCompleted {
             GC.sharedInstance.achievementsCacheShowAfter[achievementIdentifier] = achievementIdentifier
         }
         GC.sharedInstance.reportAchievementToGameCenter(achievement: achievement)
     }
 
-    public class func getGKAllAchievementDescription(completion completion: ((arrayGKAD:Set<GKAchievementDescription>?) -> Void)){
+    open class func getGKAllAchievementDescription(completion: ((_ arrayGKAD:Set<GKAchievementDescription>?) -> Void)){
         
         
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return
         }
         
         guard GC.sharedInstance.achievementsDescriptionCache.count > 0 else {
-            GCError.NoAchievement.printError()
+            GCError.noAchievement.printError()
             return
         }
         
@@ -511,25 +515,25 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         for achievementDes in GC.sharedInstance.achievementsDescriptionCache {
             tempsEnvoi.insert(achievementDes.1)
         }
-        completion(arrayGKAD: tempsEnvoi)
+        completion(tempsEnvoi)
     }
     
-    public class func isAchievementCompleted(achievementIdentifier achievementIdentifier: String) -> Bool{
+    open class func isAchievementCompleted(achievementIdentifier: String) -> Bool{
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return false
         }
-        guard let achievement = GC.getAchievementForIndentifier(identifierAchievement: achievementIdentifier)
-            where achievement.completed || achievement.percentComplete == 100.00 else {
+        guard let achievement = GC.getAchievementForIndentifier(identifierAchievement: achievementIdentifier as NSString)
+            , achievement.isCompleted || achievement.percentComplete == 100.00 else {
                 return false
         }
         return true
     }
     
-    public class func getAchievementCompleteAndBannerNotShowing() -> [GKAchievement]? {
+    open class func getAchievementCompleteAndBannerNotShowing() -> [GKAchievement]? {
         
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return nil
         }
         
@@ -539,8 +543,8 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         if achievements.count > 0 {
             
             for achievement in achievements  {
-                if let achievementExtract = GC.getAchievementForIndentifier(identifierAchievement: achievement.1) {
-                    if achievementExtract.completed && achievementExtract.showsCompletionBanner == false {
+                if let achievementExtract = GC.getAchievementForIndentifier(identifierAchievement: achievement.1 as NSString) {
+                    if achievementExtract.isCompleted && achievementExtract.showsCompletionBanner == false {
                         achievementsTemps.append(achievementExtract)
                     }
                 }
@@ -550,16 +554,16 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         return nil
     }
     
-    public class func showAllBannerAchievementCompleteForBannerNotShowing(completion: ((achievementShow:GKAchievement?) -> Void)? = nil) {
+    open class func showAllBannerAchievementCompleteForBannerNotShowing(_ completion: ((_ achievementShow:GKAchievement?) -> Void)? = nil) {
         
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
-            if completion != nil { completion!(achievementShow: nil) }
+            GCError.notLogin.errorCall()
+            if completion != nil { completion!(nil) }
             return
         }
         guard let achievementNotShow: [GKAchievement] = GC.getAchievementCompleteAndBannerNotShowing()  else {
             
-            if completion != nil { completion!(achievementShow: nil) }
+            if completion != nil { completion!(nil) }
             return
         }
         
@@ -571,7 +575,7 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
                 
                 guard let tupleOK = tupleGKAchievementAndDescription   else {
                     
-                    if completion != nil { completion!(achievementShow: nil) }
+                    if completion != nil { completion!(nil) }
                     return
                 }
                 
@@ -580,46 +584,46 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
                 
                 GC.showCustomBanner(title: title!, description: description!, completion: {
                     
-                    if completion != nil { completion!(achievementShow: achievement) }
+                    if completion != nil { completion!(achievement) }
                 })
                 
             })
         }
-        GC.sharedInstance.achievementsCacheShowAfter.removeAll(keepCapacity: false)
+        GC.sharedInstance.achievementsCacheShowAfter.removeAll(keepingCapacity: false)
     }
 
-    public class func getProgressForAchievement(achievementIdentifier achievementIdentifier:String) -> Double? {
+    open class func getProgressForAchievement(achievementIdentifier:String) -> Double? {
         
         guard achievementIdentifier != "" else {
-            GCError.Empty.errorCall()
+            GCError.empty.errorCall()
             return nil
         }
         
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return nil
         }
         
         if let achievementInArrayInt = GC.sharedInstance.achievementsCache[achievementIdentifier]?.percentComplete {
             return achievementInArrayInt
         } else {
-            GCError.Error("No Achievement for achievementIdentifier : \(achievementIdentifier)").errorCall()
-            GCError.NoAchievement.errorCall()
+            GCError.error("No Achievement for achievementIdentifier : \(achievementIdentifier)").errorCall()
+            GCError.noAchievement.errorCall()
             return nil
         }
         
     }
     
-    public class func resetAllAchievements( completion:  ((achievementReset:GKAchievement?) -> Void)? = nil)  {
+    open class func resetAllAchievements( _ completion:  ((_ achievementReset:GKAchievement?) -> Void)? = nil)  {
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
-            if completion != nil { completion!(achievementReset: nil) }
+            GCError.notLogin.errorCall()
+            if completion != nil { completion!(nil) }
             return
         }
         
         
-        GKAchievement.resetAchievementsWithCompletionHandler({
-            (error:NSError?) in
+        GKAchievement.resetAchievements(completionHandler: {
+            (error:Error?) in
             guard error == nil else {
                 GC.printLogGC("Couldn't Reset achievement (Send data error)")
                 return
@@ -631,16 +635,16 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
                 let achievementGK = lookupAchievement.1
                 achievementGK.percentComplete = 0
                 achievementGK.showsCompletionBanner = false
-                if completion != nil { completion!(achievementReset:achievementGK) }
+                if completion != nil { completion!(achievementGK) }
                 GC.printLogGC("Reset achievement (\(achievementID))")
             }
             
         })
     }
     
-    public class func findMatchWithMinPlayers(minPlayers: Int, maxPlayers: Int) {
+    open class func findMatchWithMinPlayers(_ minPlayers: Int, maxPlayers: Int) {
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return
         }
         do {
@@ -657,23 +661,23 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
             let controlllerGKMatch = GKMatchmakerViewController(matchRequest: request)
             controlllerGKMatch!.matchmakerDelegate = GC.sharedInstance
             
-            var delegeteParent:UIViewController? = delegatVC.parentViewController
+            var delegeteParent:UIViewController? = delegatVC.parent
             if delegeteParent == nil {
                 delegeteParent = delegatVC
             }
-            delegeteParent!.presentViewController(controlllerGKMatch!, animated: true, completion: nil)
+            delegeteParent!.present(controlllerGKMatch!, animated: true, completion: nil)
             
-        } catch GCError.NoDelegate {
-            GCError.NoDelegate.errorCall()
+        } catch GCError.noDelegate {
+            GCError.noDelegate.errorCall()
             
         } catch {
             fatalError("Dont work\(error)")
         }
     }
     
-    public class func getPlayerInMatch() -> Set<GKPlayer>? {
+    open class func getPlayerInMatch() -> Set<GKPlayer>? {
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return nil
         }
         
@@ -687,9 +691,9 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
     /**
      Deconnect the Match
      */
-    public class func disconnectMatch() {
+    open class func disconnectMatch() {
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return
         }
         guard let match = GC.sharedInstance.match else {
@@ -703,9 +707,9 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         
     }
     
-    public class func getMatch() -> GKMatch? {
+    open class func getMatch() -> GKMatch? {
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return nil
         }
         
@@ -718,7 +722,7 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
     }
     
     @available(iOS 8.0, *)
-    private func lookupPlayers() {
+    fileprivate func lookupPlayers() {
         
         guard let match =  GC.sharedInstance.match else {
             GC.printLogGC("No Match")
@@ -734,7 +738,7 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         }
         
         /* Load an array of player */
-        GKPlayer.loadPlayersForIdentifiers(hasePlayerIDS) {
+        GKPlayer.loadPlayers(forIdentifiers: hasePlayerIDS) {
             (players, error) in
             
             guard error == nil else {
@@ -755,15 +759,15 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
             
             if let arrayPlayers = players as [GKPlayer]? { self.playersInMatch = Set(arrayPlayers) }
             
-            GKMatchmaker.sharedMatchmaker().finishMatchmakingForMatch(match)
+            GKMatchmaker.shared().finishMatchmaking(for: match)
             (Static.delegate as? GCDelegate)?.GCMatchStarted?()
             
         }
     }
 
-    public class func sendDataToAllPlayers(data: NSData!, modeSend:GKMatchSendDataMode) {
+    open class func sendDataToAllPlayers(_ data: Data!, modeSend:GKMatchSendDataMode) {
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return
         }
         guard let match = GC.sharedInstance.match else {
@@ -772,7 +776,7 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         }
         
         do {
-            try match.sendDataToAllPlayers(data, withDataMode: modeSend)
+            try match.sendData(toAllPlayers: data, with: modeSend)
             GC.printLogGC("Succes sending data all Player")
         } catch  {
             GC.disconnectMatch()
@@ -781,23 +785,23 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         }
     }
 
-    class private var sharedInstance : GC {
+    class fileprivate var sharedInstance : GC {
         
         guard let instance = Static.instance else {
-            GCError.Error("No Instance, please sharedInstance of EasyGameCenter").errorCall()
+            GCError.error("No Instance, please sharedInstance of EasyGameCenter").errorCall()
             fatalError("No Instance, please sharedInstance of EasyGameCenter")
         }
         return instance
     }
 
-    private func getDelegate() throws -> UIViewController {
+    fileprivate func getDelegate() throws -> UIViewController {
         guard let delegate = Static.delegate else {
-            throw GCError.NoDelegate
+            throw GCError.noDelegate
         }
         return delegate
     }
     
-    private static func completionCachingAchievements(achievementsType :[AnyObject]?) {
+    fileprivate static func completionCachingAchievements(_ achievementsType :[AnyObject]?) {
         
         func finish() {
             if GC.sharedInstance.achievementsCache.count > 0 &&
@@ -812,8 +816,8 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         // Type GKAchievement
         if achievementsType is [GKAchievement] {
             
-            guard let arrayGKAchievement = achievementsType as? [GKAchievement] where arrayGKAchievement.count > 0 else {
-                GCError.CantCachingGKAchievement.errorCall()
+            guard let arrayGKAchievement = achievementsType as? [GKAchievement] , arrayGKAchievement.count > 0 else {
+                GCError.cantCachingGKAchievement.errorCall()
                 return
             }
             
@@ -825,15 +829,15 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
             // Type GKAchievementDescription
         } else if achievementsType is [GKAchievementDescription] {
             
-            guard let arrayGKAchievementDes = achievementsType as? [GKAchievementDescription] where arrayGKAchievementDes.count > 0 else {
-                GCError.CantCachingGKAchievementDescription.errorCall()
+            guard let arrayGKAchievementDes = achievementsType as? [GKAchievementDescription] , arrayGKAchievementDes.count > 0 else {
+                GCError.cantCachingGKAchievementDescription.errorCall()
                 return
             }
             
             for anAchievementDes in arrayGKAchievementDes where  anAchievementDes.identifier != nil {
                 
                 // Add GKAchievement
-                if GC.sharedInstance.achievementsCache.indexForKey(anAchievementDes.identifier!) == nil {
+                if GC.sharedInstance.achievementsCache.index(forKey: anAchievementDes.identifier!) == nil {
                     GC.sharedInstance.achievementsCache[anAchievementDes.identifier!] = GKAchievement(identifier: anAchievementDes.identifier!)
                     
                 }
@@ -841,7 +845,7 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
                 GC.sharedInstance.achievementsDescriptionCache[anAchievementDes.identifier!] = anAchievementDes
             }
             
-            GKAchievement.loadAchievementsWithCompletionHandler({
+            GKAchievement.loadAchievements(completionHandler: {
                 (allAchievements, error) in
                 
                 guard (error == nil) && allAchievements!.count != 0  else {
@@ -855,20 +859,20 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         }
     }
 
-    private func cachingAchievements() {
+    fileprivate func cachingAchievements() {
         guard GC.isConnectedToNetwork else {
-            GCError.NoConnection.errorCall()
+            GCError.noConnection.errorCall()
             return
         }
         guard GC.isPlayerIdentified else {
-            GCError.NotLogin.errorCall()
+            GCError.notLogin.errorCall()
             return
         }
         // Load GKAchievementDescription
-        GKAchievementDescription.loadAchievementDescriptionsWithCompletionHandler({
+        GKAchievementDescription.loadAchievementDescriptions(completionHandler: {
             (achievementsDescription, error) in
             guard error == nil else {
-                GCError.Error(error?.localizedDescription).errorCall()
+                GCError.error(error?.localizedDescription).errorCall()
                 return
             }
             GC.completionCachingAchievements(achievementsDescription)
@@ -887,19 +891,19 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         }
     }
     
-    private func loginPlayerToGameCenter()  {
+    fileprivate func loginPlayerToGameCenter()  {
         
         guard !GC.isPlayerIdentified else {
             return
         }
         
         guard let delegateVC = Static.delegate  else {
-            GCError.NoDelegate.errorCall()
+            GCError.noDelegate.errorCall()
             return
         }
         
         guard GC.isConnectedToNetwork else {
-            GCError.NoConnection.errorCall()
+            GCError.noConnection.errorCall()
             return
         }
         
@@ -907,24 +911,24 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
             (gameCenterVC, error) in
             
             guard error == nil else {
-                GCError.Error("User has canceled authentication").errorCall()
+                GCError.error("User has canceled authentication").errorCall()
                 return
             }
             guard let gcVC = gameCenterVC else {
                 return
             }
             if GC.showLoginPage {
-                dispatch_async(dispatch_get_main_queue()) {
-                    delegateVC.presentViewController(gcVC, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    delegateVC.present(gcVC, animated: true, completion: nil)
                 }
             }
         }
     }
     
     func checkupNetAndPlayer() {
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             if self.timerNetAndPlayer == nil {
-                self.timerNetAndPlayer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(GC.checkupNetAndPlayer), userInfo: nil, repeats: true)
+                self.timerNetAndPlayer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(GC.checkupNetAndPlayer), userInfo: nil, repeats: true)
             }
             
             if GC.isConnectedToNetwork {
@@ -936,20 +940,20 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         }
     }
     
-    private func reportAchievementToGameCenter(achievement achievement:GKAchievement) {
+    fileprivate func reportAchievementToGameCenter(achievement:GKAchievement) {
         /* try to report the progress to the Game Center */
         
-        GKAchievement.reportAchievements([achievement], withCompletionHandler:  {
-            (error:NSError?) -> Void in
+        GKAchievement.report([achievement], withCompletionHandler:  {
+            (error:Error?) -> Void in
             if error != nil { /* Game Center Save Automatique */ }
         })
     }
     
-    public func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController) {
-        gameCenterViewController.dismissViewControllerAnimated(true, completion: nil)
+    open func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true, completion: nil)
     }
 
-    public func match(theMatch: GKMatch, didReceiveData data: NSData, fromPlayer playerID: String) {
+    open func match(_ theMatch: GKMatch, didReceive data: Data, fromPlayer playerID: String) {
         guard GC.sharedInstance.match == theMatch else {
             return
         }
@@ -957,7 +961,7 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         
     }
  
-    public func match(theMatch: GKMatch, player playerID: String, didChangeState state: GKPlayerConnectionState) {
+    open func match(_ theMatch: GKMatch, player playerID: String, didChange state: GKPlayerConnectionState) {
 
         guard self.match == theMatch else {
             return
@@ -965,29 +969,29 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         
         switch state {
 
-        case .StateConnected where self.match != nil && theMatch.expectedPlayerCount == 0:
+        case .stateConnected where self.match != nil && theMatch.expectedPlayerCount == 0:
             self.lookupPlayers()
-        case .StateDisconnected:
+        case .stateDisconnected:
             GC.disconnectMatch()
         default:
             break
         }
     }
 
-    public func match(theMatch: GKMatch, didFailWithError error: NSError?) {
+    open func match(_ theMatch: GKMatch, didFailWithError error: Error?) {
         guard self.match == theMatch else {
             return
         }
         
         guard error == nil else {
-            GCError.Error("Match failed with error: \(error?.localizedDescription)").errorCall()
+            GCError.error("Match failed with error: \(error?.localizedDescription)").errorCall()
             GC.disconnectMatch()
             return
         }
     }
     
-    public func matchmakerViewController(viewController: GKMatchmakerViewController, didFindMatch theMatch: GKMatch) {
-        viewController.dismissViewControllerAnimated(true, completion: nil)
+    open func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFind theMatch: GKMatch) {
+        viewController.dismiss(animated: true, completion: nil)
         self.match = theMatch
         self.match!.delegate = self
         if match!.expectedPlayerCount == 0 {
@@ -995,47 +999,47 @@ public class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewContr
         }
     }
     
-    public func player(player: GKPlayer, didAcceptInvite inviteToAccept: GKInvite) {
+    open func player(_ player: GKPlayer, didAccept inviteToAccept: GKInvite) {
         guard let gkmv = GKMatchmakerViewController(invite: inviteToAccept) else {
-            GCError.Error("GKMatchmakerViewController invite to accept nil").errorCall()
+            GCError.error("GKMatchmakerViewController invite to accept nil").errorCall()
             return
         }
         gkmv.matchmakerDelegate = self
         
-        var delegeteParent:UIViewController? = GC.delegate.parentViewController
+        var delegeteParent:UIViewController? = GC.delegate.parent
         if delegeteParent == nil {
             delegeteParent = GC.delegate
         }
-        delegeteParent!.presentViewController(gkmv, animated: true, completion: nil)
+        delegeteParent!.present(gkmv, animated: true, completion: nil)
     }
     
-    public func player(player: GKPlayer, didRequestMatchWithOtherPlayers playersToInvite: [GKPlayer]) { }
+    open func player(_ player: GKPlayer, didRequestMatchWithOtherPlayers playersToInvite: [GKPlayer]) { }
 
-    public func player(player: GKPlayer, didRequestMatchWithPlayers playerIDsToInvite: [String]) { }
+    open func player(_ player: GKPlayer, didRequestMatchWithPlayers playerIDsToInvite: [String]) { }
     
-    public func matchmakerViewControllerWasCancelled(viewController: GKMatchmakerViewController) {
+    open func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
         
-        viewController.dismissViewControllerAnimated(true, completion: nil)
+        viewController.dismiss(animated: true, completion: nil)
         
         (Static.delegate as? GCDelegate)?.GCMatchCancel?()
         GC.printLogGC("Player cancels the matchmaking request")
         
     }
     
-    public func matchmakerViewController(viewController: GKMatchmakerViewController, didFailWithError error: NSError) {
+    open func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFailWithError error: Error) {
         
-        viewController.dismissViewControllerAnimated(true, completion: nil)
+        viewController.dismiss(animated: true, completion: nil)
         (Static.delegate as? GCDelegate)?.GCMatchCancel?()
-        GCError.Error("Error finding match: \(error.localizedDescription)\n").errorCall()
+        GCError.error("Error finding match: \(error.localizedDescription)\n").errorCall()
         
     }
 }
 
 extension GC {
     
-    private class func printLogGC(object: Any) {
+    fileprivate class func printLogGC(_ object: Any) {
         if GC.debugMode {
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 Swift.print("\n[Easy Game Center] \(object)\n")
             }
         }
@@ -1044,66 +1048,66 @@ extension GC {
 
 extension GC {
     
-    private enum GCError : ErrorType {
-        case Error(String?)
-        case CantCachingGKAchievementDescription
-        case CantCachingGKAchievement
-        case NoAchievement
-        case Empty
-        case NoConnection
-        case NotLogin
-        case NoDelegate
+    fileprivate enum GCError : Error {
+        case error(String?)
+        case cantCachingGKAchievementDescription
+        case cantCachingGKAchievement
+        case noAchievement
+        case empty
+        case noConnection
+        case notLogin
+        case noDelegate
         
         var description : String {
             
             switch self {
                 
-            case .Error(let error):
+            case .error(let error):
                 return (error != nil) ? "\(error!)" : "\(error)"
                 
-            case .CantCachingGKAchievementDescription:
+            case .cantCachingGKAchievementDescription:
                 return "Can't caching GKAchievementDescription\n( Have you create achievements in ItuneConnect ? )"
                 
-            case .CantCachingGKAchievement:
+            case .cantCachingGKAchievement:
                 return "Can' t caching GKAchievement\n( Have you create achievements in ItuneConnect ? )"
                 
-            case .NoAchievement:
+            case .noAchievement:
                 return "No GKAchievement and GKAchievementDescription\n\n( Have you create achievements in ItuneConnect ? )"
                 
-            case .NoConnection:
+            case .noConnection:
                 return "No internet connection"
                 
-            case .NotLogin:
+            case .notLogin:
                 return "User is not identified to game center"
                 
-            case .NoDelegate :
+            case .noDelegate :
                 return "\nDelegate UIViewController not added"
                 
-            case .Empty:
+            case .empty:
                 return "\nThe parameter is empty"
             }
         }
         
-        private func printError(error: GCError) {
+        fileprivate func printError(_ error: GCError) {
             GC.printLogGC(error.description)
         }
 
-        private func printError() {
+        fileprivate func printError() {
             GC.printLogGC(self.description)
         }
 
-        private func errorCall() {
+        fileprivate func errorCall() {
             
             defer { self.printError() }
             
             switch self {
-            case .NotLogin:
+            case .notLogin:
                 (GC.delegate  as? GCDelegate)?.GCAuthentified?(false)
                 break
-            case .CantCachingGKAchievementDescription:
+            case .cantCachingGKAchievementDescription:
                 GC.sharedInstance.checkupNetAndPlayer()
                 break
-            case .CantCachingGKAchievement:
+            case .cantCachingGKAchievement:
                 
                 break
             default:

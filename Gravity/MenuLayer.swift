@@ -22,7 +22,7 @@ class MenuLayer: SKNode {
     override init() {
         super.init()
         
-        backgroundNode = SKShapeNode(rectOfSize: vars.screenSize)
+        backgroundNode = SKShapeNode(rectOf: vars.screenSize)
         backgroundNode.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
         backgroundNode.zPosition = 0
         addChild(backgroundNode)
@@ -37,8 +37,8 @@ class MenuLayer: SKNode {
         highscoreNode = SKLabelNode(fontNamed: "Helvetica")
         highscoreNode.text = "00:00.00"
         highscoreNode.fontSize = vars.screenSize.height / 13
-        highscoreNode.fontColor = SKColor.whiteColor()
-        highscoreNode.horizontalAlignmentMode = .Left
+        highscoreNode.fontColor = SKColor.white
+        highscoreNode.horizontalAlignmentMode = .left
         highscoreNode.zPosition = 2
         highscoreNode.position = CGPoint(x: vars.screenSize.width - highscoreNode.frame.width - vars.screenSize.width / 60, y: vars.screenSize.height - highscoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2)
         addChild(highscoreNode)
@@ -53,15 +53,15 @@ class MenuLayer: SKNode {
         #if os(iOS)
             
             GCNode.alpha = 0
-            GCNode.hidden = true
+            GCNode.isHidden = true
             highscoreNode.alpha = 0
-            highscoreNode.hidden = true
+            highscoreNode.isHidden = true
             
             splashNode = SKShapeNode(circleOfRadius: vars.screenSize.height / 200 * 60)
             splashNode.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height / 2)
             splashNode.zPosition = 2.5
-            splashNode.fillColor = SKColor.whiteColor()
-            splashNode.strokeColor = SKColor.whiteColor()
+            splashNode.fillColor = SKColor.white
+            splashNode.strokeColor = SKColor.white
             addChild(splashNode)
             
         #endif

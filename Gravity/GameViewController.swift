@@ -10,13 +10,33 @@ import UIKit
 import SpriteKit
 import GameKit
 import AVFoundation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class GameViewController: UIViewController, GCDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        GC.sharedInstance(self)
-        self.view.multipleTouchEnabled = true
+        print(GC.sharedInstance(self))
+        self.view.isMultipleTouchEnabled = true
         vars.gameScene = GameScene()
         // Configure the view.
         let skView = self.view as! SKView
@@ -28,7 +48,7 @@ class GameViewController: UIViewController, GCDelegate {
         skView.ignoresSiblingOrder = true
         
         /* Set the scale mode to scale to fit the window */
-        vars.gameScene!.scaleMode = .AspectFill
+        vars.gameScene!.scaleMode = .aspectFill
         vars.gameScene!.size = skView.bounds.size
         
         skView.presentScene(vars.gameScene)
@@ -36,7 +56,7 @@ class GameViewController: UIViewController, GCDelegate {
         vars.gameScene!.viewController = self
     }
     
-    func GCAuthentified(authentified:Bool) {
+    func GCAuthentified(_ authentified:Bool) {
         if authentified {
             GC.getHighScore(leaderboardIdentifier: identifiers.iOSnormalLeaderboard) {
                 (tupleHighScore) -> Void in
@@ -48,8 +68,8 @@ class GameViewController: UIViewController, GCDelegate {
                         
                         vars.highscore = gcScore
                             
-                        NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "highscore")
-                        NSUserDefaults.standardUserDefaults().synchronize()
+                        UserDefaults.standard.set(vars.highscore, forKey: "highscore")
+                        UserDefaults.standard.synchronize()
                         
                     } else {
                         GC.reportScoreLeaderboard(leaderboardIdentifier: identifiers.iOSnormalLeaderboard, score: Int(vars.highscore * 100))
@@ -67,8 +87,8 @@ class GameViewController: UIViewController, GCDelegate {
                         
                         vars.extHighscore = gcExtScore
                         
-                        NSUserDefaults.standardUserDefaults().setDouble(vars.extHighscore, forKey: "extHighscore")
-                        NSUserDefaults.standardUserDefaults().synchronize()
+                        UserDefaults.standard.set(vars.extHighscore, forKey: "extHighscore")
+                        UserDefaults.standard.synchronize()
                         
                     } else {
                         GC.reportScoreLeaderboard(leaderboardIdentifier: identifiers.iOSextremeLeaderboard, score: Int(vars.extHighscore * 100))
@@ -83,8 +103,8 @@ class GameViewController: UIViewController, GCDelegate {
                         
                         vars.gamesPlayed = tupleIsOk.score
                         
-                        NSUserDefaults.standardUserDefaults().setInteger(vars.gamesPlayed, forKey: "gamesPlayed")
-                        NSUserDefaults.standardUserDefaults().synchronize()
+                        UserDefaults.standard.set(vars.gamesPlayed, forKey: "gamesPlayed")
+                        UserDefaults.standard.synchronize()
                         
                     } else {
                         GC.reportScoreLeaderboard(leaderboardIdentifier: identifiers.iOStimesLeaderboard, score: vars.gamesPlayed)
@@ -95,32 +115,32 @@ class GameViewController: UIViewController, GCDelegate {
     }
     
     func activeMultiTouch() {
-        self.view.multipleTouchEnabled = true
+        self.view.isMultipleTouchEnabled = true
     }
     
     func deactivateMultiTouch() {
-        self.view.multipleTouchEnabled = false
+        self.view.isMultipleTouchEnabled = false
     }
     
     func getScores() {
         vars.highscorePlayerNames = []
         vars.highscorePlayerScore = []
         let leaderboardRequest: GKLeaderboard = GKLeaderboard()
-        leaderboardRequest.playerScope = .FriendsOnly
-        leaderboardRequest.timeScope = .AllTime
+        leaderboardRequest.playerScope = .friendsOnly
+        leaderboardRequest.timeScope = .allTime
         leaderboardRequest.identifier = identifiers.iOSnormalLeaderboard
         leaderboardRequest.range = NSMakeRange(1, 5)
-        leaderboardRequest.loadScoresWithCompletionHandler({(scores: [GKScore]?, error: NSError?) -> Void in
+        leaderboardRequest.loadScores(completionHandler: {(scores: [GKScore]?, error: Error?) -> Void in
             if error != nil {
                 print("error retrieving scores")
             }
             if scores != nil {
                 if scores?.count > 1 {
                     for i in 0 ..< (scores?.count)! {
-                        let player = scores![i].player.alias!
-                        vars.highscorePlayerNames.append(String(player))
+                        let player = scores![i].player?.alias!
+                        vars.highscorePlayerNames.append(String(describing: player))
                         let score:String = String(scores![i].formattedValue!)
-                        let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
+                        let newScore:String = score.substring(from: score.characters.index(score.startIndex, offsetBy: 2))
                         vars.highscorePlayerScore.append(newScore)
                         vars.shouldOpenScoresList = false
                     }
@@ -135,21 +155,21 @@ class GameViewController: UIViewController, GCDelegate {
         vars.highscorePlayerNames = []
         vars.highscorePlayerScore = []
         let leaderboardRequest: GKLeaderboard = GKLeaderboard()
-        leaderboardRequest.playerScope = .FriendsOnly
-        leaderboardRequest.timeScope = .AllTime
+        leaderboardRequest.playerScope = .friendsOnly
+        leaderboardRequest.timeScope = .allTime
         leaderboardRequest.identifier = identifiers.iOSextremeLeaderboard
         leaderboardRequest.range = NSMakeRange(1, 5)
-        leaderboardRequest.loadScoresWithCompletionHandler({(scores: [GKScore]?, error: NSError?) -> Void in
+        leaderboardRequest.loadScores(completionHandler: {(scores: [GKScore]?, error: Error?) -> Void in
             if error != nil {
                 print("error retrieving scores")
             }
             if scores != nil {
                 if scores?.count > 1 {
                     for i in 0 ..< (scores?.count)! {
-                        let player = scores![i].player.alias!
-                        vars.highscorePlayerNames.append(String(player))
+                        let player = scores![i].player?.alias!
+                        vars.highscorePlayerNames.append(String(describing: player))
                         let score:String = String(scores![i].formattedValue!)
-                        let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
+                        let newScore:String = score.substring(from: score.characters.index(score.startIndex, offsetBy: 2))
                         vars.highscorePlayerScore.append(newScore)
                         vars.shouldOpenScoresList = true
                     }
@@ -162,7 +182,7 @@ class GameViewController: UIViewController, GCDelegate {
     }
     #if os(iOS)
     func shareHighscore() {
-        let device = UIDevice.currentDevice().name
+        let device = UIDevice.current.name
 
         let sharingText = "I've survived for " + ((NSString(format: "%.02f", vars.highscore)) as String) + " seconds in Gr4vity. Can you beat me?\nhttp://apple.co/1P2rkrT"
         
@@ -173,41 +193,41 @@ class GameViewController: UIViewController, GCDelegate {
         activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
         
         activityViewController.excludedActivityTypes = [
-            UIActivityTypePostToWeibo,
-            UIActivityTypePrint,
-            UIActivityTypeAssignToContact,
-            UIActivityTypeSaveToCameraRoll,
-            UIActivityTypeAddToReadingList,
-            UIActivityTypePostToFlickr,
-            UIActivityTypePostToVimeo,
-            UIActivityTypePostToTencentWeibo
+            UIActivityType.postToWeibo,
+            UIActivityType.print,
+            UIActivityType.assignToContact,
+            UIActivityType.saveToCameraRoll,
+            UIActivityType.addToReadingList,
+            UIActivityType.postToFlickr,
+            UIActivityType.postToVimeo,
+            UIActivityType.postToTencentWeibo
         ]
-        if device.containsString("iPhone") || device.containsString("iPod"){
-            self.presentViewController(activityViewController, animated: true, completion: nil)
-        } else if device.containsString("iPad") {
+        if device.contains("iPhone") || device.contains("iPod"){
+            self.present(activityViewController, animated: true, completion: nil)
+        } else if device.contains("iPad") {
             let popup: UIPopoverController = UIPopoverController(contentViewController: activityViewController)
-            popup.presentPopoverFromRect(CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 + 30, 0, 0), inView: self.view, permittedArrowDirections: .Up, animated: true)
+            popup.present(from: CGRect(x: self.view.frame.size.width / 2, y: self.view.frame.size.height / 2 + 30, width: 0, height: 0), in: self.view, permittedArrowDirections: .up, animated: true)
         }
     }
     #endif
     
     #if os(iOS)
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         return true
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        if UIDevice.currentDevice().orientation == .LandscapeLeft {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if UIDevice.current.orientation == .landscapeLeft {
             vars.deviceOrientation = 3
-        } else if UIDevice.currentDevice().orientation == .LandscapeRight {
+        } else if UIDevice.current.orientation == .landscapeRight {
             vars.deviceOrientation = 4
         }
     }
     #endif
     
-    func playBackgroundMusic(filename: String) {
-        let url = NSBundle.mainBundle().URLForResource(
-            filename, withExtension: nil)
+    func playBackgroundMusic(_ filename: String) {
+        let url = Bundle.main.url(
+            forResource: filename, withExtension: nil)
         if (url == nil) {
             print("Could not find file: \(filename)")
             return
@@ -215,7 +235,7 @@ class GameViewController: UIViewController, GCDelegate {
         
         do {
             
-            vars.backgroundMusicPlayer = try AVAudioPlayer(contentsOfURL: url!)
+            vars.backgroundMusicPlayer = try AVAudioPlayer(contentsOf: url!)
         } catch {
             
         }
@@ -239,9 +259,9 @@ class GameViewController: UIViewController, GCDelegate {
     
     class func MusicOn() {
         let sess = AVAudioSession.sharedInstance()
-        if sess.otherAudioPlaying {
+        if sess.isOtherAudioPlaying {
             _ = try? sess.setCategory(AVAudioSessionCategoryAmbient)
-            _ = try? sess.setActive(true, withOptions: [])
+            _ = try? sess.setActive(true, with: [])
         }
         if vars.musicPlaying == true {
             vars.musicPlaying = false
@@ -251,9 +271,9 @@ class GameViewController: UIViewController, GCDelegate {
     
     class func MusicOff() {
         let sess = AVAudioSession.sharedInstance()
-        if sess.otherAudioPlaying {
+        if sess.isOtherAudioPlaying {
             _ = try? sess.setCategory(AVAudioSessionCategoryAmbient)
-            _ = try? sess.setActive(true, withOptions: [])
+            _ = try? sess.setActive(true, with: [])
         }
         if vars.musicPlaying == false {
             vars.musicPlaying = true
@@ -265,11 +285,11 @@ class GameViewController: UIViewController, GCDelegate {
         }
     }
     #if os(iOS)
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return .AllButUpsideDown
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return .allButUpsideDown
         } else {
-            return .All
+            return .all
         }
     }
     #endif
@@ -277,7 +297,7 @@ class GameViewController: UIViewController, GCDelegate {
         super.didReceiveMemoryWarning()
     }
     #if os(iOS)
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     #endif
