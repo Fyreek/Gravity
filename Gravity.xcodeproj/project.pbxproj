@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1447A9221CA18E2D0074332E /* GameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1447A9211CA18E2D0074332E /* GameCenter.swift */; };
-		14994BD71CB30D840009A545 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14994BD61CB30D840009A545 /* AppDelegate.swift */; };
-		14994BD91CB30D840009A545 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14994BD81CB30D840009A545 /* GameScene.swift */; };
-		14994BDB1CB30D840009A545 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 14994BDA1CB30D840009A545 /* GameScene.sks */; };
-		14994BDD1CB30D840009A545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14994BDC1CB30D840009A545 /* Assets.xcassets */; };
-		14994BE01CB30D840009A545 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14994BDE1CB30D840009A545 /* MainMenu.xib */; };
+		145100E21D92CEE300ABEFA1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145100E01D92CEE300ABEFA1 /* AppDelegate.swift */; };
+		145100E31D92CEE300ABEFA1 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145100E11D92CEE300ABEFA1 /* GameScene.swift */; };
+		145100E51D92D98100ABEFA1 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 145100E41D92D98100ABEFA1 /* GameScene.sks */; };
+		145100E81D92D9C600ABEFA1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 145100E61D92D9C600ABEFA1 /* MainMenu.xib */; };
+		145100EA1D92D9D900ABEFA1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 145100E91D92D9D900ABEFA1 /* Assets.xcassets */; };
 		14994BE51CB30DA20009A545 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE471C49488F00760D54 /* MenuLayer.swift */; };
 		14994BE61CB30DA40009A545 /* GameLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE461C49488F00760D54 /* GameLayer.swift */; };
 		14994BE71CB30DA70009A545 /* HighscoreLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127C0201C4E52AE0042258B /* HighscoreLayer.swift */; };
@@ -52,12 +52,12 @@
 /* Begin PBXFileReference section */
 		14188E271CBD2AE900ED16DF /* Gravity macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Gravity macOS.entitlements"; path = "Gravity macOS/Gravity macOS.entitlements"; sourceTree = "<group>"; };
 		1447A9211CA18E2D0074332E /* GameCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCenter.swift; sourceTree = "<group>"; };
+		145100E01D92CEE300ABEFA1 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "Gravity macOS/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
+		145100E11D92CEE300ABEFA1 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameScene.swift; path = "Gravity macOS/GameScene.swift"; sourceTree = SOURCE_ROOT; };
+		145100E41D92D98100ABEFA1 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = GameScene.sks; path = "Gravity macOS/GameScene.sks"; sourceTree = SOURCE_ROOT; };
+		145100E71D92D9C600ABEFA1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Gravity macOS/Base.lproj/MainMenu.xib"; sourceTree = SOURCE_ROOT; };
+		145100E91D92D9D900ABEFA1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Gravity macOS/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		14994BD41CB30D840009A545 /* Gravity macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		14994BD61CB30D840009A545 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "Gravity macOS/AppDelegate.swift"; sourceTree = "<group>"; };
-		14994BD81CB30D840009A545 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GameScene.swift; path = "Gravity macOS/GameScene.swift"; sourceTree = "<group>"; };
-		14994BDA1CB30D840009A545 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = GameScene.sks; path = "Gravity macOS/GameScene.sks"; sourceTree = "<group>"; };
-		14994BDC1CB30D840009A545 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Gravity macOS/Assets.xcassets"; sourceTree = "<group>"; };
-		14994BDF1CB30D840009A545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		14994BE11CB30D840009A545 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Gravity macOS/Info.plist"; sourceTree = "<group>"; };
 		14EE10751C74B410004CA811 /* Gravity tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EE10801C74B410004CA811 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -115,11 +115,11 @@
 			isa = PBXGroup;
 			children = (
 				14188E271CBD2AE900ED16DF /* Gravity macOS.entitlements */,
-				14994BD61CB30D840009A545 /* AppDelegate.swift */,
-				14994BD81CB30D840009A545 /* GameScene.swift */,
-				14994BDA1CB30D840009A545 /* GameScene.sks */,
-				14994BDC1CB30D840009A545 /* Assets.xcassets */,
-				14994BDE1CB30D840009A545 /* MainMenu.xib */,
+				145100E01D92CEE300ABEFA1 /* AppDelegate.swift */,
+				145100E61D92D9C600ABEFA1 /* MainMenu.xib */,
+				145100E41D92D98100ABEFA1 /* GameScene.sks */,
+				145100E91D92D9D900ABEFA1 /* Assets.xcassets */,
+				145100E11D92CEE300ABEFA1 /* GameScene.swift */,
 				14994BE11CB30D840009A545 /* Info.plist */,
 			);
 			name = "Gravity macOS";
@@ -292,6 +292,7 @@
 					14994BD31CB30D840009A545 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = ZA57B2W688;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 1;
@@ -342,10 +343,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14994BDD1CB30D840009A545 /* Assets.xcassets in Resources */,
-				14994BDB1CB30D840009A545 /* GameScene.sks in Resources */,
+				145100E51D92D98100ABEFA1 /* GameScene.sks in Resources */,
 				14994BF21CB32D300009A545 /* music.caf in Resources */,
-				14994BE01CB30D840009A545 /* MainMenu.xib in Resources */,
+				145100EA1D92D9D900ABEFA1 /* Assets.xcassets in Resources */,
+				145100E81D92D9C600ABEFA1 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,13 +429,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				145100E21D92CEE300ABEFA1 /* AppDelegate.swift in Sources */,
 				14994BE81CB30DC10009A545 /* Structs.swift in Sources */,
 				14994BE71CB30DA70009A545 /* HighscoreLayer.swift in Sources */,
 				14994BF01CB310210009A545 /* SKSceneExtension.swift in Sources */,
 				14994BE51CB30DA20009A545 /* MenuLayer.swift in Sources */,
+				145100E31D92CEE300ABEFA1 /* GameScene.swift in Sources */,
 				14994BE61CB30DA40009A545 /* GameLayer.swift in Sources */,
-				14994BD91CB30D840009A545 /* GameScene.swift in Sources */,
-				14994BD71CB30D840009A545 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,13 +473,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		14994BDE1CB30D840009A545 /* MainMenu.xib */ = {
+		145100E61D92D9C600ABEFA1 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				14994BDF1CB30D840009A545 /* Base */,
+				145100E71D92D9C600ABEFA1 /* Base */,
 			);
 			name = MainMenu.xib;
-			path = "Gravity macOS";
 			sourceTree = "<group>";
 		};
 		14EE107F1C74B410004CA811 /* Main.storyboard */ = {
@@ -514,6 +514,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yalu.Gravity-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -531,6 +532,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yalu.Gravity-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

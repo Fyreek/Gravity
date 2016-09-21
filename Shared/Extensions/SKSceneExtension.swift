@@ -37,16 +37,16 @@ class SKSceneExtension: SKScene {
     #endif
     
     #if os(OSX)
-    override func mouseDown(theEvent: NSEvent) {
-        let location = theEvent.locationInNode(self)
+    override func mouseDown(with theEvent: NSEvent) {
+        let location = theEvent.location(in: self)
         screenInteractionStarted(location)
     }
-    override func mouseDragged(theEvent: NSEvent) {
-        let location = theEvent.locationInNode(self)
+    override func mouseDragged(with theEvent: NSEvent) {
+        let location = theEvent.location(in: self)
         screenInteractionMoved(location)
     }
-    override func mouseUp(theEvent: NSEvent) {
-        let location = theEvent.locationInNode(self)
+    override func mouseUp(with theEvent: NSEvent) {
+        let location = theEvent.location(in: self)
         screenInteractionEnded(location)
     }
     #endif

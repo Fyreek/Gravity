@@ -96,7 +96,7 @@ open class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewControl
                 return delegateInstance
             } catch  {
                 GCError.noDelegate.errorCall()
-                fatalError(error as! String)
+                fatalError(error.localizedDescription)
             }
         }
         

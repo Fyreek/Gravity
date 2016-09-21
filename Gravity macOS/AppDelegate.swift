@@ -19,7 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var skView: SKView!
     
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         window.delegate = self
         
         vars.gameScene = GameScene()
@@ -28,7 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         skView.showsPhysics = false
         skView.ignoresSiblingOrder = true
         
-        vars.gameScene!.scaleMode = .AspectFill
+        vars.gameScene!.scaleMode = .aspectFill
         vars.gameScene!.size = skView.bounds.size
         
         skView.presentScene(vars.gameScene)
@@ -36,34 +36,34 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     }
     
     func setWindowStyleGame() {
-        window.styleMask = NSClosableWindowMask | NSTitledWindowMask | NSMiniaturizableWindowMask
-        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.ZoomButton)!
-        zoomButton.hidden = true
+        window.styleMask = [NSClosableWindowMask, NSTitledWindowMask, NSMiniaturizableWindowMask]
+        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.zoomButton)!
+        zoomButton.isHidden = true
     }
     
     func setWindowStyleMenu() {
-        window.styleMask = NSClosableWindowMask | NSTitledWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
-        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.ZoomButton)!
-        zoomButton.hidden = false
+        window.styleMask = [NSClosableWindowMask, NSTitledWindowMask, NSMiniaturizableWindowMask, NSResizableWindowMask]
+        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.zoomButton)!
+        zoomButton.isHidden = false
     }
     
     func setWindowStyleFullGame() {
-        window.styleMask = NSFullScreenWindowMask | NSClosableWindowMask
-        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.ZoomButton)!
-        zoomButton.hidden = true
+        window.styleMask = [NSFullScreenWindowMask, NSClosableWindowMask]
+        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.zoomButton)!
+        zoomButton.isHidden = true
     }
     
     func setWindowStyleFullMenu() {
-        window.styleMask = NSFullScreenWindowMask | NSClosableWindowMask
-        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.ZoomButton)!
-        zoomButton.hidden = false
+        window.styleMask = [NSFullScreenWindowMask, NSClosableWindowMask]
+        let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.zoomButton)!
+        zoomButton.isHidden = false
     }
     
-    func windowWillEnterFullScreen(notification: NSNotification) {
+    func windowWillEnterFullScreen(_ notification: Notification) {
         vars.windowIsFullscreen = true
     }
     
-    func windowWillExitFullScreen(notification: NSNotification) {
+    func windowWillExitFullScreen(_ notification: Notification) {
         vars.windowIsFullscreen = false
         if vars.currentGameState == .gameMenu {
             setWindowStyleMenu()
@@ -72,7 +72,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         }
     }
     
-    func applicationDockMenu(sender: NSApplication) -> NSMenu? {
+    func applicationDockMenu(_ sender: NSApplication) -> NSMenu? {
         let musicSelector : Selector = #selector(self.musicUpdate)
         let modeSelector: Selector = #selector(self.modeUpdate)
         let musicItem = NSMenuItem()
@@ -121,7 +121,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         } else {
             vars.gameScene?.initNormalMode()
         }
-        NSUserDefaults.standardUserDefaults().setBool(vars.extremeMode, forKey: "extreme")
+        UserDefaults.standard.set(vars.extremeMode, forKey: "extreme")
     }
     
     func musicUpdate() {
@@ -135,23 +135,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         }
     }
     
-    func applicationWillResignActive(notification: NSNotification) {
+    func applicationWillResignActive(_ notification: Notification) {
        leaveActive()
     }
     
-    func windowDidMiniaturize(notification: NSNotification) {
+    func windowDidMiniaturize(_ notification: Notification) {
         leaveActive()
     }
     
-    func windowDidDeminiaturize(notification: NSNotification) {
+    func windowDidDeminiaturize(_ notification: Notification) {
         returnActive()
     }
     
-    func applicationDidBecomeActive(notification: NSNotification) {
+    func applicationDidBecomeActive(_ notification: Notification) {
         returnActive()
     }
     
-    func windowDidResize(notification: NSNotification) {
+    func windowDidResize(_ notification: Notification) {
         vars.gameScene!.size = skView.bounds.size
         vars.gameScene!.rerangeInterface()
     }
@@ -162,7 +162,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         } else {
             MusicOn()
         }
-        NSUserDefaults.standardUserDefaults().setBool(vars.musicState, forKey: "musicState")
+        UserDefaults.standard.set(vars.musicState, forKey: "musicState")
         
     }
     
@@ -174,7 +174,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
             vars.gameScene?.startTimerAfter()
         }
         
-        vars.extremeMode = NSUserDefaults.standardUserDefaults().boolForKey("extreme")
+        vars.extremeMode = UserDefaults.standard.bool(forKey: "extreme")
         
         if vars.currentGameState == .gameActive && vars.extremeMode == true && vars.gameModeBefore == false {
             vars.gameScene?.goToMenu()
@@ -200,9 +200,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         }
     }
     
-    func playBackgroundMusic(filename: String) {
-        let url = NSBundle.mainBundle().URLForResource(
-            filename, withExtension: nil)
+    func playBackgroundMusic(_ filename: String) {
+        let url = Bundle.main.url(
+            forResource: filename, withExtension: nil)
         if (url == nil) {
             print("Could not find file: \(filename)")
             return
@@ -210,7 +210,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         
         do {
             
-            vars.backgroundMusicPlayer = try AVAudioPlayer(contentsOfURL: url!)
+            vars.backgroundMusicPlayer = try AVAudioPlayer(contentsOf: url!)
         } catch {
             
         }
@@ -250,9 +250,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         }
     }
     
-    func GCAuthentified(authentified:Bool) {
+    func GCAuthentified(_ authentified:Bool) {
         if authentified {
-            getHighScore(leaderboardIdentifier: identifiers.OSXnormalLeaderboard) {
+            getHighScore(identifiers.OSXnormalLeaderboard) {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
                     vars.localPlayerName = tupleIsOk.playerName
@@ -262,8 +262,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
                         
                         vars.highscore = gcScore
                         
-                        NSUserDefaults.standardUserDefaults().setDouble(vars.highscore, forKey: "highscore")
-                        NSUserDefaults.standardUserDefaults().synchronize()
+                        UserDefaults.standard.set(vars.highscore, forKey: "highscore")
+                        UserDefaults.standard.synchronize()
                         
                     } else {
                         self.reportScoreLeaderboard(identifiers.OSXnormalLeaderboard, score: Int(vars.highscore * 100))
@@ -272,15 +272,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
                     vars.gameScene?.achievementProgress()
                 }
             }
-            getHighScore(leaderboardIdentifier: identifiers.OSXtimesLeaderboard) {
+            getHighScore(identifiers.OSXtimesLeaderboard) {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
                     if vars.gamesPlayed < tupleIsOk.score {
                         
                         vars.gamesPlayed = tupleIsOk.score
                         
-                        NSUserDefaults.standardUserDefaults().setInteger(vars.gamesPlayed, forKey: "gamesPlayed")
-                        NSUserDefaults.standardUserDefaults().synchronize()
+                        UserDefaults.standard.set(vars.gamesPlayed, forKey: "gamesPlayed")
+                        UserDefaults.standard.synchronize()
                         
                     } else {
                         self.reportScoreLeaderboard(identifiers.OSXtimesLeaderboard, score: vars.gamesPlayed)
@@ -294,21 +294,29 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         vars.highscorePlayerNames = []
         vars.highscorePlayerScore = []
         let leaderboardRequest: GKLeaderboard = GKLeaderboard()
-        leaderboardRequest.playerScope = .FriendsOnly
-        leaderboardRequest.timeScope = .AllTime
+        leaderboardRequest.playerScope = .friendsOnly
+        leaderboardRequest.timeScope = .allTime
         leaderboardRequest.identifier = identifiers.OSXnormalLeaderboard
         leaderboardRequest.range = NSMakeRange(1, 5)
-        leaderboardRequest.loadScoresWithCompletionHandler({(scores: [GKScore]?, error: NSError?) -> Void in
+        leaderboardRequest.loadScores(completionHandler: { (scores: [GKScore]?, error) -> Void in
+        //}
+        //leaderboardRequest.loadScoresWithCompletionHandler({(scores: [GKScore]?, error: NSError?) -> Void in
             if error != nil {
                 print("error retrieving scores")
             }
             if scores != nil {
-                if scores?.count > 1 {
+                if (scores?.count)! > 1 {
                     for i in 0 ..< (scores?.count)! {
-                        let player = scores![i].player.alias!
-                        vars.highscorePlayerNames.append(String(player))
+                        let player = scores![i].player?.alias!
+                        vars.highscorePlayerNames.append(String(describing: player))
                         let score:String = String(scores![i].formattedValue!)
-                        let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
+                        //let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
+                        //let newScore:String = score.substring(from: score.startIndex.advancedBy(2))
+                        //let newScore:String = score.substring(from: score[2])
+                        
+                        let subIndex = score.index(score.startIndex, offsetBy: 2)
+                        let newScore:String = score.substring(from: subIndex)
+                        
                         vars.highscorePlayerScore.append(newScore)
                         vars.shouldOpenScoresList = true
                     }
@@ -324,21 +332,22 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         vars.highscorePlayerNames = []
         vars.highscorePlayerScore = []
         let leaderboardRequest: GKLeaderboard = GKLeaderboard()
-        leaderboardRequest.playerScope = .FriendsOnly
-        leaderboardRequest.timeScope = .AllTime
+        leaderboardRequest.playerScope = .friendsOnly
+        leaderboardRequest.timeScope = .allTime
         leaderboardRequest.identifier = identifiers.OSXextremeLeaderboard
         leaderboardRequest.range = NSMakeRange(1, 5)
-        leaderboardRequest.loadScoresWithCompletionHandler({(scores: [GKScore]?, error: NSError?) -> Void in
+        leaderboardRequest.loadScores(completionHandler: { (scores: [GKScore]?, error) -> Void in
             if error != nil {
                 print("error retrieving scores")
             }
             if scores != nil {
-                if scores?.count > 1 {
+                if (scores?.count)! > 1 {
                     for i in 0 ..< (scores?.count)! {
-                        let player = scores![i].player.alias!
-                        vars.highscorePlayerNames.append(String(player))
+                        let player = scores![i].player?.alias!
+                        vars.highscorePlayerNames.append(String(describing: player))
                         let score:String = String(scores![i].formattedValue!)
-                        let newScore:String = score.substringFromIndex(score.startIndex.advancedBy(2))
+                        let subIndex = score.index(score.startIndex, offsetBy: 2)
+                        let newScore:String = score.substring(from: subIndex)
                         vars.highscorePlayerScore.append(newScore)
                         vars.shouldOpenScoresList = true
                     }
@@ -350,7 +359,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         })
     }
     
-    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }
     
@@ -359,7 +368,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         let sharingServicePicker: NSSharingServicePicker = NSSharingServicePicker(items: urls)
         sharingServicePicker.delegate = self
         let position = vars.gameScene?.highscoreLayer.shareNode.frame.origin
-        sharingServicePicker.showRelativeToRect(CGRect(x: position!.x, y: position!.y - 100, width: 100, height: 100), ofView: skView, preferredEdge: NSRectEdge.MinY)
+        sharingServicePicker.show(relativeTo: CGRect(x: position!.x, y: position!.y - 100, width: 100, height: 100), of: skView, preferredEdge: NSRectEdge.minY)
     }
     
     //GameCenter
@@ -372,18 +381,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     
     var isPlayerIdentified: Bool {
         get {
-            return GKLocalPlayer.localPlayer().authenticated
+            return GKLocalPlayer.localPlayer().isAuthenticated
         }
     }
     
     var isConnectedToNetwork: Bool {
         
         var zeroAddress = sockaddr_in()
-        zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
         
-        guard let defaultRouteReachability = withUnsafePointer(&zeroAddress, {
-            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+        guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                zeroSockAddress in SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
         }) else {
             return false
         }
@@ -393,29 +404,32 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
             return false
         }
         
-        let isReachable = flags.contains(.Reachable)
-        let needsConnection = flags.contains(.ConnectionRequired)
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
         return (isReachable && !needsConnection)
     }
     
-    func reportScoreLeaderboard(leaderboardIdentifier: String, score: Int) {
+    func reportScoreLeaderboard(_ leaderboardIdentifier: String, score: Int) {
         if isConnectedToNetwork && isPlayerIdentified {
             let gkScore = GKScore(leaderboardIdentifier: leaderboardIdentifier)
             gkScore.value = Int64(score)
             gkScore.shouldSetDefaultLeaderboard = true
-            GKScore.reportScores([gkScore], withCompletionHandler: { (error: NSError?) in
+            GKScore.report([gkScore], withCompletionHandler: { (error: Error?) in
                 print("pushed score to GC!")
             })
+            //GKScore.reportScores([gkScore], withCompletionHandler: { (error: NSError?) in
+            //    print("pushed score to GC!")
+            //})
         } else {
             print("Not Connected!")
         }
     }
     
     func getHighScore(
-        leaderboardIdentifier leaderboardIdentifier:String,
-                              completion:((playerName:String, score:Int,rank:Int)? -> Void)
+        _ leaderboardIdentifier:String,
+                              completion:@escaping (((playerName:String, score:Int,rank:Int)?) -> Void)
         ) {
-        getGKScoreLeaderboard(leaderboardIdentifier: leaderboardIdentifier, completion: {
+        getGKScoreLeaderboard(leaderboardIdentifier, completion: {
             (resultGKScore) in
 
             guard let valGkscore = resultGKScore else {
@@ -431,62 +445,63 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         })
     }
     
-    func  getGKScoreLeaderboard(leaderboardIdentifier leaderboardIdentifier:String, completion:((resultGKScore:GKScore?) -> Void)) {
+    func  getGKScoreLeaderboard(_ leaderboardIdentifier:String, completion:@escaping ((_ resultGKScore:GKScore?) -> Void)) {
 
         guard leaderboardIdentifier != "" else {
-            completion(resultGKScore:nil)
+            completion(nil)
             return
         }
 
         guard isConnectedToNetwork else {
-            completion(resultGKScore: nil)
+            completion(nil)
             return
         }
 
         guard isPlayerIdentified else {
-            completion(resultGKScore: nil)
+            completion(nil)
             return
         }
 
         let leaderBoardRequest = GKLeaderboard()
         leaderBoardRequest.identifier = leaderboardIdentifier
 
-        leaderBoardRequest.loadScoresWithCompletionHandler {
+        leaderBoardRequest.loadScores {
             (resultGKScore, error) in
 
             guard error == nil && resultGKScore != nil else {
-                completion(resultGKScore: nil)
+                completion(nil)
                 return
             }
 
-            completion(resultGKScore: leaderBoardRequest.localPlayerScore)
+            completion(leaderBoardRequest.localPlayerScore)
             
         }
     }
     
-    func reportAchievement( progress progress : Double, achievementIdentifier : String, showBannnerIfCompleted : Bool = true) {
+    func reportAchievement( _ progress : Double, achievementIdentifier : String, showBannnerIfCompleted : Bool = true) {
         
         let achievement = GKAchievement(identifier: achievementIdentifier)
         achievement.percentComplete = progress
         achievement.showsCompletionBanner = showBannnerIfCompleted
         
-        GKAchievement.reportAchievements([achievement], withCompletionHandler:  {
-            (error:NSError?) -> Void in
+        GKAchievement.report([achievement], withCompletionHandler: {
+            (error:Error?) -> Void in
             if error != nil {
                 print("Error while pushing achievement: \(achievementIdentifier)")
             } else {
                 print("Reported score for achievement: \(achievementIdentifier) with Progress of: \(achievement.percentComplete)")
             }
         })
+        
     }
     
     func authenticateLocalPlayer() {
         let localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer()
-        localPlayer.authenticateHandler = {(viewController: NSViewController?, error: NSError?) -> Void in
+        localPlayer.authenticateHandler = {(viewController: NSViewController?, error: Error?) -> Void in
             if viewController != nil {
-            } else if localPlayer.authenticated {
+            } else if localPlayer.isAuthenticated {
                 print("Logged in")
-                self.GCAuthentified(localPlayer.authenticated)
+                self.GCAuthentified(localPlayer.isAuthenticated)
             }
             else {
                 print("Failed")
@@ -494,21 +509,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         }
     }
     
-    func showLeaderboard(leaderboardID: String) {
+    func showLeaderboard(_ leaderboardID: String) {
         if isConnectedToNetwork && isPlayerIdentified {
             let gameCenterController: GKGameCenterViewController = GKGameCenterViewController()
             gameCenterController.gameCenterDelegate = self
-            gameCenterController.viewState = .Leaderboards
-            gameCenterController.leaderboardTimeScope = .Today
+            gameCenterController.viewState = .leaderboards
+            gameCenterController.leaderboardTimeScope = .today
             gameCenterController.leaderboardIdentifier = leaderboardID
-            let sdc: GKDialogController = GKDialogController.sharedDialogController()
+            let sdc: GKDialogController = GKDialogController.shared()
             sdc.parentWindow = window
-            sdc.presentViewController(gameCenterController)
+            sdc.present(gameCenterController)
         }
     }
     
-    func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController) {
-        let sdc: GKDialogController = GKDialogController.sharedDialogController()
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        let sdc: GKDialogController = GKDialogController.shared()
         sdc.dismiss(self)
     }
 }
