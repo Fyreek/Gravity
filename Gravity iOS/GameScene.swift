@@ -1511,10 +1511,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                     }
                 }
             }
-            
-            if isTouchedR == false && isTouchedL == false {
-                moveRight = false
-                moveLeft = false
+            if vars.motionControl == false {
+                if isTouchedR == false && isTouchedL == false {
+                    moveRight = false
+                    moveLeft = false
+                }
             }
             
             if moveRight == true && moveLeft == false {
