@@ -339,12 +339,16 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             moveRight = false
             interactionHappend = true
         } else if theEvent.keyCode == 126 { //Up
-            if vars.currentGameState == .gameActive || vars.currentGameState == .gameOver {
-                goToMenu()
+            if isAnimating == false {
+                if vars.currentGameState == .gameActive || vars.currentGameState == .gameOver {
+                    goToMenu()
+                }
             }
         } else if theEvent.keyCode == 13 { //W
-            if vars.currentGameState == .gameActive || vars.currentGameState == .gameOver {
-                goToMenu()
+            if isAnimating == false {
+                if vars.currentGameState == .gameActive || vars.currentGameState == .gameOver {
+                    goToMenu()
+                }
             }
         } else if theEvent.keyCode == 0 { //A
             moveLeft = false
@@ -354,14 +358,18 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             interactionHappend = true
         } else if theEvent.keyCode == 49 { //Space
             if vars.currentGameState == .gameMenu {
-                if gameStarted == false {
-                    gameStarted = true
-                    showGameLayer()
+                if isAnimating == false {
+                    if gameStarted == false {
+                        gameStarted = true
+                        showGameLayer()
+                    }
                 }
             } else if vars.currentGameState == .gameOver {
-                if gameRestarting == false {
-                    gameRestarting = true
-                    restartButton()
+                if isAnimating == false {
+                    if gameRestarting == false {
+                        gameRestarting = true
+                        restartButton()
+                    }
                 }
             }
             interactionHappend = true
@@ -589,12 +597,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 })
                 self.gameStarted = false
                 vars.currentGameState = .gameMenu
-                self.isAnimating = false
                 if vars.windowIsFullscreen == false {
                     self.viewController.setWindowStyleMenu()
                 } else {
                     self.viewController.setWindowStyleFullMenu()
                 }
+                self.isAnimating = false
             })
         } else if vars.currentGameState == .gameOver {
             highscoreLayer.highscoreNode.run(SKAction.moveTo(x: vars.screenSize.width + highscoreLayer.highscoreNode.frame.size.width / 2, duration: vars.gameLayerFadeTime))
@@ -622,13 +630,13 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 self.menuLayer.highscoreNode.run(SKAction.moveTo(y: vars.screenSize.height - self.menuLayer.highscoreNode.frame.height / 2 - (vars.screenSize.height / 7) / 2, duration: vars.gameLayerFadeTime))
                 self.gameStarted = false
                 vars.currentGameState = .gameMenu
-                self.isAnimating = false
                 self.menuLayer.GCNode.zPosition = 1
                 if vars.windowIsFullscreen == false {
                     self.viewController.setWindowStyleMenu()
                 } else {
                     self.viewController.setWindowStyleFullMenu()
                 }
+                self.isAnimating = false
             })
         }
     }
@@ -754,6 +762,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func showGameLayer() {
+        isAnimating = true
         if vars.windowIsFullscreen == false {
             viewController.setWindowStyleGame()
         } else {
@@ -762,7 +771,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         if vars.firstTimePlaying == false {
             vars.showTutorial = true
         }
-        isAnimating = true
         gameLayer = GameLayer()
         setColors()
         addChild(gameLayer)
