@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10101" systemVersion="15E33d" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10101"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -13,8 +14,8 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="AMainMenu" systemMenu="main" id="29">
             <items>
-                <menuItem title="Gravity OSX" id="56">
-                    <menu key="submenu" title="Gravity OSX" systemMenu="apple" id="57">
+                <menuItem title="Gr4vity" id="56">
+                    <menu key="submenu" title="Gr4vity" systemMenu="apple" id="57">
                         <items>
                             <menuItem title="About Gravity OSX" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -23,16 +24,6 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="236">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
-                            <menuItem title="Preferences…" keyEquivalent="," id="129"/>
-                            <menuItem isSeparatorItem="YES" id="143">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
-                            <menuItem title="Services" id="131">
-                                <menu key="submenu" title="Services" systemMenu="services" id="130"/>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="144">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
                             <menuItem title="Hide Gravity OSX" keyEquivalent="h" id="134">
@@ -58,6 +49,18 @@
                                 <connections>
                                     <action selector="terminate:" target="-3" id="449"/>
                                 </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Settings" id="Kjm-6M-ngT" userLabel="Settings">
+                    <menu key="submenu" title="Settings" systemMenu="apple" id="JVr-ea-WQO">
+                        <items>
+                            <menuItem title="Sound Off" id="DgQ-7n-h5U" userLabel="Sound">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="Extreme Mode" id="MDL-IW-BOP">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                             </menuItem>
                         </items>
                     </menu>
@@ -99,12 +102,13 @@
                     </menu>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="-43" y="89"/>
         </menu>
         <window title="Gravity OSX" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="0.0" y="0.0" width="800" height="600"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1057"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -121,12 +125,18 @@
                 </constraints>
             </view>
         </window>
-        <customObject id="494" customClass="AppDelegate" customModuleProvider="target">
+        <customObject id="494" customClass="AppDelegate" customModule="Gravity_macOS" customModuleProvider="target">
             <connections>
                 <outlet property="skView" destination="539" id="540"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
+        <menuItem title="Services" id="131">
+            <menu key="submenu" title="Services" systemMenu="services" id="130"/>
+        </menuItem>
+        <menuItem isSeparatorItem="YES" id="144">
+            <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+        </menuItem>
     </objects>
 </document>
