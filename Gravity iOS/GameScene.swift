@@ -9,26 +9,6 @@
 import SpriteKit
 #if os(iOS)
 import CoreMotion
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 #endif
 
 class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
@@ -483,7 +463,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func GCNodePressed() {
         if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
-            GC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
+            GC.showGameCenterLeaderboard(leaderboardIdentifier: identifiers.iOSnormalLeaderboard)
         }
     }
     
@@ -1506,7 +1486,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
         if vars.currentGameState == .gameActive {
             
-            if gameLayer.player.physicsBody?.allContactedBodies().count > 0 {
+            if (gameLayer.player.physicsBody?.allContactedBodies().count)! > 0 {
                 if let contact = gameLayer.player.physicsBody?.allContactedBodies()[0] {
                     let objectNode = contact.node
                     let player = gameLayer.player

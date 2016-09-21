@@ -84,7 +84,10 @@ open class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewControl
     
     open class func sharedInstance(_ delegate:UIViewController)-> GC {
         if Static.instance == nil {
-            _ = GC.__once
+            Static.instance = GC()
+            Static.delegate = delegate
+            Static.instance!.loginPlayerToGameCenter()
+            //}
         }
         return Static.instance!
     }

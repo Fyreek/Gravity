@@ -10,26 +10,6 @@ import UIKit
 import SpriteKit
 import GameKit
 import AVFoundation
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 class GameViewController: UIViewController, GCDelegate {
     
@@ -135,7 +115,7 @@ class GameViewController: UIViewController, GCDelegate {
                 print("error retrieving scores")
             }
             if scores != nil {
-                if scores?.count > 1 {
+                if (scores?.count)! > 1 {
                     for i in 0 ..< (scores?.count)! {
                         let player = scores![i].player?.alias!
                         vars.highscorePlayerNames.append(String(describing: player))
@@ -164,7 +144,7 @@ class GameViewController: UIViewController, GCDelegate {
                 print("error retrieving scores")
             }
             if scores != nil {
-                if scores?.count > 1 {
+                if (scores?.count)! > 1 {
                     for i in 0 ..< (scores?.count)! {
                         let player = scores![i].player?.alias!
                         vars.highscorePlayerNames.append(String(describing: player))
