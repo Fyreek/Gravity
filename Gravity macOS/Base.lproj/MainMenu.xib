@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16A312a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
@@ -56,11 +56,17 @@
                 <menuItem title="Settings" id="Kjm-6M-ngT" userLabel="Settings">
                     <menu key="submenu" title="Settings" systemMenu="apple" id="JVr-ea-WQO">
                         <items>
-                            <menuItem title="Sound Off" id="DgQ-7n-h5U" userLabel="Sound">
+                            <menuItem title="Turn Sound Off" id="DgQ-7n-h5U" userLabel="Sound">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="soundMenuAction:" target="494" id="XX9-u2-h9e"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="Extreme Mode" id="MDL-IW-BOP">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="modeMenuAction:" target="494" id="tLJ-IK-Bgv"/>
+                                </connections>
                             </menuItem>
                         </items>
                     </menu>
@@ -108,7 +114,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
             <rect key="contentRect" x="0.0" y="0.0" width="800" height="600"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -127,7 +133,9 @@
         </window>
         <customObject id="494" customClass="AppDelegate" customModule="Gravity_macOS" customModuleProvider="target">
             <connections>
+                <outlet property="modeMenuItem" destination="MDL-IW-BOP" id="oe9-AS-dBR"/>
                 <outlet property="skView" destination="539" id="540"/>
+                <outlet property="soundMenuItem" destination="DgQ-7n-h5U" id="Byq-A5-YfD"/>
                 <outlet property="window" destination="371" id="532"/>
             </connections>
         </customObject>

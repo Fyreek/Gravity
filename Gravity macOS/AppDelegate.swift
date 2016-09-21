@@ -18,6 +18,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var skView: SKView!
+    @IBOutlet weak var soundMenuItem: NSMenuItem!
+    @IBOutlet weak var modeMenuItem: NSMenuItem!
+    
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         window.delegate = self
@@ -69,6 +72,25 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
             setWindowStyleMenu()
         } else {
             setWindowStyleGame()
+        }
+    }
+    
+    @IBAction func soundMenuAction(_ sender: AnyObject) {
+        musicUpdate()
+        if vars.musicState == true {
+            soundMenuItem.title = "Turn Sound Off"
+        } else {
+            soundMenuItem.title = "Turn Sound On"
+        }
+    }
+    
+    
+    @IBAction func modeMenuAction(_ sender: AnyObject) {
+        modeUpdate()
+        if vars.extremeMode == true {
+            modeMenuItem.title = "Normal Mode"
+        } else {
+            modeMenuItem.title = "Extreme Mode"
         }
     }
     
