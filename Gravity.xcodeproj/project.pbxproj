@@ -20,6 +20,9 @@
 		14994BF01CB310210009A545 /* SKSceneExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE481C49488F00760D54 /* SKSceneExtension.swift */; };
 		14994BF21CB32D300009A545 /* music.caf in Resources */ = {isa = PBXBuildFile; fileRef = A19EFE871C623D8F00868776 /* music.caf */; };
 		14994BF31CB32D300009A545 /* music.caf in Resources */ = {isa = PBXBuildFile; fileRef = A19EFE871C623D8F00868776 /* music.caf */; };
+		14BFA9931DD0087400A5C9D9 /* LoadingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BFA9921DD0087400A5C9D9 /* LoadingHelper.swift */; };
+		14BFA9961DD00D6500A5C9D9 /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BFA9951DD00D6500A5C9D9 /* AnimationHelper.swift */; };
+		14BFA9981DD00F0E00A5C9D9 /* HighscoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BFA9971DD00F0E00A5C9D9 /* HighscoreHelper.swift */; };
 		14EE10811C74B410004CA811 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EE107F1C74B410004CA811 /* Main.storyboard */; };
 		14EE10831C74B410004CA811 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14EE10821C74B410004CA811 /* Assets.xcassets */; };
 		14EE10881C74B421004CA811 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE491C49488F00760D54 /* Structs.swift */; };
@@ -59,6 +62,9 @@
 		145100E91D92D9D900ABEFA1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Gravity macOS/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		14994BD41CB30D840009A545 /* Gravity macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14994BE11CB30D840009A545 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Gravity macOS/Info.plist"; sourceTree = "<group>"; };
+		14BFA9921DD0087400A5C9D9 /* LoadingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingHelper.swift; path = Helper/LoadingHelper.swift; sourceTree = "<group>"; };
+		14BFA9951DD00D6500A5C9D9 /* AnimationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AnimationHelper.swift; path = Helper/AnimationHelper.swift; sourceTree = "<group>"; };
+		14BFA9971DD00F0E00A5C9D9 /* HighscoreHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HighscoreHelper.swift; path = Helper/HighscoreHelper.swift; sourceTree = "<group>"; };
 		14EE10751C74B410004CA811 /* Gravity tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EE10801C74B410004CA811 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		14EE10821C74B410004CA811 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				A19EFE871C623D8F00868776 /* music.caf */,
+				14BFA98F1DD007AC00A5C9D9 /* Helper */,
 				14994BEB1CB30E3B0009A545 /* Layers */,
 				14994BEC1CB30E490009A545 /* Extensions */,
 			);
@@ -153,6 +160,16 @@
 				A108DE481C49488F00760D54 /* SKSceneExtension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		14BFA98F1DD007AC00A5C9D9 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				14BFA9921DD0087400A5C9D9 /* LoadingHelper.swift */,
+				14BFA9951DD00D6500A5C9D9 /* AnimationHelper.swift */,
+				14BFA9971DD00F0E00A5C9D9 /* HighscoreHelper.swift */,
+			);
+			name = Helper;
 			sourceTree = "<group>";
 		};
 		14CA552B1C49897B00E97C8F /* Extensions */ = {
@@ -458,11 +475,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14BFA9931DD0087400A5C9D9 /* LoadingHelper.swift in Sources */,
 				A127C0211C4E52AE0042258B /* HighscoreLayer.swift in Sources */,
 				A1D459951C46B62E0093B6CB /* GameScene.swift in Sources */,
 				A108DE4A1C49488F00760D54 /* GameLayer.swift in Sources */,
+				14BFA9981DD00F0E00A5C9D9 /* HighscoreHelper.swift in Sources */,
 				A108DE4B1C49488F00760D54 /* MenuLayer.swift in Sources */,
 				A108DE4D1C49488F00760D54 /* Structs.swift in Sources */,
+				14BFA9961DD00D6500A5C9D9 /* AnimationHelper.swift in Sources */,
 				1447A9221CA18E2D0074332E /* GameCenter.swift in Sources */,
 				A1D459971C46B62E0093B6CB /* GameViewController.swift in Sources */,
 				A108DE4C1C49488F00760D54 /* SKSceneExtension.swift in Sources */,

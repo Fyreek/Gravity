@@ -44,8 +44,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     var currentScore: TimeInterval = 0
     var newHighscore:Bool = false
     var gameCenterSync:Bool = false
-    var gameBGColor:[SKColor] = []
-    var gameObjectColor:[SKColor] = []
+    var gameBGColor:[SKColor] = [colors.redBGColor, colors.blueBGColor, colors.greenBGColor, colors.yellowBGColor, colors.orangeBGColor]
+    var gameObjectColor:[SKColor] = [colors.redObjectColor, colors.blueObjectColor, colors.greenObjectColor, colors.yellowObjectColor, colors.orangeObjectColor]
     var currentGameColor:Int = 0
     var isColorizing:Bool = false
     var barsFadedIn:Bool = true
@@ -62,6 +62,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     var isTouchedR:Bool = false
     var isTouchedL:Bool = false
+    
+    //Helper
+    var loadHelper = LoadingHelper()
+    var aniHelper = AnimationHelper()
+    var scoreHelper = HighscoreHelper()
     
     //Actions
     let fadeColorAction = SKAction.customAction(withDuration: 0.5, actionBlock: {(node: SKNode!, elapsedTime: CGFloat) -> Void in
@@ -88,39 +93,22 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     //Functions
     override func didMove(to view: SKView) {
         self.physicsWorld.contactDelegate = self
-        loadValues()
-        loadNSUserData()
+        modeSetup()
+        loadHelper.getSizes(curView: view)
+        loadHelper.loadUserData()
         interfaceSetup()
         #if os(tvOS)
         initMenuSwipe()
         #endif
     }
     
-    func loadValues() {
-        
-        vars.screenSize = (view?.frame.size)! //What size the display has
-        vars.barHeight = vars.screenSize.height / 6 //How high the bars at top and bottom are - normal: / 6
-        vars.objectSize = vars.screenSize.height / 36 //How big the objects are - normal: / 36
-        vars.screenOutLeft = -vars.objectSize * 2 //Spawnpoint on the left side
-        vars.screenOutRight = vars.screenSize.width + vars.objectSize * 2 //Spawnpoint on the right side
+    func modeSetup() {
         
         if vars.extremeMode == false {
             initNormalMode()
         } else {
             initExtremeMode()
         }
-        
-        gameBGColor.append(colors.redBGColor)
-        gameBGColor.append(colors.blueBGColor)
-        gameBGColor.append(colors.greenBGColor)
-        gameBGColor.append(colors.yellowBGColor)
-        gameBGColor.append(colors.orangeBGColor)
-        
-        gameObjectColor.append(colors.redObjectColor)
-        gameObjectColor.append(colors.blueObjectColor)
-        gameObjectColor.append(colors.greenObjectColor)
-        gameObjectColor.append(colors.yellowObjectColor)
-        gameObjectColor.append(colors.orangeObjectColor)
     }
     
     func initExtremeMode() {
@@ -159,80 +147,12 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             ])
     }
     
-    func loadNSUserData() {
-        if let _ = UserDefaults.standard.object(forKey: "highscore") {
-            vars.highscore = UserDefaults.standard.double(forKey: "highscore")
-        } else {
-            vars.highscore = 0
-        }
-        if let _ = UserDefaults.standard.object(forKey: "extHighscore") {
-            vars.extHighscore = UserDefaults.standard.double(forKey: "extHighscore")
-        } else {
-            vars.extHighscore = 0
-        }
-        if let _ = UserDefaults.standard.object(forKey: "firstTimePlaying") {
-            vars.firstTimePlaying = UserDefaults.standard.bool(forKey: "firstTimePlaying")
-        } else {
-            vars.firstTimePlaying = false
-        }
-        if let _ = UserDefaults.standard.object(forKey: "gamesPlayed") {
-            vars.gamesPlayed = UserDefaults.standard.integer(forKey: "gamesPlayed")
-        } else {
-            vars.gamesPlayed = 0
-        }
-        if let _ = UserDefaults.standard.object(forKey: "fiveSeconds") {
-            achievements.fiveSeconds = UserDefaults.standard.bool(forKey: "fiveSeconds")
-        } else {
-            achievements.fiveSeconds = false
-        }
-        if let _ = UserDefaults.standard.object(forKey: "fifthteenSeconds") {
-            achievements.fifthteenSeconds = UserDefaults.standard.bool(forKey: "fifthteenSeconds")
-        } else {
-            achievements.fifthteenSeconds = false
-        }
-        if let _ = UserDefaults.standard.object(forKey: "thirtySeconds") {
-            achievements.thirtySeconds = UserDefaults.standard.bool(forKey: "thirtySeconds")
-        } else {
-            achievements.thirtySeconds = false
-        }
-        if let _ = UserDefaults.standard.object(forKey: "sixytSeconds") {
-            achievements.sixtySeconds = UserDefaults.standard.bool(forKey: "sixtySeconds")
-        } else {
-            achievements.sixtySeconds = false
-        }
-        if let _ = UserDefaults.standard.object(forKey: "onehundredtwentySeconds") {
-            achievements.onehundredtwentySeconds = UserDefaults.standard.bool(forKey: "onehundredtwentySeconds")
-        } else {
-            achievements.onehundredtwentySeconds = false
-        }
-        if let _ = UserDefaults.standard.object(forKey: "pi") {
-            achievements.pi = UserDefaults.standard.bool(forKey: "pi")
-        } else {
-            achievements.pi = false
-        }
-        if let _ = UserDefaults.standard.object(forKey: "newton") {
-            achievements.newton = UserDefaults.standard.bool(forKey: "newton")
-        } else {
-            achievements.newton = false
-        }
-    }
-    
     func pulsingPlayButton() {
-        let factor:CGFloat = menuLayer.playButton.xScale
-        let pulseUp = SKAction.scale(to: factor + 0.02, duration: 2.0)
-        let pulseDown = SKAction.scale(to: factor - 0.02, duration: 2.0)
-        let pulse = SKAction.sequence([pulseUp, pulseDown])
-        let repeatPulse = SKAction.repeatForever(pulse)
-        menuLayer.playButton.run(repeatPulse, withKey: "pulse")
+        menuLayer.playButton.run(aniHelper.getPulsingAction(factor: menuLayer.playButton.xScale), withKey: "pulse")
     }
     
     func pulsingReplayButton() {
-        let factor:CGFloat = highscoreLayer.highscoreNode.xScale
-        let pulseUp = SKAction.scale(to: factor + 0.02, duration: 2.0)
-        let pulseDown = SKAction.scale(to: factor - 0.02, duration: 2.0)
-        let pulse = SKAction.sequence([pulseUp, pulseDown])
-        let repeatPulse = SKAction.repeatForever(pulse)
-        highscoreLayer.highscoreNode.run(repeatPulse, withKey: "pulse")
+        highscoreLayer.highscoreNode.run(aniHelper.getPulsingAction(factor: highscoreLayer.highscoreNode.xScale), withKey: "pulse")
     }
     
     func changeColor() {
@@ -280,30 +200,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func setHighscore() {
-        
         achievementProgress()
-        var highscoreTime:Double = 0
-        if vars.extremeMode == false {
-            highscoreTime = vars.highscore.roundToPlaces(2)
-        } else {
-            highscoreTime = vars.extHighscore.roundToPlaces(2)
-        }
-        
-        let minutes = UInt8(highscoreTime / 60.0)
-        
-        highscoreTime -= (TimeInterval(minutes) * 60)
-        
-        let seconds = UInt8(highscoreTime)
-        
-        highscoreTime -= TimeInterval(seconds)
-        
-        let fraction = Int(round(highscoreTime * 100.0)) % 100
-        
-        let strMinutes = String(format: "%02d", minutes)
-        let strSeconds = String(format: "%02d", seconds)
-        let strFraction = String(format: "%02d", fraction)
-        
-        menuLayer.highscoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
+        menuLayer.highscoreNode.text = scoreHelper.setHighscore()
     }
     
     func setupSpawnTimer() {
@@ -665,7 +563,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         
         let currentTime = Date.timeIntervalSinceReferenceDate
         
-        var elapsedTime: TimeInterval = currentTime - startTime
+        let elapsedTime: TimeInterval = currentTime - startTime
         currentScore = elapsedTime
         if vars.extremeMode == true {
             if currentScore > vars.extHighscore {
@@ -679,19 +577,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             }
         }
         
-        let minutes = UInt8(elapsedTime / 60.0)
-        
-        elapsedTime -= (TimeInterval(minutes) * 60)
-        
-        let seconds = UInt8(elapsedTime)
-        
-        elapsedTime -= TimeInterval(seconds)
-        
-        let fraction = UInt8(elapsedTime * 100)
-        
-        let strMinutes = String(format: "%02d", minutes)
-        let strSeconds = String(format: "%02d", seconds)
-        let strFraction = String(format: "%02d", fraction)
+        let timeArr = scoreHelper.getAchievements(curElapsedTime: elapsedTime)
+        let seconds = timeArr[1]
         
         if vars.showTutorial == true && seconds >= 5 {
             vars.showTutorial = false
@@ -699,50 +586,11 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             gameLayer.tutorialNodeRight.run(SKAction.fadeOut(withDuration: vars.gameLayerFadeTime))
         }
         
-        if achievements.fiveSeconds == false {
-            if seconds >= 5 {
-                achievements.fiveSeconds = true
-                GC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_5seconds", showBannnerIfCompleted: true, addToExisting: false)
-                UserDefaults.standard.set(true, forKey: "fiveSeconds")
-                UserDefaults.standard.synchronize()
-            }
-        }
-        if achievements.fifthteenSeconds == false {
-            if seconds >= 15 {
-                achievements.fifthteenSeconds = true
-                GC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_15seconds", showBannnerIfCompleted: true, addToExisting: false)
-                UserDefaults.standard.set(true, forKey: "fifthteenSeconds")
-                UserDefaults.standard.synchronize()
-            }
-        }
-        if achievements.thirtySeconds == false {
-            if seconds >= 30 {
-                achievements.thirtySeconds = true
-                GC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_30seconds", showBannnerIfCompleted: true, addToExisting: false)
-                UserDefaults.standard.set(true, forKey: "thirtySeconds")
-                UserDefaults.standard.synchronize()
-            }
-        }
-        if achievements.sixtySeconds == false {
-            if minutes >= 1 {
-                achievements.sixtySeconds = true
-                GC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_60seconds", showBannnerIfCompleted: true, addToExisting: false)
-                UserDefaults.standard.set(true, forKey: "sixtySeconds")
-                UserDefaults.standard.synchronize()
-            }
-        }
-        if achievements.onehundredtwentySeconds == false {
-            if minutes >= 2 {
-                achievements.onehundredtwentySeconds = true
-                GC.reportAchievement(progress: 100.00, achievementIdentifier: "gravity.achievement_120seconds", showBannnerIfCompleted: true, addToExisting: false)
-                UserDefaults.standard.set(true, forKey: "onehundredtwentySeconds")
-                UserDefaults.standard.synchronize()
-            }
-        }
+        let totalScore: String = scoreHelper.getScoreString(timeArr: timeArr)
         
-        gameLayer.scoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
+        gameLayer.scoreNode.text = totalScore
         if newHighscore == true {
-            menuLayer.highscoreNode.text = "\(strMinutes):\(strSeconds).\(strFraction)"
+            menuLayer.highscoreNode.text = totalScore
         }
     }
     
