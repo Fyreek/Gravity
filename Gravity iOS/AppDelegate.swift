@@ -20,11 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    #if os(iOS)
     @available(iOS 9.0, *)
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         completionHandler(handleQuickAction(shortcutItem))
     }
-
+    #endif
 
     func applicationWillResignActive(_ application: UIApplication) {
         if vars.musicPlaying == true {
@@ -49,23 +50,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             vars.gameScene?.startTimerAfter()
         }
         
+        #if os(iOS)
         gameSettings = ["motioncontrol": "Motion Control" as AnyObject]
         gameSettings = ["extreme": "Extreme Mode" as AnyObject]
         UserDefaults.standard.register(defaults: gameSettings)
         vars.motionControl = UserDefaults.standard.bool(forKey: "motioncontrol")
         vars.extremeMode = UserDefaults.standard.bool(forKey: "extreme")
-        
+        #endif
+            
         if vars.currentGameState == .gameActive && vars.extremeMode == true && vars.gameModeBefore == false {
             vars.gameScene?.goToMenu()
         } else if vars.currentGameState == .gameActive && vars.extremeMode == false && vars.gameModeBefore == true {
             vars.gameScene?.goToMenu()
         }
         
+        #if os(iOS)
         if vars.motionControl == true && vars.currentGameState == .gameActive {
             vars.gameScene?.initMotionControl()
         } else if vars.currentGameState == .gameActive {
             vars.gameScene?.cancelMotionControl()
         }
+        #endif
+        
         if vars.extremeMode == true {
             vars.gameScene?.initExtremeMode()
         } else {
@@ -96,6 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case touchControl = "TouchControl"
     }
     
+    #if os(iOS)
     @available(iOS 9.0, *)
     func handleQuickAction(_ shortcutItem: UIApplicationShortcutItem) -> Bool {
         
@@ -118,5 +125,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return quickActionHandled
     }
+    #endif
 }
 

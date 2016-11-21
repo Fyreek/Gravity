@@ -12,7 +12,7 @@
 		145100E31D92CEE300ABEFA1 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145100E11D92CEE300ABEFA1 /* GameScene.swift */; };
 		145100E51D92D98100ABEFA1 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 145100E41D92D98100ABEFA1 /* GameScene.sks */; };
 		145100E81D92D9C600ABEFA1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 145100E61D92D9C600ABEFA1 /* MainMenu.xib */; };
-		145100EA1D92D9D900ABEFA1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 145100E91D92D9D900ABEFA1 /* Assets.xcassets */; };
+		145100EA1D92D9D900ABEFA1 /* Assets_macOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 145100E91D92D9D900ABEFA1 /* Assets_macOS.xcassets */; };
 		14994BE51CB30DA20009A545 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE471C49488F00760D54 /* MenuLayer.swift */; };
 		14994BE61CB30DA40009A545 /* GameLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE461C49488F00760D54 /* GameLayer.swift */; };
 		14994BE71CB30DA70009A545 /* HighscoreLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127C0201C4E52AE0042258B /* HighscoreLayer.swift */; };
@@ -23,8 +23,18 @@
 		14BFA9931DD0087400A5C9D9 /* LoadingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BFA9921DD0087400A5C9D9 /* LoadingHelper.swift */; };
 		14BFA9961DD00D6500A5C9D9 /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BFA9951DD00D6500A5C9D9 /* AnimationHelper.swift */; };
 		14BFA9981DD00F0E00A5C9D9 /* HighscoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BFA9971DD00F0E00A5C9D9 /* HighscoreHelper.swift */; };
+		14E229D31DE3529C00EF4808 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E229D21DE3529C00EF4808 /* GameKit.framework */; };
+		14E229D41DE3547C00EF4808 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459901C46B62E0093B6CB /* AppDelegate.swift */; };
+		14E229D61DE3635700EF4808 /* SF-UI-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 14E229D51DE3635700EF4808 /* SF-UI-Display-Regular.otf */; };
+		14E229D71DE3635700EF4808 /* SF-UI-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 14E229D51DE3635700EF4808 /* SF-UI-Display-Regular.otf */; };
+		14E229D81DE3635700EF4808 /* SF-UI-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 14E229D51DE3635700EF4808 /* SF-UI-Display-Regular.otf */; };
+		14E229DA1DE36FA400EF4808 /* Assets_iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1D4599B1C46B62E0093B6CB /* Assets_iOS.xcassets */; };
+		14EDA5981DE33927009B06FD /* GameCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1447A9211CA18E2D0074332E /* GameCenter.swift */; };
+		14EDA5991DE339C3009B06FD /* LoadingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BFA9921DD0087400A5C9D9 /* LoadingHelper.swift */; };
+		14EDA59A1DE339C6009B06FD /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BFA9951DD00D6500A5C9D9 /* AnimationHelper.swift */; };
+		14EDA59B1DE339C8009B06FD /* HighscoreHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BFA9971DD00F0E00A5C9D9 /* HighscoreHelper.swift */; };
 		14EE10811C74B410004CA811 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EE107F1C74B410004CA811 /* Main.storyboard */; };
-		14EE10831C74B410004CA811 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14EE10821C74B410004CA811 /* Assets.xcassets */; };
+		14EE10831C74B410004CA811 /* Assets_tvOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14EE10821C74B410004CA811 /* Assets_tvOS.xcassets */; };
 		14EE10881C74B421004CA811 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE491C49488F00760D54 /* Structs.swift */; };
 		14EE10891C74B423004CA811 /* SKSceneExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE481C49488F00760D54 /* SKSceneExtension.swift */; };
 		14EE108A1C74B426004CA811 /* HighscoreLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127C0201C4E52AE0042258B /* HighscoreLayer.swift */; };
@@ -33,8 +43,6 @@
 		14EE108D1C74B430004CA811 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A1D459921C46B62E0093B6CB /* GameScene.sks */; };
 		14EE108E1C74B433004CA811 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459941C46B62E0093B6CB /* GameScene.swift */; };
 		14EE108F1C74B434004CA811 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459961C46B62E0093B6CB /* GameViewController.swift */; };
-		14EE10911C74B43F004CA811 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1D4599B1C46B62E0093B6CB /* Assets.xcassets */; };
-		14EE10931C74B4C3004CA811 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EE10921C74B4C3004CA811 /* AppDelegate.swift */; };
 		816F2D811D900A7D0031BC06 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 816F2D801D900A7D0031BC06 /* GameKit.framework */; };
 		A108DE4A1C49488F00760D54 /* GameLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE461C49488F00760D54 /* GameLayer.swift */; };
 		A108DE4B1C49488F00760D54 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE471C49488F00760D54 /* MenuLayer.swift */; };
@@ -49,7 +57,7 @@
 		A1D459951C46B62E0093B6CB /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459941C46B62E0093B6CB /* GameScene.swift */; };
 		A1D459971C46B62E0093B6CB /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459961C46B62E0093B6CB /* GameViewController.swift */; };
 		A1D4599A1C46B62E0093B6CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1D459981C46B62E0093B6CB /* Main.storyboard */; };
-		A1D4599C1C46B62E0093B6CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1D4599B1C46B62E0093B6CB /* Assets.xcassets */; };
+		A1D4599C1C46B62E0093B6CB /* Assets_iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1D4599B1C46B62E0093B6CB /* Assets_iOS.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,15 +67,17 @@
 		145100E11D92CEE300ABEFA1 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameScene.swift; path = "Gravity macOS/GameScene.swift"; sourceTree = SOURCE_ROOT; };
 		145100E41D92D98100ABEFA1 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = GameScene.sks; path = "Gravity macOS/GameScene.sks"; sourceTree = SOURCE_ROOT; };
 		145100E71D92D9C600ABEFA1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Gravity macOS/Base.lproj/MainMenu.xib"; sourceTree = SOURCE_ROOT; };
-		145100E91D92D9D900ABEFA1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Gravity macOS/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		145100E91D92D9D900ABEFA1 /* Assets_macOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets_macOS.xcassets; path = "Gravity macOS/Assets_macOS.xcassets"; sourceTree = SOURCE_ROOT; };
 		14994BD41CB30D840009A545 /* Gravity macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14994BE11CB30D840009A545 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Gravity macOS/Info.plist"; sourceTree = "<group>"; };
 		14BFA9921DD0087400A5C9D9 /* LoadingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingHelper.swift; path = Helper/LoadingHelper.swift; sourceTree = "<group>"; };
 		14BFA9951DD00D6500A5C9D9 /* AnimationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AnimationHelper.swift; path = Helper/AnimationHelper.swift; sourceTree = "<group>"; };
 		14BFA9971DD00F0E00A5C9D9 /* HighscoreHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HighscoreHelper.swift; path = Helper/HighscoreHelper.swift; sourceTree = "<group>"; };
+		14E229D21DE3529C00EF4808 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS10.0.sdk/System/Library/Frameworks/GameKit.framework; sourceTree = DEVELOPER_DIR; };
+		14E229D51DE3635700EF4808 /* SF-UI-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Regular.otf"; sourceTree = "<group>"; };
 		14EE10751C74B410004CA811 /* Gravity tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EE10801C74B410004CA811 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		14EE10821C74B410004CA811 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		14EE10821C74B410004CA811 /* Assets_tvOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets_tvOS.xcassets; sourceTree = "<group>"; };
 		14EE10841C74B410004CA811 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14EE10921C74B4C3004CA811 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14FD4E4E1CBEDAF9005F58C8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -86,7 +96,7 @@
 		A1D459941C46B62E0093B6CB /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		A1D459961C46B62E0093B6CB /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		A1D459991C46B62E0093B6CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		A1D4599B1C46B62E0093B6CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1D4599B1C46B62E0093B6CB /* Assets_iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets_iOS.xcassets; sourceTree = "<group>"; };
 		A1D459A01C46B62E0093B6CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14E229D31DE3529C00EF4808 /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +135,7 @@
 				145100E01D92CEE300ABEFA1 /* AppDelegate.swift */,
 				145100E61D92D9C600ABEFA1 /* MainMenu.xib */,
 				145100E41D92D98100ABEFA1 /* GameScene.sks */,
-				145100E91D92D9D900ABEFA1 /* Assets.xcassets */,
+				145100E91D92D9D900ABEFA1 /* Assets_macOS.xcassets */,
 				145100E11D92CEE300ABEFA1 /* GameScene.swift */,
 				14994BE11CB30D840009A545 /* Info.plist */,
 			);
@@ -136,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				A19EFE871C623D8F00868776 /* music.caf */,
+				14E229D51DE3635700EF4808 /* SF-UI-Display-Regular.otf */,
 				14BFA98F1DD007AC00A5C9D9 /* Helper */,
 				14994BEB1CB30E3B0009A545 /* Layers */,
 				14994BEC1CB30E490009A545 /* Extensions */,
@@ -185,7 +197,7 @@
 			children = (
 				14EE10921C74B4C3004CA811 /* AppDelegate.swift */,
 				14EE107F1C74B410004CA811 /* Main.storyboard */,
-				14EE10821C74B410004CA811 /* Assets.xcassets */,
+				14EE10821C74B410004CA811 /* Assets_tvOS.xcassets */,
 				14EE10841C74B410004CA811 /* Info.plist */,
 			);
 			path = "Gravity tvOS";
@@ -194,6 +206,7 @@
 		8C4A506B52B050643EA03376 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				14E229D21DE3529C00EF4808 /* GameKit.framework */,
 				816F2D801D900A7D0031BC06 /* GameKit.framework */,
 				14FD4E4E1CBEDAF9005F58C8 /* AVFoundation.framework */,
 				A19946581C46B8D500A0041B /* GameKit.framework */,
@@ -231,7 +244,7 @@
 				A1D459941C46B62E0093B6CB /* GameScene.swift */,
 				A1D459921C46B62E0093B6CB /* GameScene.sks */,
 				A1D459981C46B62E0093B6CB /* Main.storyboard */,
-				A1D4599B1C46B62E0093B6CB /* Assets.xcassets */,
+				A1D4599B1C46B62E0093B6CB /* Assets_iOS.xcassets */,
 				A126FADE1C565DA5002D4A85 /* Settings.bundle */,
 				A1D459A01C46B62E0093B6CB /* Info.plist */,
 				14CA552B1C49897B00E97C8F /* Extensions */,
@@ -263,12 +276,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 14EE10871C74B410004CA811 /* Build configuration list for PBXNativeTarget "Gravity tvOS" */;
 			buildPhases = (
-				94634BD6C4BADB75B27EA354 /* Check Pods Manifest.lock */,
 				14EE10711C74B410004CA811 /* Sources */,
 				14EE10721C74B410004CA811 /* Frameworks */,
 				14EE10731C74B410004CA811 /* Resources */,
-				813CBEE0D45EE21385D2EA75 /* Embed Pods Frameworks */,
-				9DD96DAD923442EFA4C25D08 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -322,6 +332,13 @@
 					14EE10741C74B410004CA811 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = ZA57B2W688;
+						LastSwiftMigration = 0810;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+						};
 					};
 					A1D4598C1C46B62E0093B6CB = {
 						CreatedOnToolsVersion = 7.2;
@@ -362,7 +379,8 @@
 			files = (
 				145100E51D92D98100ABEFA1 /* GameScene.sks in Resources */,
 				14994BF21CB32D300009A545 /* music.caf in Resources */,
-				145100EA1D92D9D900ABEFA1 /* Assets.xcassets in Resources */,
+				14E229D81DE3635700EF4808 /* SF-UI-Display-Regular.otf in Resources */,
+				145100EA1D92D9D900ABEFA1 /* Assets_macOS.xcassets in Resources */,
 				145100E81D92D9C600ABEFA1 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,10 +389,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14EE10831C74B410004CA811 /* Assets.xcassets in Resources */,
+				14EE10831C74B410004CA811 /* Assets_tvOS.xcassets in Resources */,
 				14EE108D1C74B430004CA811 /* GameScene.sks in Resources */,
-				14EE10911C74B43F004CA811 /* Assets.xcassets in Resources */,
+				14E229D71DE3635700EF4808 /* SF-UI-Display-Regular.otf in Resources */,
 				14994BF31CB32D300009A545 /* music.caf in Resources */,
+				14E229DA1DE36FA400EF4808 /* Assets_iOS.xcassets in Resources */,
 				14EE10811C74B410004CA811 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -385,61 +404,14 @@
 			files = (
 				A1D459931C46B62E0093B6CB /* GameScene.sks in Resources */,
 				A19EFE881C623D8F00868776 /* music.caf in Resources */,
+				14E229D61DE3635700EF4808 /* SF-UI-Display-Regular.otf in Resources */,
 				A126FADF1C565DA5002D4A85 /* Settings.bundle in Resources */,
-				A1D4599C1C46B62E0093B6CB /* Assets.xcassets in Resources */,
+				A1D4599C1C46B62E0093B6CB /* Assets_iOS.xcassets in Resources */,
 				A1D4599A1C46B62E0093B6CB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		813CBEE0D45EE21385D2EA75 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gravity tvOS/Pods-Gravity tvOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		94634BD6C4BADB75B27EA354 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		9DD96DAD923442EFA4C25D08 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Gravity tvOS/Pods-Gravity tvOS-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		14994BD01CB30D840009A545 /* Sources */ = {
@@ -460,11 +432,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14E229D41DE3547C00EF4808 /* AppDelegate.swift in Sources */,
+				14EDA5991DE339C3009B06FD /* LoadingHelper.swift in Sources */,
 				14EE108F1C74B434004CA811 /* GameViewController.swift in Sources */,
 				14EE108E1C74B433004CA811 /* GameScene.swift in Sources */,
-				14EE10931C74B4C3004CA811 /* AppDelegate.swift in Sources */,
+				14EDA59B1DE339C8009B06FD /* HighscoreHelper.swift in Sources */,
 				14EE10891C74B423004CA811 /* SKSceneExtension.swift in Sources */,
 				14EE108B1C74B428004CA811 /* GameLayer.swift in Sources */,
+				14EDA59A1DE339C6009B06FD /* AnimationHelper.swift in Sources */,
+				14EDA5981DE33927009B06FD /* GameCenter.swift in Sources */,
 				14EE108C1C74B42C004CA811 /* MenuLayer.swift in Sources */,
 				14EE10881C74B421004CA811 /* Structs.swift in Sources */,
 				14EE108A1C74B426004CA811 /* HighscoreLayer.swift in Sources */,
@@ -559,17 +535,18 @@
 		14EE10851C74B410004CA811 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "Brand Assets";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = ZA57B2W688;
 				INFOPLIST_FILE = "Gravity tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yalu.Gravity-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = appletvos;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 			};
@@ -578,17 +555,18 @@
 		14EE10861C74B410004CA811 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "Brand Assets";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = ZA57B2W688;
 				INFOPLIST_FILE = "Gravity tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yalu.Gravity-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yalu.Gravity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = appletvos;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 			};

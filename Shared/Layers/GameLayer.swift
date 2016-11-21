@@ -50,7 +50,7 @@ class GameLayer: SKNode {
         player.zPosition = 2
         addChild(player)
         
-        scoreNode = SKLabelNode(fontNamed: "Helvetia")
+        scoreNode = SKLabelNode(fontNamed: "SF-UI-Display-Regular")
         scoreNode.text = "00:00.00"
         scoreNode.fontSize = vars.screenSize.height / 13
         scoreNode.fontColor = SKColor.white

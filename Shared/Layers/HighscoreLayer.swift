@@ -49,7 +49,7 @@ class HighscoreLayer: SKNode {
         highscoreNode.alpha = 0
         addChild(highscoreNode)
     
-        highscoreText = SKLabelNode(fontNamed: "Helvetia")
+        highscoreText = SKLabelNode(fontNamed: "SF-UI-Display-Regular")
         highscoreText.text = "00:00.00"
         highscoreText.fontSize = vars.screenSize.height / 13
         highscoreText.alpha = 0
@@ -58,7 +58,7 @@ class HighscoreLayer: SKNode {
         highscoreText.position = CGPoint(x: vars.screenSize.width * 1.5, y: vars.screenSize.height / 2 - highscoreText.frame.size.height / 2)
         addChild(highscoreText)
         
-        firstHighscoreText = SKLabelNode(fontNamed: "Helvetia")
+        firstHighscoreText = SKLabelNode(fontNamed: "SF-UI-Display-Regular")
         firstHighscoreText.text = "00:00.00 - Name"
         firstHighscoreText.fontSize = vars.screenSize.height / 26
         firstHighscoreText.horizontalAlignmentMode = .center
@@ -69,7 +69,7 @@ class HighscoreLayer: SKNode {
         firstHighscoreText.position = CGPoint(x: -vars.screenSize.width / 2, y: vars.screenSize.height / 2)
         addChild(firstHighscoreText)
         
-        secondHighscoreText = SKLabelNode(fontNamed: "Helvetia")
+        secondHighscoreText = SKLabelNode(fontNamed: "SF-UI-Display-Regular")
         secondHighscoreText.text = "00:00.00 - Name"
         secondHighscoreText.fontSize = vars.screenSize.height / 26
         secondHighscoreText.horizontalAlignmentMode = .center
@@ -80,7 +80,7 @@ class HighscoreLayer: SKNode {
         secondHighscoreText.position = CGPoint(x: -vars.screenSize.width / 2, y: vars.screenSize.height / 2)
         addChild(secondHighscoreText)
         
-        thirdHighscoreText = SKLabelNode(fontNamed: "Helvetia")
+        thirdHighscoreText = SKLabelNode(fontNamed: "SF-UI-Display-Regular")
         thirdHighscoreText.text = "00:00.00 - Name"
         thirdHighscoreText.fontSize = vars.screenSize.height / 26
         thirdHighscoreText.horizontalAlignmentMode = .center
@@ -91,7 +91,7 @@ class HighscoreLayer: SKNode {
         thirdHighscoreText.position = CGPoint(x: -vars.screenSize.width / 2, y: vars.screenSize.height / 2)
         addChild(thirdHighscoreText)
         
-        fourthHighscoreText = SKLabelNode(fontNamed: "Helvetia")
+        fourthHighscoreText = SKLabelNode(fontNamed: "SF-UI-Display-Regular")
         fourthHighscoreText.text = "00:00.00 - Name"
         fourthHighscoreText.fontSize = vars.screenSize.height / 26
         fourthHighscoreText.horizontalAlignmentMode = .center
@@ -102,7 +102,7 @@ class HighscoreLayer: SKNode {
         fourthHighscoreText.position = CGPoint(x: -vars.screenSize.width / 2, y: vars.screenSize.height / 2)
         addChild(fourthHighscoreText)
         
-        fifthHighscoreText = SKLabelNode(fontNamed: "Helvetia")
+        fifthHighscoreText = SKLabelNode(fontNamed: "SF-UI-Display-Regular")
         fifthHighscoreText.text = "00:00.00 - Name"
         fifthHighscoreText.fontSize = vars.screenSize.height / 26
         fifthHighscoreText.horizontalAlignmentMode = .center

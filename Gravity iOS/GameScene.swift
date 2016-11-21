@@ -118,6 +118,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         vars.objectMoveTime = 2
         vars.colorChangeTime = 0.5
         
+        UserDefaults.standard.set(vars.extremeMode, forKey: "extremeMode")
+        UserDefaults.standard.synchronize()
+        
         waitAction = SKAction.wait(forDuration: vars.objectWait)
         moveLeftAction = SKAction.sequence([
             waitAction,
@@ -135,6 +138,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         vars.gravity = vars.screenSize.height / 40 //How fast the player moves up and down - normal: / 35
         vars.objectMoveTime = 4
         vars.colorChangeTime = 5
+        
+        UserDefaults.standard.set(vars.extremeMode, forKey: "extremeMode")
+        UserDefaults.standard.synchronize()
         
         waitAction = SKAction.wait(forDuration: vars.objectWait)
         moveLeftAction = SKAction.sequence([
@@ -456,7 +462,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         spawnTimerRunning = false
         gravityDirection = "up"
         switchGravity()
+        #if os(iOS)
         viewController.deactivateMultiTouch()
+        #endif
         
         self.enumerateChildNodes(withName: "objectPos") {
             node, stop in
@@ -605,7 +613,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         addChild(gameLayer)
         barsFadedIn = false
         interactionHappend = false
+        #if os(iOS)
         viewController.activeMultiTouch()
+        #endif
         
         gameLayer.topBar.run(gameLayer.topBarInAction)
         gameLayer.bottomBar.run(gameLayer.bottomBarInAction)
@@ -752,10 +762,26 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             
         case ColliderType.player.rawValue | ColliderType.ground.rawValue:
             switchGravity()
-            
+
         default:
-            print("unknown collision")
+            contact.bodyA.node!.removeAllActions()
+            contact.bodyB.node!.removeAllActions()
+            contact.bodyA.isDynamic = false
+            contact.bodyB.isDynamic = false
+            contact.bodyA.velocity = CGVector(dx: 0, dy: 0)
+            contact.bodyB.velocity = CGVector(dx: 0, dy: 0)
+            objectsCanRotate = false
+            self.enumerateChildNodes(withName: "objectPos") {
+                node, stop in
+                node.removeAllActions()
+            }
+            self.enumerateChildNodes(withName: "objectNeg") {
+                node, stop in
+                node.removeAllActions()
+            }
+            gameOver()
         }
+        
     }
     
     func setColors() {
@@ -910,8 +936,10 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     func openNewHighScore() {
         isAnimating = true
         timesPlayedWithoutInteraction = 0
+        #if os(iOS)
         viewController.deactivateMultiTouch()
-         
+        #endif
+        
         highscoreLayer = HighscoreLayer()
         self.addChild(highscoreLayer)
         
@@ -1334,31 +1362,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
         if vars.currentGameState == .gameActive {
             
-            if (gameLayer.player.physicsBody?.allContactedBodies().count)! > 0 {
-                if let contact = gameLayer.player.physicsBody?.allContactedBodies()[0] {
-                    let objectNode = contact.node
-                    let player = gameLayer.player
-                    let nodeName = objectNode!.name
-                    if nodeName == "objectPos" || nodeName == "objectNeg" {
-                        player.physicsBody?.isDynamic = false
-                        objectNode?.physicsBody?.isDynamic = false
-                        player.removeAllActions()
-                        objectNode?.removeAllActions()
-                        player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                        objectNode?.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                        objectsCanRotate = false
-                        self.enumerateChildNodes(withName: "objectPos") {
-                            node, stop in
-                            node.removeAllActions()
-                        }
-                        self.enumerateChildNodes(withName: "objectNeg") {
-                            node, stop in
-                            node.removeAllActions()
-                        }
-                        gameOver()
-                    }
-                }
-            }
             if vars.motionControl == false {
                 if isTouchedR == false && isTouchedL == false {
                     moveRight = false

@@ -30,6 +30,11 @@ class LoadingHelper {
         } else {
             vars.extHighscore = 0
         }
+        if let _ = UserDefaults.standard.object(forKey: "extremeMode") {
+            vars.extremeMode = UserDefaults.standard.bool(forKey: "extremeMode")
+        } else {
+            vars.extremeMode = false
+        }
         if let _ = UserDefaults.standard.object(forKey: "firstTimePlaying") {
             vars.firstTimePlaying = UserDefaults.standard.bool(forKey: "firstTimePlaying")
         } else {

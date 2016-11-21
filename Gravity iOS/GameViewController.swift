@@ -16,7 +16,9 @@ class GameViewController: UIViewController, GCDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(GC.sharedInstance(self))
+        #if os(iOS)
         self.view.isMultipleTouchEnabled = true
+        #endif
         vars.gameScene = GameScene()
         // Configure the view.
         let skView = self.view as! SKView
@@ -94,6 +96,7 @@ class GameViewController: UIViewController, GCDelegate {
         }
     }
     
+    #if os(iOS)
     func activeMultiTouch() {
         self.view.isMultipleTouchEnabled = true
     }
@@ -101,6 +104,7 @@ class GameViewController: UIViewController, GCDelegate {
     func deactivateMultiTouch() {
         self.view.isMultipleTouchEnabled = false
     }
+    #endif
     
     func getScores() {
         vars.highscorePlayerNames = []
@@ -283,64 +287,82 @@ class GameViewController: UIViewController, GCDelegate {
     #endif
     
     #if os(tvOS)
-    override func pressesBegan(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         for item in presses {
-            if item.type == .Menu {
-                if vars.currentGameState == .gameOver || vars.currentGameState == .gameActive {
-                    vars.gameScene!.goToMenu()
-                } else if vars.currentGameState == .gameMenu {
-                    GC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
-                }
-            } else if item.type == .PlayPause {
-                if vars.currentGameState == .gameMenu {
-                    vars.gameScene!.showGameLayer()
-                } else if vars.currentGameState == .gameOver {
-                    vars.gameScene!.restartButton()
-                }
-            } else if item.type == .RightArrow {
-                if vars.currentGameState == .gameActive {
-                    vars.gameScene?.moveLeft = false
-                    vars.gameScene?.moveRight = true
-                }
-            } else if item.type == .LeftArrow {
-                if vars.currentGameState == .gameActive {
-                    vars.gameScene?.moveRight = false
-                    vars.gameScene?.moveLeft = true
-                }
+            if item.type.rawValue == 5 {
+//                if vars.currentGameState == .gameOver || vars.currentGameState == .gameActive {
+//                    vars.gameScene!.goToMenu()
+//                } else if vars.currentGameState == .gameMenu {
+//                    GC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
+//                }
+            } else if item.type.rawValue == 6 {
+//                if vars.currentGameState == .gameMenu {
+//                    vars.gameScene!.showGameLayer()
+//                } else if vars.currentGameState == .gameActive {
+//                    vars.gameScene!.goToMenu()
+//                } else if vars.currentGameState == .gameOver {
+//                    vars.gameScene!.restartButton()
+//                }
+            } else if item.type == .rightArrow {
+//                if vars.currentGameState == .gameActive {
+//                    vars.gameScene?.moveLeft = false
+//                    vars.gameScene?.moveRight = true
+//                }
+            } else if item.type == .leftArrow {
+//                if vars.currentGameState == .gameActive {
+//                    vars.gameScene?.moveRight = false
+//                    vars.gameScene?.moveLeft = true
+//                }
             }
         }
     }
 
-    override func pressesEnded(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+    override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         for item in presses {
-            if item.type == .Menu {
+            if item.type.rawValue == 5 {
                 if vars.currentGameState == .gameOver || vars.currentGameState == .gameActive {
-                    vars.gameScene!.goToMenu()
+                    vars.gameScene!.menuNodePressed()
                 } else if vars.currentGameState == .gameMenu {
                     GC.showGameCenterLeaderboard(leaderboardIdentifier: "IdentifierLeaderboard")
                 }
-            } else if item.type == .PlayPause {
+            } else if item.type.rawValue == 6 {
                 if vars.currentGameState == .gameMenu {
-                    vars.gameScene!.showGameLayer()
-                } else if vars.currentGameState == .gameOver {
-                    vars.gameScene!.restartButton()
+                    if vars.extremeMode == false {
+                        if vars.tvOSNotificationCooldown == false {
+                            vars.tvOSNotificationCooldown = true
+                            vars.extremeMode = true
+                            vars.gameScene!.initExtremeMode()
+                            GC.showCustomBanner(title: "Extreme Mode", description: "activated", duration: 0.5, completion: {
+                                vars.tvOSNotificationCooldown = false
+                            })
+                        }
+                    } else {
+                        if vars.tvOSNotificationCooldown == false {
+                            vars.tvOSNotificationCooldown = true
+                            vars.extremeMode = false
+                            vars.gameScene!.initNormalMode()
+                            GC.showCustomBanner(title: "Normal Mode", description: "activated", duration: 0.5, completion: {
+                                vars.tvOSNotificationCooldown = false
+                            })
+                        }
+                    }
                 }
-            } else if item.type == .RightArrow {
+            } else if item.type == .rightArrow {
                 if vars.currentGameState == .gameActive {
-                    vars.gameScene?.moveRight = false
+                    //vars.gameScene?.moveLeft = false
                 }
-            } else if item.type == .LeftArrow {
+            } else if item.type == .leftArrow {
                 if vars.currentGameState == .gameActive {
-                    vars.gameScene?.moveLeft = false
+                    //vars.gameScene?.moveRight = false
                 }
             }
         }
     }
     
-    func swipedRight(gesture:UISwipeGestureRecognizer) {
+    func swipedRight(_ gesture:UISwipeGestureRecognizer) {
         vars.gameScene?.tvOSMenuSwipeRight()
     }
-    func swipedLeft(gesture:UISwipeGestureRecognizer) {
+    func swipedLeft(_ gesture:UISwipeGestureRecognizer) {
         vars.gameScene?.tvOSMenuSwipeLeft()
     }
     #endif

@@ -34,7 +34,7 @@ class MenuLayer: SKNode {
         playButton.name = "playButton"
         addChild(playButton)
         
-        highscoreNode = SKLabelNode(fontNamed: "Helvetica")
+        highscoreNode = SKLabelNode(fontNamed: "SF-UI-Display-Regular")
         highscoreNode.text = "00:00.00"
         highscoreNode.fontSize = vars.screenSize.height / 13
         highscoreNode.fontColor = SKColor.white

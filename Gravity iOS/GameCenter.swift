@@ -291,13 +291,14 @@ open class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewControl
         
     }
     
-    open class func showCustomBanner(title:String, description:String,completion: (() -> Void)? = nil) {
+    open class func showCustomBanner(title:String, description:String, duration:TimeInterval, completion: (() -> Void)? = nil) {
         guard GC.isPlayerIdentified else {
             GCError.notLogin.errorCall()
             return
         }
         
-        GKNotificationBanner.show(withTitle: title, message: description, completionHandler: completion)
+        //GKNotificationBanner.show(withTitle: title, message: description, completionHandler: completion)
+        GKNotificationBanner.show(withTitle: title, message: description, duration: duration, completionHandler: completion)
     }
     
     open class func showGameCenterAuthentication(_ completion: ((_ result:Bool) -> Void)? = nil) {
@@ -490,7 +491,7 @@ open class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewControl
                         let title = tupleIsOK.gkAchievementDescription.title
                         let description = tupleIsOK.gkAchievementDescription.achievedDescription
                         
-                        GC.showCustomBanner(title: title!, description: description!)
+                        GC.showCustomBanner(title: title!, description: description!, duration: 2)
                     }
                 })
             }
@@ -585,7 +586,7 @@ open class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewControl
                 let title = tupleOK.gkAchievementDescription.title
                 let description = tupleOK.gkAchievementDescription.achievedDescription
                 
-                GC.showCustomBanner(title: title!, description: description!, completion: {
+                GC.showCustomBanner(title: title!, description: description!, duration: 2, completion: {
                     
                     if completion != nil { completion!(achievement) }
                 })
@@ -955,7 +956,8 @@ open class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewControl
     open func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true, completion: nil)
     }
-
+    
+    #if os(iOS)
     open func match(_ theMatch: GKMatch, didReceive data: Data, fromPlayer playerID: String) {
         guard GC.sharedInstance.match == theMatch else {
             return
@@ -980,7 +982,8 @@ open class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewControl
             break
         }
     }
-
+    #endif
+    
     open func match(_ theMatch: GKMatch, didFailWithError error: Error?) {
         guard self.match == theMatch else {
             return
@@ -1017,8 +1020,10 @@ open class GC: NSObject, GKGameCenterControllerDelegate, GKMatchmakerViewControl
     }
     
     open func player(_ player: GKPlayer, didRequestMatchWithOtherPlayers playersToInvite: [GKPlayer]) { }
-
+    
+    #if os(iOS)
     open func player(_ player: GKPlayer, didRequestMatchWithPlayers playerIDsToInvite: [String]) { }
+    #endif
     
     open func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
         

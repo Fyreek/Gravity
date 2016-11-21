@@ -54,6 +54,7 @@ struct vars {
     static var cursorTime:Int = 0 //seconds / 60 since last mouse movement
     static var windowIsFullscreen:Bool = false //If the window is in fullscreen mode
     static var spawnObjects:Bool = true //If Objects are allowed to spawn
+    static var tvOSNotificationCooldown = false //If Notification on tvOS is displayed
 }
 
 struct colors {
