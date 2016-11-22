@@ -1240,6 +1240,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             gameLayer.topBar.fillColor = newColor
             gameLayer.bottomBar.strokeColor = newColor
             gameLayer.bottomBar.fillColor = newColor
+            menuLayer.notificationNode.fillColor = newColor
         }
     }
     #if os(iOS)
@@ -1381,12 +1382,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 }
             } else if moveLeft == true && moveRight == true {
                 gameLayer.player.position = gameLayer.player.position
-            }
-        }
-        if gameCenterSync == false {
-            if vars.gameCenterLoggedIn == true {
-                gameCenterSync = true
-                setHighscore()
             }
         }
     }

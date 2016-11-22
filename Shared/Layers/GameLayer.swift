@@ -71,6 +71,7 @@ class GameLayer: SKNode {
         
         menuNodeInAction = SKAction.moveTo(y: vars.screenSize.height - ((vars.screenSize.height / 7) / 2), duration: vars.gameLayerFadeTime)
         
+        #if os(iOS) || os(macOS)
         tutorialNodeLeft = SKSpriteNode(imageNamed: "Tutorial-Touch")
         tutorialNodeLeft.setScale(vars.screenSize.height / 1280)
         tutorialNodeLeft.position = CGPoint(x: tutorialNodeLeft.size.width / 1.5, y: bottomBar.frame.size.height + tutorialNodeLeft.size.height / 1.5)
@@ -85,6 +86,7 @@ class GameLayer: SKNode {
         tutorialNodeRight.zRotation = CGFloat(M_PI)
         tutorialNodeRight.alpha = 0
         addChild(tutorialNodeRight)
+        #endif
         
     }
     

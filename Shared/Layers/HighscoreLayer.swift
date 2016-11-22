@@ -35,12 +35,14 @@ class HighscoreLayer: SKNode {
     override init() {
         super.init()
     
+        #if os(iOS) || os(macOS)
         shareNode = SKSpriteNode(imageNamed: "Share")
         shareNode.setScale(vars.screenSize.height / 1280)
         shareNode.position = CGPoint(x: vars.screenSize.width - (shareNode.frame.size.width / 2) - vars.screenSize.width / 66, y: vars.screenSize.height + shareNode.frame.height + vars.screenSize.height / 40)
         shareNode.zPosition = 3
         shareNode.name = "shareNode"
         addChild(shareNode)
+        #endif
         
         highscoreNode = SKShapeNode(circleOfRadius: vars.screenSize.height / 5)
         highscoreNode.position = CGPoint(x: vars.screenSize.width * 1.5, y: vars.screenSize.height / 2)

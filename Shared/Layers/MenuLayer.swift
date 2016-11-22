@@ -18,6 +18,7 @@ class MenuLayer: SKNode {
     var circleNode = SKShapeNode()
     var circleNode2 = SKShapeNode()
     var splashNode = SKShapeNode()
+    var notificationNode = SKShapeNode()
     
     override init() {
         super.init()
@@ -49,6 +50,14 @@ class MenuLayer: SKNode {
         GCNode.zPosition = 1
         GCNode.name = "GCNode"
         addChild(GCNode)
+        
+//        #if os(tvOS)
+//            notificationNode = SKShapeNode(rectOf: CGSize(width: vars.screenSize.width / 3, height: (vars.barHeight * 2) / 3), cornerRadius: 1)
+//            notificationNode.position = CGPoint(x: vars.screenSize.width / 2, y: vars.screenSize.height - vars.barHeight / 2)
+//            
+//            notificationNode.zPosition = 10
+//            addChild(notificationNode)
+//        #endif
         
         #if os(iOS)
             

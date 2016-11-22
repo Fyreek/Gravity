@@ -1491,12 +1491,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 }
             }
         }
-        if gameCenterSync == false {
-            if vars.gameCenterLoggedIn == true {
-                gameCenterSync = true
-                setHighscore()
-            }
-        }
     }
 }
 extension NSColor {
