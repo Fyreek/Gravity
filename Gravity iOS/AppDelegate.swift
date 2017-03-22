@@ -65,9 +65,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         #if os(iOS)
-        if vars.motionControl == true && vars.currentGameState == .gameActive {
+        if vars.motionControl == true{
             vars.gameScene?.initMotionControl()
-        } else if vars.currentGameState == .gameActive {
+        } else {
             vars.gameScene?.cancelMotionControl()
         }
         #endif
@@ -113,13 +113,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             case .motionControl:
                 UserDefaults.standard.set(true, forKey: "motioncontrol")
                 UserDefaults.standard.synchronize()
-                vars.motionControl = UserDefaults.standard.bool(forKey: "motioncontrol")
+                vars.motionControl = true
                 quickActionHandled = true
                 
             case .touchControl:
                 UserDefaults.standard.set(false, forKey: "motioncontrol")
                 UserDefaults.standard.synchronize()
-                vars.motionControl = UserDefaults.standard.bool(forKey: "motioncontrol")
+                vars.motionControl = false
                 quickActionHandled = true
             }
         }

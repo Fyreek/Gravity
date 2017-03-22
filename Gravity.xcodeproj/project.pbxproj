@@ -43,6 +43,9 @@
 		14EE108D1C74B430004CA811 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A1D459921C46B62E0093B6CB /* GameScene.sks */; };
 		14EE108E1C74B433004CA811 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459941C46B62E0093B6CB /* GameScene.swift */; };
 		14EE108F1C74B434004CA811 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D459961C46B62E0093B6CB /* GameViewController.swift */; };
+		14EEC2521E5CE67500A11EAE /* Gr4vity_wav.wav in Resources */ = {isa = PBXBuildFile; fileRef = 14EEC2511E5CE67500A11EAE /* Gr4vity_wav.wav */; };
+		14EEC2531E5CE67500A11EAE /* Gr4vity_wav.wav in Resources */ = {isa = PBXBuildFile; fileRef = 14EEC2511E5CE67500A11EAE /* Gr4vity_wav.wav */; };
+		14EEC2541E5CE67500A11EAE /* Gr4vity_wav.wav in Resources */ = {isa = PBXBuildFile; fileRef = 14EEC2511E5CE67500A11EAE /* Gr4vity_wav.wav */; };
 		816F2D811D900A7D0031BC06 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 816F2D801D900A7D0031BC06 /* GameKit.framework */; };
 		A108DE4A1C49488F00760D54 /* GameLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE461C49488F00760D54 /* GameLayer.swift */; };
 		A108DE4B1C49488F00760D54 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A108DE471C49488F00760D54 /* MenuLayer.swift */; };
@@ -80,6 +83,7 @@
 		14EE10821C74B410004CA811 /* Assets_tvOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets_tvOS.xcassets; sourceTree = "<group>"; };
 		14EE10841C74B410004CA811 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14EE10921C74B4C3004CA811 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		14EEC2511E5CE67500A11EAE /* Gr4vity_wav.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Gr4vity_wav.wav; sourceTree = "<group>"; };
 		14FD4E4E1CBEDAF9005F58C8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		816F2D801D900A7D0031BC06 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/GameKit.framework; sourceTree = DEVELOPER_DIR; };
 		A108DE461C49488F00760D54 /* GameLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameLayer.swift; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				A19EFE871C623D8F00868776 /* music.caf */,
+				14EEC2511E5CE67500A11EAE /* Gr4vity_wav.wav */,
 				14E229D51DE3635700EF4808 /* SF-UI-Display-Regular.otf */,
 				14BFA98F1DD007AC00A5C9D9 /* Helper */,
 				14994BEB1CB30E3B0009A545 /* Layers */,
@@ -380,6 +385,7 @@
 				145100E51D92D98100ABEFA1 /* GameScene.sks in Resources */,
 				14994BF21CB32D300009A545 /* music.caf in Resources */,
 				14E229D81DE3635700EF4808 /* SF-UI-Display-Regular.otf in Resources */,
+				14EEC2541E5CE67500A11EAE /* Gr4vity_wav.wav in Resources */,
 				145100EA1D92D9D900ABEFA1 /* Assets_macOS.xcassets in Resources */,
 				145100E81D92D9C600ABEFA1 /* MainMenu.xib in Resources */,
 			);
@@ -391,6 +397,7 @@
 			files = (
 				14EE10831C74B410004CA811 /* Assets_tvOS.xcassets in Resources */,
 				14EE108D1C74B430004CA811 /* GameScene.sks in Resources */,
+				14EEC2531E5CE67500A11EAE /* Gr4vity_wav.wav in Resources */,
 				14E229D71DE3635700EF4808 /* SF-UI-Display-Regular.otf in Resources */,
 				14994BF31CB32D300009A545 /* music.caf in Resources */,
 				14E229DA1DE36FA400EF4808 /* Assets_iOS.xcassets in Resources */,
@@ -404,6 +411,7 @@
 			files = (
 				A1D459931C46B62E0093B6CB /* GameScene.sks in Resources */,
 				A19EFE881C623D8F00868776 /* music.caf in Resources */,
+				14EEC2521E5CE67500A11EAE /* Gr4vity_wav.wav in Resources */,
 				14E229D61DE3635700EF4808 /* SF-UI-Display-Regular.otf in Resources */,
 				A126FADF1C565DA5002D4A85 /* Settings.bundle in Resources */,
 				A1D4599C1C46B62E0093B6CB /* Assets_iOS.xcassets in Resources */,

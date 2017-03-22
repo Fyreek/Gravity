@@ -211,7 +211,7 @@ class GameViewController: UIViewController, GCDelegate {
     }
     #endif
     
-    func playBackgroundMusic(_ filename: String) {
+    class func playBackgroundMusic(_ filename: String) {
         let url = Bundle.main.url(
             forResource: filename, withExtension: nil)
         if (url == nil) {
@@ -264,6 +264,7 @@ class GameViewController: UIViewController, GCDelegate {
         if vars.musicPlaying == false {
             vars.musicPlaying = true
             //playBackgroundMusic("music.caf")
+            playBackgroundMusic("Gr4vity_wav.wav")
         } else {
             if vars.backgroundMusicPlayer != nil {
                 vars.backgroundMusicPlayer.play()
