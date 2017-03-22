@@ -111,6 +111,13 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
     }
     
+    func gamecenterNotLoggedIn() {
+        menuLayer.GCNode.texture = SKTexture(imageNamed: "GameCenter_disabled")
+    }
+    func gamecenterLoggedIn() {
+        menuLayer.GCNode.texture = SKTexture(imageNamed: "GameCenter")
+    }
+    
     func initExtremeMode() {
         setHighscore()
         vars.playerSideSpeed = vars.screenSize.width / 130 //How fast the player moves sideways - normal: / 160

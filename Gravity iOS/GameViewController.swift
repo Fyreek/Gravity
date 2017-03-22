@@ -40,6 +40,7 @@ class GameViewController: UIViewController, GCDelegate {
     
     func GCAuthentified(_ authentified:Bool) {
         if authentified {
+            vars.gameScene?.gamecenterLoggedIn()
             GC.getHighScore(leaderboardIdentifier: identifiers.iOSnormalLeaderboard) {
                 (tupleHighScore) -> Void in
                 if let tupleIsOk = tupleHighScore {
@@ -95,6 +96,8 @@ class GameViewController: UIViewController, GCDelegate {
                     }
                 }
             }
+        } else {
+            vars.gameScene?.gamecenterNotLoggedIn()
         }
     }
     

@@ -966,7 +966,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             viewController.reportScoreLeaderboard(identifiers.OSXextremeLeaderboard, score: Int(vars.extHighscore * 100))
             achievementProgress()
             if vars.gameCenterLoggedIn == true {
-                viewController.getExtScores()
+                //viewController.getExtScores()
+                openNewHighScore()
             } else {
                 openNewHighScore()
             }
@@ -977,7 +978,8 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
             viewController.reportScoreLeaderboard(identifiers.OSXnormalLeaderboard, score: Int(vars.highscore * 100))
             achievementProgress()
             if vars.gameCenterLoggedIn == true {
-                viewController.getScores()
+                //viewController.getScores()
+                openNewHighScore()
             } else {
                 openNewHighScore()
             }
@@ -1100,6 +1102,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func openNewHighScore() {
+        print("opennewhighscore")
         isAnimating = true
         timesPlayedWithoutInteraction = 0
         
@@ -1133,7 +1136,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
                 }
             }
         }
-        
         
         if vars.gameCenterLoggedIn == true && vars.shouldOpenScoresList == true{
             if vars.highscorePlayerNames.count >= 0 {
@@ -1258,6 +1260,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func gameOverAfter() {
+        print("gameoverafter")
         isAnimating = true
         UserDefaults.standard.set(vars.gamesPlayed, forKey: "gamesPlayed")
         UserDefaults.standard.synchronize()
@@ -1320,6 +1323,7 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func gameOver() {
+        print("gameover")
         spawnTimer.invalidate()
         gameLayer.player.physicsBody?.affectedByGravity = false
         gameLayer.player.physicsBody?.isDynamic = false

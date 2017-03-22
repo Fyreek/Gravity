@@ -21,7 +21,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     @IBOutlet weak var soundMenuItem: NSMenuItem!
     @IBOutlet weak var modeMenuItem: NSMenuItem!
     
-    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         window.delegate = self
         
@@ -42,6 +41,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         window.styleMask = [NSClosableWindowMask, NSTitledWindowMask, NSMiniaturizableWindowMask]
         let zoomButton: NSButton = window.standardWindowButton(NSWindowButton.zoomButton)!
         zoomButton.isHidden = true
+        
     }
     
     func setWindowStyleMenu() {
@@ -395,7 +395,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     
     //GameCenter
     
-    var localPayer: GKLocalPlayer {
+    var localPlayer: GKLocalPlayer {
         get {
             return GKLocalPlayer.localPlayer()
         }
@@ -460,7 +460,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
             }
 
             let rankVal = valGkscore.rank
-            let nameVal  = self.localPayer.alias!
+            let nameVal  = self.localPlayer.alias!
             let scoreVal  = Int(valGkscore.value)
             completion((playerName: nameVal, score: scoreVal, rank: rankVal))
             
@@ -531,7 +531,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
                 vars.gameScene?.gamecenterNotLoggedIn()
                 vars.gameCenterLoggedIn = false
             }
-            print(error)
+            //print(error)
         }
     }
     

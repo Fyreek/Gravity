@@ -49,6 +49,7 @@ class HighscoreLayer: SKNode {
         highscoreNode.fillColor = SKColor.white
         highscoreNode.zPosition = 3
         highscoreNode.alpha = 0
+        highscoreNode.name = "highscoreNodeEnd"
         addChild(highscoreNode)
     
         highscoreText = SKLabelNode(fontNamed: "SF-UI-Display-Regular")
