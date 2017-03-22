@@ -264,7 +264,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     func MusicOff() {
         if vars.musicPlaying == false {
             vars.musicPlaying = true
-            playBackgroundMusic("music.caf")
+            playBackgroundMusic("Gr4vity_wav.wav")
         } else {
             if vars.backgroundMusicPlayer != nil {
                 vars.backgroundMusicPlayer.play()
@@ -290,7 +290,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
                     } else {
                         self.reportScoreLeaderboard(identifiers.OSXnormalLeaderboard, score: Int(vars.highscore * 100))
                     }
-                    vars.gameCenterLoggedIn = true
+                    //vars.gameCenterLoggedIn = true
                     vars.gameScene?.achievementProgress()
                 }
             }
@@ -518,20 +518,26 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     }
     
     func authenticateLocalPlayer() {
+        print("Login start")
         let localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer()
         localPlayer.authenticateHandler = {(viewController: NSViewController?, error: Error?) -> Void in
-            if viewController != nil {
-            } else if localPlayer.isAuthenticated {
+            if localPlayer.isAuthenticated {
                 print("Logged in")
                 self.GCAuthentified(localPlayer.isAuthenticated)
+                vars.gameScene?.gamecenterLoggedIn()
+                vars.gameCenterLoggedIn = true
+            } else {
+                print("Unable to login")
+                vars.gameScene?.gamecenterNotLoggedIn()
+                vars.gameCenterLoggedIn = false
             }
-            else {
-                print("Failed")
-            }
+            print(error)
         }
     }
     
     func showLeaderboard(_ leaderboardID: String) {
+        print("Connected: " + String(isConnectedToNetwork))
+        print("identified: " + String(isConnectedToNetwork))
         if isConnectedToNetwork && isPlayerIdentified {
             let gameCenterController: GKGameCenterViewController = GKGameCenterViewController()
             gameCenterController.gameCenterDelegate = self

@@ -436,6 +436,13 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
         }
     }
     
+    func gamecenterNotLoggedIn() {
+        menuLayer.GCNode.texture = SKTexture(imageNamed: "GameCenter_disabled")
+    }
+    func gamecenterLoggedIn() {
+        menuLayer.GCNode.texture = SKTexture(imageNamed: "GameCenter")
+    }
+    
     func playButtonPressed() {
         if gameStarted == false {
             gameStarted = true
@@ -445,7 +452,14 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func GCNodePressed() {
         if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
-            viewController.showLeaderboard(identifiers.OSXnormalLeaderboard)
+            print("GC Presse")
+            if(vars.gameCenterLoggedIn) {
+                print("show")
+                viewController.showLeaderboard(identifiers.OSXnormalLeaderboard)
+            } else {
+                print("login")
+                viewController.authenticateLocalPlayer()
+            }
         }
     }
     
