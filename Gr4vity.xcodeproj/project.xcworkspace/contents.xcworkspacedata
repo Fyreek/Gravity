@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Gravity.xcodeproj">
+      location = "self:/Users/luca/Documents/Coding/Swift/Gravity/Gr4vity.xcodeproj">
    </FileRef>
 </Workspace>

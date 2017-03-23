@@ -68,14 +68,14 @@
 		145100E41D92D98100ABEFA1 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = GameScene.sks; path = "Gravity macOS/GameScene.sks"; sourceTree = SOURCE_ROOT; };
 		145100E71D92D9C600ABEFA1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Gravity macOS/Base.lproj/MainMenu.xib"; sourceTree = SOURCE_ROOT; };
 		145100E91D92D9D900ABEFA1 /* Assets_macOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets_macOS.xcassets; path = "Gravity macOS/Assets_macOS.xcassets"; sourceTree = SOURCE_ROOT; };
-		14994BD41CB30D840009A545 /* Gravity macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		14994BD41CB30D840009A545 /* Gr4vity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gr4vity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14994BE11CB30D840009A545 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Gravity macOS/Info.plist"; sourceTree = "<group>"; };
 		14BFA9921DD0087400A5C9D9 /* LoadingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingHelper.swift; path = Helper/LoadingHelper.swift; sourceTree = "<group>"; };
 		14BFA9951DD00D6500A5C9D9 /* AnimationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AnimationHelper.swift; path = Helper/AnimationHelper.swift; sourceTree = "<group>"; };
 		14BFA9971DD00F0E00A5C9D9 /* HighscoreHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HighscoreHelper.swift; path = Helper/HighscoreHelper.swift; sourceTree = "<group>"; };
 		14E229D21DE3529C00EF4808 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS10.0.sdk/System/Library/Frameworks/GameKit.framework; sourceTree = DEVELOPER_DIR; };
 		14E229D51DE3635700EF4808 /* SF-UI-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Display-Regular.otf"; sourceTree = "<group>"; };
-		14EE10751C74B410004CA811 /* Gravity tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		14EE10751C74B410004CA811 /* Gr4vity tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gr4vity tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EE10801C74B410004CA811 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		14EE10821C74B410004CA811 /* Assets_tvOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets_tvOS.xcassets; sourceTree = "<group>"; };
 		14EE10841C74B410004CA811 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 		A126FADE1C565DA5002D4A85 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A127C0201C4E52AE0042258B /* HighscoreLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighscoreLayer.swift; sourceTree = "<group>"; };
 		A19946581C46B8D500A0041B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
-		A1D4598D1C46B62E0093B6CB /* Gravity iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gravity iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1D4598D1C46B62E0093B6CB /* Gr4vity iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gr4vity iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1D459901C46B62E0093B6CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1D459921C46B62E0093B6CB /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		A1D459941C46B62E0093B6CB /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -229,9 +229,9 @@
 		A1D4598E1C46B62E0093B6CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A1D4598D1C46B62E0093B6CB /* Gravity iOS.app */,
-				14EE10751C74B410004CA811 /* Gravity tvOS.app */,
-				14994BD41CB30D840009A545 /* Gravity macOS.app */,
+				A1D4598D1C46B62E0093B6CB /* Gr4vity iOS.app */,
+				14EE10751C74B410004CA811 /* Gr4vity tvOS.app */,
+				14994BD41CB30D840009A545 /* Gr4vity.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -255,9 +255,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		14994BD31CB30D840009A545 /* Gravity macOS */ = {
+		14994BD31CB30D840009A545 /* Gr4vity macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14994BE41CB30D840009A545 /* Build configuration list for PBXNativeTarget "Gravity macOS" */;
+			buildConfigurationList = 14994BE41CB30D840009A545 /* Build configuration list for PBXNativeTarget "Gr4vity macOS" */;
 			buildPhases = (
 				14994BD01CB30D840009A545 /* Sources */,
 				14994BD11CB30D840009A545 /* Frameworks */,
@@ -267,14 +267,14 @@
 			);
 			dependencies = (
 			);
-			name = "Gravity macOS";
+			name = "Gr4vity macOS";
 			productName = "Gravity OSX";
-			productReference = 14994BD41CB30D840009A545 /* Gravity macOS.app */;
+			productReference = 14994BD41CB30D840009A545 /* Gr4vity.app */;
 			productType = "com.apple.product-type.application";
 		};
-		14EE10741C74B410004CA811 /* Gravity tvOS */ = {
+		14EE10741C74B410004CA811 /* Gr4vity tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14EE10871C74B410004CA811 /* Build configuration list for PBXNativeTarget "Gravity tvOS" */;
+			buildConfigurationList = 14EE10871C74B410004CA811 /* Build configuration list for PBXNativeTarget "Gr4vity tvOS" */;
 			buildPhases = (
 				14EE10711C74B410004CA811 /* Sources */,
 				14EE10721C74B410004CA811 /* Frameworks */,
@@ -284,14 +284,14 @@
 			);
 			dependencies = (
 			);
-			name = "Gravity tvOS";
+			name = "Gr4vity tvOS";
 			productName = "Gravity tvOS";
-			productReference = 14EE10751C74B410004CA811 /* Gravity tvOS.app */;
+			productReference = 14EE10751C74B410004CA811 /* Gr4vity tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A1D4598C1C46B62E0093B6CB /* Gravity iOS */ = {
+		A1D4598C1C46B62E0093B6CB /* Gr4vity iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1D459A31C46B62E0093B6CB /* Build configuration list for PBXNativeTarget "Gravity iOS" */;
+			buildConfigurationList = A1D459A31C46B62E0093B6CB /* Build configuration list for PBXNativeTarget "Gr4vity iOS" */;
 			buildPhases = (
 				A1D459891C46B62E0093B6CB /* Sources */,
 				A1D4598A1C46B62E0093B6CB /* Frameworks */,
@@ -301,9 +301,9 @@
 			);
 			dependencies = (
 			);
-			name = "Gravity iOS";
+			name = "Gr4vity iOS";
 			productName = Gravity;
-			productReference = A1D4598D1C46B62E0093B6CB /* Gravity iOS.app */;
+			productReference = A1D4598D1C46B62E0093B6CB /* Gr4vity iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -352,7 +352,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A1D459881C46B62E0093B6CB /* Build configuration list for PBXProject "Gravity" */;
+			buildConfigurationList = A1D459881C46B62E0093B6CB /* Build configuration list for PBXProject "Gr4vity" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -365,9 +365,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1D4598C1C46B62E0093B6CB /* Gravity iOS */,
-				14EE10741C74B410004CA811 /* Gravity tvOS */,
-				14994BD31CB30D840009A545 /* Gravity macOS */,
+				A1D4598C1C46B62E0093B6CB /* Gr4vity iOS */,
+				14EE10741C74B410004CA811 /* Gr4vity tvOS */,
+				14994BD31CB30D840009A545 /* Gr4vity macOS */,
 			);
 		};
 /* End PBXProject section */
@@ -507,8 +507,8 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Gravity macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yalu.Gravity-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yalu.Gravity-OSX";
+				PRODUCT_NAME = Gr4vity;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 3.0;
 			};
@@ -525,8 +525,8 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Gravity macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yalu.Gravity-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yalu.Gravity-OSX";
+				PRODUCT_NAME = Gr4vity;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 3.0;
 			};
@@ -699,7 +699,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		14994BE41CB30D840009A545 /* Build configuration list for PBXNativeTarget "Gravity macOS" */ = {
+		14994BE41CB30D840009A545 /* Build configuration list for PBXNativeTarget "Gr4vity macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				14994BE21CB30D840009A545 /* Debug */,
@@ -708,7 +708,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		14EE10871C74B410004CA811 /* Build configuration list for PBXNativeTarget "Gravity tvOS" */ = {
+		14EE10871C74B410004CA811 /* Build configuration list for PBXNativeTarget "Gr4vity tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				14EE10851C74B410004CA811 /* Debug */,
@@ -717,7 +717,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1D459881C46B62E0093B6CB /* Build configuration list for PBXProject "Gravity" */ = {
+		A1D459881C46B62E0093B6CB /* Build configuration list for PBXProject "Gr4vity" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1D459A11C46B62E0093B6CB /* Debug */,
@@ -726,7 +726,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1D459A31C46B62E0093B6CB /* Build configuration list for PBXNativeTarget "Gravity iOS" */ = {
+		A1D459A31C46B62E0093B6CB /* Build configuration list for PBXNativeTarget "Gr4vity iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1D459A41C46B62E0093B6CB /* Debug */,
