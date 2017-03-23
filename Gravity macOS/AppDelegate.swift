@@ -20,9 +20,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     @IBOutlet weak var skView: SKView!
     @IBOutlet weak var soundMenuItem: NSMenuItem!
     @IBOutlet weak var modeMenuItem: NSMenuItem!
+    @IBOutlet weak var backToMenu: NSMenuItem!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         window.delegate = self
+        self.window.titleVisibility = .hidden
         
         vars.gameScene = GameScene()
         skView.showsFPS = false
@@ -36,6 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
         skView.presentScene(vars.gameScene)
         authenticateLocalPlayer()
     }
+    
     
     func setWindowStyleGame() {
         window.styleMask = [NSClosableWindowMask, NSTitledWindowMask, NSMiniaturizableWindowMask]
@@ -93,6 +96,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
             modeMenuItem.title = "Extreme Mode"
         }
     }
+    
+    @IBAction func backToMenuAction(_ sender: AnyObject) {
+        if vars.currentGameState != .gameMenu {
+            vars.gameScene?.goToMenu()
+        }
+    }
+    
     
     func applicationDockMenu(_ sender: NSApplication) -> NSMenu? {
         let musicSelector : Selector = #selector(self.musicUpdate)
@@ -518,11 +528,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, GKGameCent
     }
     
     func authenticateLocalPlayer() {
-        print("Login start")
         let localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer()
         localPlayer.authenticateHandler = {(viewController: NSViewController?, error: Error?) -> Void in
             if localPlayer.isAuthenticated {
-                print("Logged in")
                 self.GCAuthentified(localPlayer.isAuthenticated)
                 vars.gameScene?.gamecenterLoggedIn()
                 vars.gameCenterLoggedIn = true

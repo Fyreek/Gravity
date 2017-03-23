@@ -452,12 +452,9 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     
     func GCNodePressed() {
         if vars.currentGameState == .gameOver || vars.currentGameState == .gameMenu {
-            print("GC Presse")
             if(vars.gameCenterLoggedIn) {
-                print("show")
                 viewController.showLeaderboard(identifiers.OSXnormalLeaderboard)
             } else {
-                print("login")
                 viewController.authenticateLocalPlayer()
             }
         }
@@ -1102,7 +1099,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func openNewHighScore() {
-        print("opennewhighscore")
         isAnimating = true
         timesPlayedWithoutInteraction = 0
         
@@ -1260,7 +1256,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func gameOverAfter() {
-        print("gameoverafter")
         isAnimating = true
         UserDefaults.standard.set(vars.gamesPlayed, forKey: "gamesPlayed")
         UserDefaults.standard.synchronize()
@@ -1323,7 +1318,6 @@ class GameScene: SKSceneExtension, SKPhysicsContactDelegate {
     }
     
     func gameOver() {
-        print("gameover")
         spawnTimer.invalidate()
         gameLayer.player.physicsBody?.affectedByGravity = false
         gameLayer.player.physicsBody?.isDynamic = false

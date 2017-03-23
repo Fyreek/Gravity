@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -87,6 +88,17 @@
                             <menuItem isSeparatorItem="YES" id="92">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
+                            <menuItem title="Go to Main Menu" id="HfS-XM-llY">
+                                <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
+                                <connections>
+                                    <action selector="backToMenuAction:" target="494" id="jvy-9d-BSE"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="Tsp-af-Erg">
+                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
+                            </menuItem>
                             <menuItem title="Bring All to Front" id="5">
                                 <connections>
                                     <action selector="arrangeInFront:" target="-1" id="39"/>
@@ -131,8 +143,10 @@
                 </constraints>
             </view>
         </window>
-        <customObject id="494" customClass="AppDelegate" customModule="Gravity_macOS" customModuleProvider="target">
+        <customObject id="494" customClass="AppDelegate" customModule="Gr4vity" customModuleProvider="target">
             <connections>
+                <outlet property="backToMenu" destination="HfS-XM-llY" id="Z5R-PY-sIt"/>
+                <outlet property="mainMenuItem" destination="HfS-XM-llY" id="OuU-9A-6aB"/>
                 <outlet property="modeMenuItem" destination="MDL-IW-BOP" id="oe9-AS-dBR"/>
                 <outlet property="skView" destination="539" id="540"/>
                 <outlet property="soundMenuItem" destination="DgQ-7n-h5U" id="Byq-A5-YfD"/>
